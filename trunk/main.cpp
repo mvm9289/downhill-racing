@@ -16,12 +16,13 @@ void init(void)
 	glEnable(GL_LIGHTING); 
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_LIGHT0);
-	glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
+	glColorMaterial(GL_FRONT, GL_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
 }
 
 void render(void)   
 {
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	scene.render();
     glutSwapBuffers();
 }
@@ -35,15 +36,12 @@ void reshape(int width, int height)
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60, (float)width/(float)height, radius, 3*radius);
+	gluPerspective(45, (float)width/(float)height, 0.1, 3*radius);
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glTranslatef(0,0,-2*radius);
-	glRotatef(-0,0,0,1);
-	glRotatef(0,1,0,0);
-	glRotatef(-0,0,1,0);
-	glTranslatef(-center.x, -center.y, -center.z);
+
+	gluLookAt(center.x+2*radius, center.y+2*radius, center.z, center.x, center.y, center.z, -1, 1, 0);
 }
 
 void keyboard(unsigned char key, int x, int y)

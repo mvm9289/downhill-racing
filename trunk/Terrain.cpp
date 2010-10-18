@@ -2,8 +2,9 @@
 
 #include <cstdlib>
 #include <cstring>
+#include <fstream>
 
-Terrain::Terrain(string level):vertices(0),normals(0),colors(0)
+Terrain::Terrain(string level):verticesArray(0),normalsArray(0),colorsArray(0),indicesArray(0)
 {
 	readLevelTxt(level);
 	createTerrain();
@@ -15,12 +16,13 @@ Terrain::~Terrain(void)
 	free(verticesArray);
 	free(normalsArray);
 	free(colorsArray);
+	free(indicesArray);
 }
 
 void Terrain::readLevelTxt(string level)
 {
 	ifstream inputFile;
-	inputFile.open(level);
+	inputFile.open(level.c_str());
 
 	if (inputFile.is_open()) {
 		while (!inputFile.eof()) {
@@ -43,16 +45,16 @@ void Terrain::createTerrain(void)
 	vertices.push_back(Vertex(Point(TERRAIN_WIDTH, vertices[0].coord.y, vertices[0].coord.z)));
 
 	int n = heights.size();
-	for(int i = 1; i < n; ++i)
+	for(int i = 1, j = 0; i < n; ++i)
 	{
-		vertices.push_back(Vertex(Point(0.0, (float)heights[i], vertices[(i - 1)*VERTICES_PER_HEIGHT].coord.z - TERRAIN_DEPTH)));
-		vertices.push_back(Vertex(Point(TERRAIN_WIDTH, vertices[i*VERTICES_PER_HEIGHT].y, vertices[i*VERTICES_PER_HEIGHT].z)));
+		vertices.push_back(Vertex(Point(0.0, (float)heights[i], vertices[j++].coord.z - TERRAIN_DEPTH)));
+		vertices.push_back(Vertex(Point(TERRAIN_WIDTH, (float)heights[i], vertices[j++].coord.z - TERRAIN_DEPTH)));
 
 		Face f;
-		f.addVertex(vertices[(i - 1)*VERTICES_PER_HEIGHT]);
-		f.addVertex(vertices[(i - 1)*VERTICES_PER_HEIGHT + 1]);
-		f.addVertex(vertices[i*VERTICES_PER_HEIGHT]);
-		f.addVertex(vertices[i*VERTICES_PER_HEIGHT + 1]);
+		f.addVertex(j - 2);
+		f.addVertex(j - 1);
+		f.addVertex(j + 1);
+		f.addVertex(j);
 		faces.push_back(f);
 	}
 
@@ -77,7 +79,7 @@ void Terrain::createVertexArrays(void)
 	verticesArray = (GLfloat*)malloc(sizeof(GLfloat)*n*VERTEX_COMPONENTS);
 	normalsArray = (GLfloat*)malloc(sizeof(GLfloat)*n*NORMAL_COMPONENTS);
 	colorsArray = (GLfloat*)malloc(sizeof(GLfloat)*n*COLOR_COMPONENTS);
-	indicesArray = (GLint*)malloc(sizeof(GLint)*faces.size()*VERTICES_PER_FACE);
+	indicesArray = (GLuint*)malloc(sizeof(GLuint)*faces.size()*VERTICES_PER_FACE);
 
 	for(int i = 0; i < n; ++i)
 	{
@@ -95,13 +97,13 @@ void Terrain::createVertexArrays(void)
 	}
 
 	n = faces.size();
-	for(int i = 0; i < n; ++i)
-		for(int j = 0; j < VERTICES_PER_FACE; ++j)
-			indicesArray[i*VERTICES_PER_FACE + j] = faces[i].indices[j];
-
-	glVertexPointer(3, GL_FLOAT, 0, verticesArray);
-	glNormalPointer(GL_FLOAT, 0 , normalsArray);
-	glColorPointer(3, GL_FLOAT, 0, colorsArray);
+	for(int i = 0, j = 0; i < n; ++i)
+	{
+		indicesArray[j++] = faces[i].indices[0];
+		indicesArray[j++] = faces[i].indices[1];
+		indicesArray[j++] = faces[i].indices[2];
+		indicesArray[j++] = faces[i].indices[3];
+	}
 }
 
 Box Terrain::boundingBox( void )
@@ -118,6 +120,10 @@ Box Terrain::boundingBox( void )
 
 void Terrain::render(void)
 {
+	glVertexPointer(3, GL_FLOAT, 0, verticesArray);
+	glNormalPointer(GL_FLOAT, 0 , normalsArray);
+	glColorPointer(3, GL_FLOAT, 0, colorsArray);
+
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);

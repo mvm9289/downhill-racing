@@ -1,10 +1,10 @@
 #pragma once
 
+#include <gl/glut.h>
 #include "Vertex.h"
 #include "Face.h"
 #include "Box.h"
 
-#include <gl/GL.h>
 #include <vector>
 #include <string>
 using namespace std;
@@ -26,7 +26,7 @@ private:
 	GLfloat* verticesArray;
 	GLfloat* normalsArray;
 	GLfloat* colorsArray;
-	GLint* indicesArray;
+	GLuint* indicesArray;
 
 public:
 	vector<int> heights;
