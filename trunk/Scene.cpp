@@ -4,16 +4,16 @@ Scene::Scene(void):terrain("levels/level1.txt") {}
 
 Scene::~Scene(void) {}
 
-Box Scene::boundingBox( void )
+Box Scene::boundingBox(void)
 {
 	return terrain.boundingBox();
 }
 
-void Scene::boundingSphere( Point& center, float& radius )
+void Scene::boundingSphere(Point& center, float& radius)
 {
 	Box box = boundingBox();
 	center = (box.maximum + box.minimum)/2;
-	radius = (box.maximum - center).lenght();
+	radius = (box.maximum - center).length();
 }
 
 void Scene::render(void)

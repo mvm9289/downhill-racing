@@ -39,7 +39,7 @@ void Face::computeNormal(const vector<Vertex>& vertices)
 
 void Face::addVerticesNormals(vector<Vertex>& vertices)
 {
-	int n = vertices.size();
+	int n = indices.size();
 	for (int i = 0; i < n; i++)
 		vertices[indices[i]].addNormal(normal);
 }
