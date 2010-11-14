@@ -9,37 +9,26 @@ void Face::addVertex(int v)
 	indices.push_back(v);
 }
 
-void Face::computeNormal(const vector<Vertex>& vertices)
+void Face::computeNormal(vector<Vertex>& vertices)
 {
-	normal.x=0.0;
-	normal.y=0.0;
-	normal.z=0.0;
+	Point a = vertices[indices[0]].coord;
+	Point b = vertices[indices[1]].coord;
+	Point c = vertices[indices[2]].coord;
 
-	int n = indices.size();
-	for (int i = 0; i < n; ++i)
-	{
-		int j = (i + 1)%n;
-		float vx = vertices[indices[i]].coord.x;
-		float vy = vertices[indices[i]].coord.y;
-		float vz = vertices[indices[i]].coord.z;
-		float v1x = vertices[indices[j]].coord.x;
-		float v1y = vertices[indices[j]].coord.y;
-		float v1z = vertices[indices[j]].coord.z;
-		normal.x+=((vz + v1z)*(vy - v1y));
-		normal.y+=((vx + v1x)*(vz - v1z));
-		normal.z+=((vy + v1y)*(vx - v1x));
-	}
+	Vector v1 = b - a;
+	Vector v2 = c - a;
 
-	normal.x*=0.5;
-	normal.y*=0.5;
-	normal.z*=0.5;
-
+	normal.x = (v1.y*v2.z) - (v1.z*v2.y);
+	normal.y = -((v2.z*v1.x) - (v2.x*v1.z));
+	normal.z = (v1.x*v2.y) - (v1.y*v2.x);
 	normal.normalize();
-}
 
-void Face::addVerticesNormals(vector<Vertex>& vertices)
-{
 	int n = indices.size();
 	for (int i = 0; i < n; i++)
-		vertices[indices[i]].addNormal(normal);
+	{
+		vertices[indices[i]].normal.x += normal.x;
+		vertices[indices[i]].normal.y += normal.y;
+		vertices[indices[i]].normal.z += normal.z;
+		vertices[indices[i]].normal.normalize();
+	}
 }

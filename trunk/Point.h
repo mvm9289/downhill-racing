@@ -6,13 +6,11 @@ class Vector;
 
 class Point
 {
-// ATTRIBUTES
 public:
 	float x;
 	float y;
 	float z;
 
-// FUNCTIONS
 public:
 	Point(float px = 0.0, float py = 0.0, float pz = 0.0);
 	~Point(void);
