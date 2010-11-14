@@ -65,14 +65,14 @@ Point operator*(float f, const Point& p)
 
 Point operator/(const Point& p, float f)
 {
-	float inv = 1.0/f;
+	float inv = 1/f;
 
 	return p*inv;
 }
 
 Point& operator/=(Point& p, float f)
 {
-	float inv = 1.0/f;
+	float inv = 1/f;
 
 	p.x*=inv;
 	p.y*=inv;

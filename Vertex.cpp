@@ -1,15 +1,10 @@
 #include "Vertex.h"
 
-Vertex::Vertex(const Point& coordinates):coord(coordinates) {}
+Vertex::Vertex(const Point& coordinates):coord(coordinates)
+{
+	normal.x = 0;
+	normal.y = 0;
+	normal.z = 0;
+}
 
 Vertex::~Vertex(void) {}
-
-void Vertex::addNormal(const Vector& norm)
-{
-	normal+=norm;
-}
-
-void Vertex::computeNormal( void )
-{
-	normal.normalize();
-}

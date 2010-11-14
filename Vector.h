@@ -6,13 +6,11 @@ class Point;
 
 class Vector
 {
-// ATTRIBUTES
 public:
 	float x;
 	float y;
 	float z;
 
-// FUNCTIONS
 public:
 	Vector(float vx = 0.0, float vy = 0.0, float vz = 0.0);
 	Vector(const Point& p);
