@@ -1,12 +1,12 @@
 #include "Scene.h"
 
-Scene::Scene(void):terrain("levels/level1.txt") {}
+Scene::Scene(void) {}
 
 Scene::~Scene(void) {}
 
 Box Scene::boundingBox(void)
 {
-	return terrain.boundingBox();
+	return level.boundingBox();
 }
 
 void Scene::boundingSphere(Point& center, float& radius)
@@ -18,5 +18,10 @@ void Scene::boundingSphere(Point& center, float& radius)
 
 void Scene::render(void)
 {
-	terrain.render();
+	level.render();
+}
+
+bool Scene::init(string levelPath)
+{
+	return level.loadLevel(levelPath);
 }

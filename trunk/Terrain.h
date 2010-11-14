@@ -9,37 +9,39 @@
 #include <string>
 using namespace std;
 
-#define TERRAIN_WIDTH 5.0
-#define TERRAIN_DEPTH 2.0
+#define TERRAIN_WIDTH 10.0
+#define TERRAIN_DEPTH 1.0
 #define VERTICES_PER_HEIGHT 2
 #define VERTICES_PER_FACE 4
 #define VERTEX_COMPONENTS 3
 #define NORMAL_COMPONENTS 3
-#define COLOR_COMPONENTS 3
+#define TEXTURE_COMPONENTS 2
 
 class Terrain
 {
-// ATTRIBUTES
 private:
 	vector<Vertex> vertices;
 	vector<Face> faces;
+	vector<Point> textureCoords;
+	Box _boundingBox;
+	GLuint texture;
+
 	GLfloat* verticesArray;
 	GLfloat* normalsArray;
-	GLfloat* colorsArray;
+	GLfloat* textureArray;
 	GLuint* indicesArray;
 
 public:
 	vector<int> heights;
 
-// FUNCTIONS
 private:
-	void readLevelTxt(string level);
-	void readLevelXML(string level);
-	void createTerrain(void);
+	void createTerrain(vector<int> terrainHeights);
 	void createVertexArrays(void);
+	void updateBoundingBox();
 
 public:
-	Terrain(string level);
+	Terrain(vector<int> terrainHeights, GLuint textureID);
+	Terrain(void);
 	~Terrain(void);
 	Box boundingBox(void);
 	void render(void);

@@ -1,19 +1,18 @@
 #pragma once
 
-#include "Terrain.h"
+#include "Level.h"
 #include "Box.h"
 #include "Point.h"
 
 class Scene
 {
-// ATTRIBUTES
 private:
-	Terrain terrain;
+	Level level;
 
-// FUNCTIONS
 public:
 	Scene(void);
 	~Scene(void);
+	bool init(string level);
 	Box boundingBox(void);
 	void boundingSphere(Point& center, float& radius);
 	void render(void);
