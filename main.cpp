@@ -1,94 +1,91 @@
 #include <windows.h>
-#include <gl/glut.h>
+#include <gl\glut.h>
+#include "Game.h"
 
-#include "Scene.h"
-#include "Sphere.h"
-#include "Player.h"
+// Delete console
+// #pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
 
-#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
+Game game;
 
-Scene scene;
-Sphere *skydome;
-Player *player;
-
-void init(void)
+void AppRender()
 {
-	glClearColor(0.35f, 0.35f, 0.6f, 1.0f);
-	glPolygonMode(GL_FRONT, GL_FILL);
-	glEnable(GL_DEPTH_TEST);
-
-	glEnable(GL_LIGHTING); 
-	glEnable(GL_NORMALIZE);
-	glEnable(GL_LIGHT0);
-	glColorMaterial(GL_FRONT, GL_DIFFUSE);
-	glEnable(GL_COLOR_MATERIAL);
-
-	float r;
-	Point c;
-	scene.boundingSphere(c, r);
-	skydome = new Sphere(c, r);
-	player = new Player(Point(0,0,0));
+	game.Render();
 }
 
-void render(void)   
+void AppReshape(int width, int height)
 {
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	scene.render();
-	//skydome->render();
-	glColor3f(1, 0, 0);
-	player->render();
-    glutSwapBuffers();
+	game.Reshape(width, height);
 }
 
-void reshape(int width, int height)
+void AppKeyboard(unsigned char key, int x, int y)
 {
-	float radius;
-	Point center;
-	scene.boundingSphere(center, radius);
-
-	glViewport(0, 0, width, height);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(45, (float)width/(float)height, 0.1, 3*radius);
-	
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	gluLookAt(center.x+2*radius, center.y+2*radius, center.z, center.x, center.y, center.z, -1, 1, 0);
+	game.ReadKeyboard(key,x,y,true);
 }
 
-void keyboard(unsigned char key, int x, int y)
+void AppKeyboardUp(unsigned char key, int x, int y)
 {
-	switch (key)
-	{
-		case 27:	exit(0);
-					break;
-	}
+	game.ReadKeyboard(key,x,y,false);
 }
 
-void special_keys(int a_keys, int x, int y)
+void AppSpecialKeys(int key, int x, int y)
 {
+	game.ReadKeyboard(key,x,y,true);
+}
+
+void AppSpecialKeysUp(int key, int x, int y)
+{
+	game.ReadKeyboard(key,x,y,false);
+}
+
+void AppMouse(int button, int state, int x, int y)
+{
+	game.ReadMouse(button,state,x,y);
+}
+
+void AppIdle()
+{
+	if(!game.Loop()) exit(0);
 }
 
 void main(int argc, char** argv)
 {
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
-	
-	glutInitWindowPosition(100,100);
-	glutInitWindowSize(640,480);
-	glutCreateWindow("Downhill Racing");
-	
-	/*
-	glutGameModeString("640x480:16");
-	glutEnterGameMode();
-	*/
-	glutSetCursor(GLUT_CURSOR_NONE);
+	int res_x,res_y,pos_x,pos_y;
 
-	init();
-	glutDisplayFunc(render);
-	glutReshapeFunc(reshape);
-	glutKeyboardFunc(keyboard);
-	glutSpecialFunc(special_keys);
-	glutMainLoop();
+	// GLUT initialization
+	glutInit(&argc, argv);
+
+	// RGBA with double buffer
+	glutInitDisplayMode(GLUT_RGBA | GLUT_ALPHA | GLUT_DOUBLE);
+
+	// Create centered window
+	res_x = glutGet(GLUT_SCREEN_WIDTH);
+	res_y = glutGet(GLUT_SCREEN_HEIGHT);
+	pos_x = (res_x>>1)-(GAME_WIDTH>>1);
+	pos_y = (res_y>>1)-(GAME_HEIGHT>>1);
+	
+	glutInitWindowPosition(pos_x, pos_y);
+	glutInitWindowSize(GAME_WIDTH,GAME_HEIGHT);
+	glutCreateWindow("My GLUT Application!");
+
+	/*glutGameModeString("800x600:32");
+	glutEnterGameMode();*/
+
+	// Make the default cursor disappear
+	//glutSetCursor(GLUT_CURSOR_NONE);
+
+	// Register callback functions
+	glutDisplayFunc(AppRender);
+	glutReshapeFunc(AppReshape);
+	glutKeyboardFunc(AppKeyboard);
+	glutKeyboardUpFunc(AppKeyboardUp);
+	glutSpecialFunc(AppSpecialKeys);
+	glutSpecialUpFunc(AppSpecialKeysUp);
+	glutMouseFunc(AppMouse);
+	glutIdleFunc(AppIdle);
+
+	// Game initializations
+	game.Init();
+
+	// Application loop
+	glutMainLoop();	
 }
