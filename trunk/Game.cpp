@@ -1,6 +1,11 @@
 #include "Game.h"
 #include <gl/glut.h>
 
+#include "Sphere.h"
+#include "Player.h"
+Sphere *skydome;
+Player *player;
+
 Game::Game(void)
 {
 }
@@ -24,6 +29,12 @@ bool Game::Init()
 	glColorMaterial(GL_FRONT, GL_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
 
+	float r;
+	Point c;
+	scene.boundingSphere(c, r);
+	skydome = new Sphere(c, r);
+	player = new Player(Point(0,0,0));
+  
 	res = scene.init("levels/level1.txt");
 
 	return res;
@@ -88,6 +99,9 @@ void Game::Render()
 	//glLoadIdentity();
 
 	scene.render();
+	//skydome->render();
+	glColor3f(1, 0, 0);
+	player->render();
 
 	glutSwapBuffers();
 }
