@@ -2,10 +2,14 @@
 #include <gl/glut.h>
 
 #include "Scene.h"
+#include "Sphere.h"
+#include "Player.h"
 
 #pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
 
 Scene scene;
+Sphere *skydome;
+Player *player;
 
 void init(void)
 {
@@ -18,12 +22,21 @@ void init(void)
 	glEnable(GL_LIGHT0);
 	glColorMaterial(GL_FRONT, GL_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
+
+	float r;
+	Point c;
+	scene.boundingSphere(c, r);
+	skydome = new Sphere(c, r);
+	player = new Player(Point(0,0,0));
 }
 
 void render(void)   
 {
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	scene.render();
+	//skydome->render();
+	glColor3f(1, 0, 0);
+	player->render();
     glutSwapBuffers();
 }
 
@@ -61,9 +74,11 @@ void main(int argc, char** argv)
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
+	
 	glutInitWindowPosition(100,100);
 	glutInitWindowSize(640,480);
 	glutCreateWindow("Downhill Racing");
+	
 	/*
 	glutGameModeString("640x480:16");
 	glutEnterGameMode();
