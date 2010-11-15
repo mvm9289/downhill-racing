@@ -27,7 +27,7 @@ bool Level::loadLevel(string level)
 		string textureBitMap;
 		if (!inputFile.eof()) inputFile >> textureBitMap;
 		Texture texture;
-		if (!texture.load((char *)("textures/" + textureBitMap).c_str())) return false;
+		if (!texture.load((char *)("textures/" + textureBitMap).c_str(), GL_RGB)) return false;
 
 		vector<int> terrainHeights;
 		while (!inputFile.eof()) {
