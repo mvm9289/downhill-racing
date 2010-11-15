@@ -22,6 +22,8 @@ bool Game::Init()
 	glClearColor(0.35f, 0.35f, 0.6f, 1.0f);
 	glPolygonMode(GL_FRONT, GL_FILL);
 	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_CULL_FACE);
+	//glCullFace(GL_BACK);
 
 	glEnable(GL_LIGHTING); 
 	glEnable(GL_NORMALIZE);
@@ -95,11 +97,15 @@ bool Game::Process()
 // Output
 void Game::Render()
 {
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);	
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 	//glLoadIdentity();
 
 	scene.render();
-	//skydome->render();
+
+	//glCullFace(GL_FRONT);
+	skydome->render();
+	//glCullFace(GL_BACK);
+
 	glColor3f(1, 0, 0);
 	player->render();
 

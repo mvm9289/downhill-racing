@@ -2,6 +2,8 @@
 
 #include <gl/glut.h>
 
+#pragma comment (lib, "corona")
+
 class Texture
 {
 private:
