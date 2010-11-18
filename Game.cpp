@@ -22,8 +22,8 @@ bool Game::Init()
 	glClearColor(0.35f, 0.35f, 0.6f, 1.0f);
 	glPolygonMode(GL_FRONT, GL_FILL);
 	glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_CULL_FACE);
-	//glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 
 	glEnable(GL_LIGHTING); 
 	glEnable(GL_NORMALIZE);
@@ -31,13 +31,13 @@ bool Game::Init()
 	glColorMaterial(GL_FRONT, GL_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
 
+	res = scene.init("levels/level1.txt");
+
 	float r;
 	Point c;
 	scene.boundingSphere(c, r);
 	skydome = new Sphere(c, r);
 	player = new Player(Point(0,0,0));
-  
-	res = scene.init("levels/level1.txt");
 
 	return res;
 }
@@ -102,9 +102,14 @@ void Game::Render()
 
 	scene.render();
 
-	//glCullFace(GL_FRONT);
+	//SKYDOME
+	//desactivar iluminació i pintar amb textura
+	glDisable(GL_LIGHTING);
+	glCullFace(GL_FRONT);
+	glColor3f(1, 0, 0);
 	skydome->render();
-	//glCullFace(GL_BACK);
+	glCullFace(GL_BACK);
+	glEnable(GL_LIGHTING);
 
 	glColor3f(1, 0, 0);
 	player->render();
