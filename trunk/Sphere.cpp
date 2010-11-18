@@ -13,6 +13,6 @@ void Sphere::render() {
 		glTranslatef(center.x, center.y, center.z);
 		GLUquadricObj *quad;
 		quad = gluNewQuadric();
-		gluSphere(quad, radius/2, DEPTH, DEPTH);
+		gluSphere(quad, radius, DEPTH, DEPTH);
 	glPopMatrix();
 }
