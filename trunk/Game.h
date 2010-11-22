@@ -5,8 +5,11 @@
 #define GAME_WIDTH	640
 #define GAME_HEIGHT 480
 
-class Game
-{
+#define MENU 0
+#define GAME 1
+#define DEBUG 2
+
+class Game {
 private:
 	unsigned char keys[256];
 	Scene scene;

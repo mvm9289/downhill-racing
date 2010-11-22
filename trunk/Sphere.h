@@ -1,5 +1,6 @@
 #pragma once
 #include "Point.h"
+#include <gl/glut.h>
 
 #define DEPTH 20
 
@@ -10,8 +11,10 @@ public:
 	~Sphere(void);
 
 	void render();
+	void setTextureID(GLuint id);
 protected:
 	float radius;
 	Point center;
+	int textID;
 };
 
