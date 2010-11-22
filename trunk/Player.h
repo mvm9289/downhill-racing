@@ -7,6 +7,7 @@ public:
 	~Player(void);
 	void move(float dx);
 	void jump();
+	Point getPosition();
 
 private:
 	float weight;
