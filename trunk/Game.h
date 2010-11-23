@@ -25,6 +25,7 @@ private:
 	unsigned int mode;
 	float ra;
 	void setProjection();
+	void createMenus();
 public:
 	Game(void);
 	virtual ~Game(void);
