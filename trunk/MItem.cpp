@@ -6,6 +6,8 @@ MItem::MItem(Point p) : position(p)
 }
 
 
-MItem::~MItem(void)
+MItem::~MItem()
 {
 }
+
+void MItem::render () {}
