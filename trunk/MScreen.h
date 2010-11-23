@@ -11,10 +11,10 @@ public:
 	MScreen(GLuint textureID, float ratio);
 	~MScreen();
 	void render();
-	void add(MItem item);
+	void add(MItem *item);
 private:
 	GLuint texture;
 	float ra;
-	vector<MItem> items;
+	vector<MItem*> items;
 };
 
