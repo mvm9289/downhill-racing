@@ -5,6 +5,8 @@
 #include "Player.h"
 #include "Texture.h"
 
+#include "MLabel.h"
+
 Sphere *skydome;
 Player *player;
 
@@ -36,6 +38,11 @@ bool Game::Init()
 	glColorMaterial(GL_FRONT, GL_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
 
+	glLineWidth(4.0);
+
+	ra = (float)GAME_WIDTH/(float)GAME_HEIGHT;
+	setProjection();
+
 	//Init scene and get bSphere
 	res = scene.init("levels/level1.txt");
 	float r;
@@ -51,7 +58,13 @@ bool Game::Init()
 	//Player creation
 	player = new Player(Point(5, 31, 0));
 
-	//Menus creation
+	createMenus();
+	mode = GAME;
+
+	return res;
+}
+
+void Game::createMenus() {
 	float c1[] = {1, 0, 0};
 	float c2[] = {1, 1, 1};
 	//title = new MLabel(Point(1, 1, 0), "HOLA", c1, c2);
@@ -59,9 +72,8 @@ bool Game::Init()
 	menuTexture.load("textures/sky1.png", GL_RGBA);
 	mainScreen = new MScreen(menuTexture.getID(), 4.0/3.0);
 
-	mode = MENU;
-
-	return res;
+	MLabel *title = new MLabel(Point(4, 4, 0), "HOLA", c1);
+	mainScreen->add(title);
 }
 
 bool Game::Loop()
@@ -96,7 +108,7 @@ void Game::setProjection() {
 	glLoadIdentity();
 
 	if (mode == MENU) {
-		glOrtho(0, 10*ra + 1, 0, 10 + 1, 0.1, 15);
+		glOrtho(-10.0*ra/2.0 - 1, 10.0*ra/2.0 + 1, -5 - 1, 5 + 1, 0.1, 15);
 	}
 	else {
 		float radius;
@@ -162,7 +174,7 @@ void Game::Render()
 	
 	switch (mode) {
 	case MENU:
-		gluLookAt(10*ra/2, 10, 5, 10*ra/2, 0, 5, 0, 0, 1);
+		gluLookAt(10.0*ra/2.0, 10, 5, 10.0*ra/2.0, 0, 5, 0, 0, 1);
 		break;
 	case GAME:
 		gluLookAt(OBS.x, OBS.y, OBS.z, VRP.x, VRP.y, VRP.z, 0, 1, 0);
@@ -175,9 +187,9 @@ void Game::Render()
 	//Coordinate system
 	glDisable(GL_LIGHTING);
 	glBegin(GL_LINES);
-		glColor3f(1, 0, 0); glVertex3f(0,0,0); glVertex3f(1, 0, 0);
-		glColor3f(0, 1, 0); glVertex3f(0,0,0); glVertex3f(0, 1, 0);
-		glColor3f(0, 0, 1); glVertex3f(0,0,0); glVertex3f(0, 0, 1);
+		glColor3f(1, 0, 0); glVertex3f(0,0,0); glVertex3f(100, 0, 0);
+		glColor3f(0, 1, 0); glVertex3f(0,0,0); glVertex3f(0, 100, 0);
+		glColor3f(0, 0, 1); glVertex3f(0,0,0); glVertex3f(0, 0, 100);
 	glEnd();
 	glEnable(GL_LIGHTING);
 
@@ -186,6 +198,7 @@ void Game::Render()
 		mainScreen->render();
 	}
 	else {
+		mainScreen->render();
 		//SCENE
 		scene.render();
 
