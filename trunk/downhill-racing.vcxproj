@@ -90,6 +90,8 @@
     <ClCompile Include="MItem.cpp" />
     <ClCompile Include="MLabel.cpp" />
     <ClCompile Include="MScreen.cpp" />
+    <ClCompile Include="MSelectable.cpp" />
+    <ClCompile Include="MText.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -107,6 +109,8 @@
     <ClInclude Include="MItem.h" />
     <ClInclude Include="MLabel.h" />
     <ClInclude Include="MScreen.h" />
+    <ClInclude Include="MSelectable.h" />
+    <ClInclude Include="MText.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Scene.h" />

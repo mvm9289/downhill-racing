@@ -5,8 +5,9 @@ class MItem
 {
 public:
 	MItem(Point p);
-	~MItem(void);
-private:
+	~MItem();
+	virtual void render();
+protected:
 	Point position;
 };
 
