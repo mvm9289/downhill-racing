@@ -11,5 +11,7 @@ public:
 protected:
 	std::string text;
 	float color[3];
+
+	void render_string(void* font, const char* string);
 };
 
