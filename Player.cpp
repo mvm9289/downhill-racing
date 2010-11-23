@@ -14,6 +14,10 @@ void Player::move(float dx) {
 	center += Point(dx, 0, 0);
 }
 
+void Player::jump() {
+
+}
+
 Point Player::getPosition() {
 	return center;
 }

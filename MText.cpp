@@ -1,6 +1,5 @@
-#include "MLabel.h"
-
-#include <gl\glut.h>
+#include "MText.h"
+#include <gl/glut.h>
 
 // Render a string
 void render_string(void* font, const char* string)
@@ -10,18 +9,20 @@ void render_string(void* font, const char* string)
 		glutBitmapCharacter(font, string[i]);
 }
 
-MLabel::MLabel(Point p, std::string str, float c1[3]) : MItem(p), text(str)
+MText::MText(Point p, std::string str, float c[3], float cSel[3], bool sel) : MLabel(p, str, c), MSelectable(sel)
 {
-	memcpy(color, c1, 3*sizeof(float));
+	memcpy(colorSel, cSel, 3*sizeof(float));
 }
 
 
-MLabel::~MLabel()
+MText::~MText()
 {
 }
 
-void MLabel::render() {
-	glColor3fv(color);
+void MText::render() {
+	if (selected) glColor3fv(colorSel);
+	else glColor3fv(color);
+
 	//glRasterPos2f(position.x, position.y);
 	glRasterPos3f(3, 0, 7);
 	render_string(GLUT_BITMAP_HELVETICA_18, text.c_str());
