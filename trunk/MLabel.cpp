@@ -3,7 +3,7 @@
 #include <gl\glut.h>
 
 // Render a string
-void render_string(void* font, const char* string)
+void MLabel::render_string(void* font, const char* string)
 {
 	int i,len = strlen(string);
 	for(i=0;i<len;i++)
