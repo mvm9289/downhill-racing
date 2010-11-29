@@ -6,6 +6,7 @@
 #include "Texture.h"
 
 #include "MLabel.h"
+#include "MText.h"
 
 Sphere *skydome;
 Player *player;
@@ -18,7 +19,7 @@ Game::~Game(void)
 {
 	delete player;
 	delete skydome;
-	delete mainScreen;
+	delete currentScreen;
 }
 
 bool Game::Init()
@@ -59,7 +60,7 @@ bool Game::Init()
 	player = new Player(Point(5, 31, 0));
 
 	createMenus();
-	mode = GAME;
+	mode = MENU;
 
 	return res;
 }
@@ -67,13 +68,38 @@ bool Game::Init()
 void Game::createMenus() {
 	float c1[] = {1, 0, 0};
 	float c2[] = {1, 1, 1};
-	//title = new MLabel(Point(1, 1, 0), "HOLA", c1, c2);
-	Texture menuTexture;
-	menuTexture.load("textures/sky1.png", GL_RGBA);
-	mainScreen = new MScreen(menuTexture.getID(), 4.0/3.0);
 
-	MLabel *title = new MLabel(Point(4, 4, 0), "HOLA", c1);
-	mainScreen->add(title);
+	//Menu screens
+	Texture menuTexture;
+	menuTexture.load("textures/bkg.png", GL_RGBA);
+	MScreen *mainScreen = new MScreen(menuTexture.getID(), ra);
+	MScreen *creditsScreen = new MScreen(menuTexture.getID(), ra);
+
+	//title
+	MLabel *mainTitle = new MLabel(Point(1.5*ra, 8, 0), "Downhill Racing", c1);
+	
+	//create menu items
+	MText *opPlay = new MText(Point(4.5*ra, 5, 0), "Play", c1, c2, true);
+	MText *opOptions = new MText(Point(4*ra, 4, 0), "Options", c1, c2);
+	MText *opCredits = new MText(Point(4*ra, 3, 0), "Credits", c1, c2);
+
+	//set menu directions
+	opPlay->setUp(opCredits);
+	opPlay->setDown(opOptions);
+	opOptions->setUp(opPlay);
+	opOptions->setDown(opCredits);
+	opCredits->setUp(opOptions);
+	opCredits->setDown(opPlay);
+
+	//add to main screen
+	mainScreen->add(mainTitle);
+	mainScreen->add(opPlay);
+	mainScreen->add(opOptions);
+	mainScreen->add(opCredits);
+	mainScreen->setSelected(opPlay);
+
+	//set current menu screen
+	currentScreen = mainScreen;
 }
 
 bool Game::Loop()
@@ -108,7 +134,7 @@ void Game::setProjection() {
 	glLoadIdentity();
 
 	if (mode == MENU) {
-		glOrtho(-10.0*ra/2.0 - 1, 10.0*ra/2.0 + 1, -5 - 1, 5 + 1, 0.1, 15);
+		glOrtho(-10.0*ra/2.0, 10.0*ra/2.0, -5, 5, 0.1, 15);
 	}
 	else {
 		float radius;
@@ -122,6 +148,8 @@ void Game::setProjection() {
 // Input
 void Game::ReadKeyboard(unsigned char key, int x, int y, bool press)
 {
+	keyUp = (keys[GLUT_KEY_UP] && !press);
+	keyDown = (keys[GLUT_KEY_DOWN] && !press);
 	keys[key] = press;
 }
 
@@ -139,6 +167,14 @@ bool Game::Process()
 
 	switch(mode) {
 	case MENU:
+		if (keyUp) {
+			currentScreen->up();
+			keyUp = false;
+		}
+		if (keyDown) {
+			currentScreen->down();
+			keyDown = false;
+		}
 		break;
 	case GAME:
 		if (keys[GLUT_KEY_LEFT]) player->move(-0.2);
@@ -174,7 +210,7 @@ void Game::Render()
 	
 	switch (mode) {
 	case MENU:
-		gluLookAt(10.0*ra/2.0, 10, 5, 10.0*ra/2.0, 0, 5, 0, 0, 1);
+		gluLookAt(10.0*ra/2.0, 5, 10, 10.0*ra/2.0, 5, 0, 0, 1, 0);
 		break;
 	case GAME:
 		gluLookAt(OBS.x, OBS.y, OBS.z, VRP.x, VRP.y, VRP.z, 0, 1, 0);
@@ -195,10 +231,10 @@ void Game::Render()
 
 	if (mode == MENU) {
 		//MENUS
-		mainScreen->render();
+		currentScreen->render();
 	}
 	else {
-		mainScreen->render();
+		currentScreen->render();
 		//SCENE
 		scene.render();
 
