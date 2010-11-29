@@ -1,5 +1,7 @@
 #include "Face.h"
 
+#include <gl/glut.h>
+
 Face::Face(void) {}
 
 Face::~Face(void) {}
@@ -31,4 +33,18 @@ void Face::computeNormal(vector<Vertex>& vertices)
 		vertices[indices[i]].normal.z += normal.z;
 		vertices[indices[i]].normal.normalize();
 	}
+}
+
+void Face::render(const vector<Vertex>& vertices)
+{
+	glBegin(GL_QUADS);
+		int nVertices = indices.size();
+		for (int i = 0; i < nVertices; i++)
+		{
+			Vertex v = vertices[indices[i]];
+			glNormal3f(v.normal.x, v.normal.y, v.normal.z);
+			glTexCoord2f(v.coord.x, v.coord.z);
+			glVertex3f(v.coord.x, v.coord.y, v.coord.z);
+		}
+	glEnd();
 }
