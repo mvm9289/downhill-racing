@@ -22,11 +22,9 @@ MLabel::~MLabel()
 
 void MLabel::render() {
 	glPushMatrix();
-	glColor3fv(color);
-	//glRasterPos2f(position.x, position.y);
-	//glRasterPos3f(3, 0, 7);
-	glTranslatef(position.x, position.y, 0);
-	glScalef(0.1, 0.1, 0.1);
-	render_string(GLUT_STROKE_ROMAN, text.c_str());
+		glColor3fv(color);
+		glTranslatef(position.x, position.y, 0.1);
+		glScalef(0.01, 0.01, 0.01);
+		render_string(GLUT_STROKE_ROMAN, text.c_str());
 	glPopMatrix();
 }

@@ -16,22 +16,45 @@ void MScreen::add(MItem *item) {
 	items.push_back(item);
 }
 
+void MScreen::up() {
+	if (selectedItem) {
+		selectedItem = selectedItem->getUp();
+		selectedItem->setSelected(true);
+	}
+}
+
+void MScreen::down() {
+	if (selectedItem) {
+		selectedItem = selectedItem->getDown();
+		selectedItem->setSelected(true);
+	}
+}
+
+void MScreen::setSelected(MSelectable *item) {
+	selectedItem = item;
+}
+
 void MScreen::render() {
-	//glBindTexture(GL_TEXTURE_2D, texture);
+	//background
+	
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glEnable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
 	glDisable(GL_CULL_FACE);
-	glColor3f(0,0,0);
+	glColor3f(1,1,1);
 	glBegin(GL_QUADS);
 		glTexCoord2d(0, 0);
 		glVertex3f(0, 0, 0);
 		glTexCoord2d(1, 0);
 		glVertex3f(10.0*ra, 0, 0);
 		glTexCoord2d(1, 1);
-		glVertex3f(10.0*ra, 0, 10.0);
+		glVertex3f(10.0*ra, 10.0, 0);
 		glTexCoord2d(0, 1);
-		glVertex3f(0, 0, 10.0);
+		glVertex3f(0, 10.0, 0);
 	glEnd();
+	glDisable(GL_TEXTURE_2D);
 	
+	//items
 	for (vector<MItem*>::iterator it = items.begin(); it != items.end(); ++it)
 		(*it)->render();
 	glEnable(GL_CULL_FACE);
