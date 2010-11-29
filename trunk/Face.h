@@ -16,4 +16,5 @@ public:
 	~Face(void);
 	void addVertex(int v);
 	void computeNormal(vector<Vertex>& vertices);
+	void render(const vector<Vertex>& vertices);
 };

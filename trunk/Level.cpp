@@ -29,15 +29,15 @@ bool Level::loadLevel(string level)
 		Texture texture;
 		if (!texture.load((char *)("textures/" + textureBitMap).c_str(), GL_RGB)) return false;
 
-		vector<int> terrainHeights;
+		vector<double> terrainPoints;
 		while (!inputFile.eof()) {
-			int aux;
+			double aux;
 			inputFile >> aux;
-			terrainHeights.push_back(aux);
+			terrainPoints.push_back(aux);
 		}
 		inputFile.close();
 
-		terrain = new Terrain(terrainHeights, texture.getID());
+		terrain = new Terrain(terrainPoints, texture.getID());
 
 		res = true;
 	}
