@@ -1,5 +1,6 @@
 #include <gl/glut.h>
 
+#include "MSelectable.h"
 #include "MItem.h"
 #include <vector>
 using namespace std;
@@ -10,11 +11,17 @@ class MScreen
 public:
 	MScreen(GLuint textureID, float ratio);
 	~MScreen();
+
 	void render();
+
 	void add(MItem *item);
+	void up();
+	void down();
+	void setSelected(MSelectable *item);
 private:
 	GLuint texture;
 	float ra;
 	vector<MItem*> items;
+	MSelectable *selectedItem;
 };
 

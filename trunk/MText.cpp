@@ -12,10 +12,12 @@ MText::~MText()
 }
 
 void MText::render() {
-	if (selected) glColor3fv(colorSel);
-	else glColor3fv(color);
+	glPushMatrix();
+		if (selected) glColor3fv(colorSel);
+		else glColor3fv(color);
 
-	//glRasterPos2f(position.x, position.y);
-	glRasterPos3f(3, 0, 7);
-	render_string(GLUT_BITMAP_HELVETICA_18, text.c_str());
+		glTranslatef(position.x, position.y, 0.1);
+		glScalef(0.005, 0.005, 0.005);
+		render_string(GLUT_STROKE_ROMAN, text.c_str());
+	glPopMatrix();
 }

@@ -18,9 +18,11 @@
 class Game {
 private:
 	unsigned char keys[256];
+	bool keyUp;
+	bool keyDown;
 	Scene scene;
 
-	MScreen *mainScreen;
+	MScreen *currentScreen;
 
 	unsigned int mode;
 	float ra;
