@@ -34,6 +34,10 @@ void MScreen::setSelected(MSelectable *item) {
 	selectedItem = item;
 }
 
+void MScreen::setRatio(float ratio) {
+	ra = ratio;
+}
+
 void MScreen::render() {
 	//background
 	

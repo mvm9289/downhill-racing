@@ -45,7 +45,7 @@ bool Game::Init()
 	setProjection();
 
 	//Init scene and get bSphere
-	res = scene.init("levels/level1.txt");
+	res = scene.init("levels/level2.txt");
 	float r;
 	Point c;
 	scene.boundingSphere(c, r);
@@ -57,10 +57,16 @@ bool Game::Init()
 	skydome->setTextureID(skydomeText.getID());
 
 	//Player creation
-	player = new Player(Point(5, 31, 0));
+	player = new Player(Point(TERRAIN_WIDTH/2, 534 + 1, -39));
+	Texture playerTexture;
+	playerTexture.load("textures/player4.png", GL_RGBA);
+	//playerTexture.load("textures/player3.png", GL_RGBA);
+	//playerTexture.load("textures/player2.png", GL_RGB);
+	//playerTexture.load("textures/player1.png", GL_RGBA);
+	player->setTextureID(playerTexture.getID());
 
 	createMenus();
-	mode = MENU;
+	mode = GAME;
 
 	return res;
 }
@@ -134,6 +140,7 @@ void Game::setProjection() {
 	glLoadIdentity();
 
 	if (mode == MENU) {
+		if (currentScreen) currentScreen->setRatio(ra);
 		glOrtho(-10.0*ra/2.0, 10.0*ra/2.0, -5, 5, 0.1, 15);
 	}
 	else {
@@ -167,6 +174,7 @@ bool Game::Process()
 
 	switch(mode) {
 	case MENU:
+		// Process Input
 		if (keyUp) {
 			currentScreen->up();
 			keyUp = false;
@@ -177,9 +185,13 @@ bool Game::Process()
 		}
 		break;
 	case GAME:
+		// Process Input
 		if (keys[GLUT_KEY_LEFT]) player->move(-0.2);
 		if (keys[GLUT_KEY_RIGHT]) player->move(0.2);
 		if (keys[GLUT_KEY_UP]) player->jump();
+
+		//Game logic
+		player->advance();
 		break;
 	case DEBUG:
 		break;

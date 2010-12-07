@@ -18,6 +18,7 @@ public:
 	void up();
 	void down();
 	void setSelected(MSelectable *item);
+	void setRatio(float ratio);
 private:
 	GLuint texture;
 	float ra;
