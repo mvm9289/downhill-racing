@@ -10,6 +10,8 @@
 using namespace std;
 
 #define TERRAIN_WIDTH 10.0
+#define STARTUP_DEPTH 20.0
+#define SCALE_FACTOR 3.0
 
 class Terrain
 {
@@ -32,6 +34,7 @@ public:
 	Terrain(vector<double> terrainPoints, GLuint textureID);
 	Terrain(void);
 	~Terrain(void);
+	Point startupPoint();
 	Box boundingBox(void);
 	void render(void);
 };
