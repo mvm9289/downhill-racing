@@ -1,15 +1,10 @@
 #include "Player.h"
 #include <cmath>
 
-Player::Player(Point c, float r) : Sphere(c, r)
-{
-	jumping = false;
-}
+Player::Player(Point c, float r):Sphere(Point(c.x, c.y + r, c.z), r),jumping(false) {}
 
 
-Player::~Player(void)
-{
-}
+Player::~Player(void) {}
 
 void Player::move(float dx) {
 	center += Point(dx, 0, 0);

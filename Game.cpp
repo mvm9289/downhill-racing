@@ -8,24 +8,20 @@
 #include "MLabel.h"
 #include "MText.h"
 
-Sphere *skydome;
-Player *player;
-
 Game::Game(void)
 {
 }
 
 Game::~Game(void)
 {
-	delete player;
-	delete skydome;
 	delete currentScreen;
+	delete menuCamera;
+	delete gameCamera;
+	delete debugCamera;
 }
 
 bool Game::Init()
 {
-	bool res = true;
-
 	// Graphics initialization
 	glClearColor(0.35f, 0.35f, 0.6f, 1.0f);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -41,34 +37,42 @@ bool Game::Init()
 
 	glLineWidth(4.0);
 
-	ra = (float)GAME_WIDTH/(float)GAME_HEIGHT;
-	setProjection();
+	// Scene initialization
+	if (!scene.init("levels/level3.txt")) return false; /////////////////////////solo cuando se selecciona un level
 
-	//Init scene and get bSphere
-	res = scene.init("levels/level2.txt");
-	float r;
-	Point c;
-	scene.boundingSphere(c, r);
+	// Cameras initialization
+	aspectRatio = (float)GAME_WIDTH/(float)GAME_HEIGHT;
 
-	//Skydome creation
-	skydome = new Sphere(c, r);
-	Texture skydomeText;
-	skydomeText.load("textures/sky2.png", GL_RGBA);
-	skydome->setTextureID(skydomeText.getID());
+	// Menu camera
+	Point obs(10.0*aspectRatio/2.0, 5, 10);
+	Point vrp(10.0*aspectRatio/2.0, 5, 0);
+	Vector up(0, 1, 0);
+	menuCamera = new Camera(obs, vrp, up, -10.0*aspectRatio/2.0, 10.0*aspectRatio/2.0, -5, 5, 0.1, 15);
 
-	//Player creation
-	player = new Player(Point(TERRAIN_WIDTH/2, 534 + 1, -39));
-	Texture playerTexture;
-	playerTexture.load("textures/player4.png", GL_RGBA);
-	//playerTexture.load("textures/player3.png", GL_RGBA);
-	//playerTexture.load("textures/player2.png", GL_RGB);
-	//playerTexture.load("textures/player1.png", GL_RGBA);
-	player->setTextureID(playerTexture.getID());
+	// Game camera
+	float radius;
+	Point center;
+	scene.boundingSphere(center, radius);
+	obs = scene.getPlayerPosition() + Vector(0, 1, 10);
+	vrp = scene.getPlayerPosition() + Vector(0, 2, 0);
+	gameCamera = new Camera(center, obs, vrp, up, 60, aspectRatio, 0.1, 5*radius); /////////////////////////solo cuando se selecciona un level
 
+	// Debug camera
+	debugCamera = new Camera(center, obs, vrp, up, 60, aspectRatio, 0.1, 5*radius);
+
+	xAnt = 0;
+	yAnt = 0;
+
+	// Menus initialization
 	createMenus();
-	mode = GAME;
+	currentScreen->setRatio(aspectRatio);
 
-	return res;
+	// Game mode initialization
+	mode = MENU;
+	currentCamera = menuCamera;
+	currentCamera->init();
+
+	return true;
 }
 
 void Game::createMenus() {
@@ -78,16 +82,16 @@ void Game::createMenus() {
 	//Menu screens
 	Texture menuTexture;
 	menuTexture.load("textures/bkg.png", GL_RGBA);
-	MScreen *mainScreen = new MScreen(menuTexture.getID(), ra);
-	MScreen *creditsScreen = new MScreen(menuTexture.getID(), ra);
+	MScreen *mainScreen = new MScreen(menuTexture.getID(), aspectRatio);
+	MScreen *creditsScreen = new MScreen(menuTexture.getID(), aspectRatio);
 
 	//title
-	MLabel *mainTitle = new MLabel(Point(1.5*ra, 8, 0), "Downhill Racing", c1);
+	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0), "Downhill Racing", c1);
 	
 	//create menu items
-	MText *opPlay = new MText(Point(4.5*ra, 5, 0), "Play", c1, c2, true);
-	MText *opOptions = new MText(Point(4*ra, 4, 0), "Options", c1, c2);
-	MText *opCredits = new MText(Point(4*ra, 3, 0), "Credits", c1, c2);
+	MText *opPlay = new MText(Point(4.5*aspectRatio, 5, 0), "Play", c1, c2, true);
+	MText *opOptions = new MText(Point(4*aspectRatio, 4, 0), "Options", c1, c2);
+	MText *opCredits = new MText(Point(4*aspectRatio, 3, 0), "Credits", c1, c2);
 
 	//set menu directions
 	opPlay->setUp(opCredits);
@@ -113,6 +117,7 @@ bool Game::Loop()
 	bool res = true;
 
 	int t1 = glutGet(GLUT_ELAPSED_TIME);
+
 	res = Process();
 	if(res) Render();
 
@@ -131,33 +136,15 @@ void Game::Finalize()
 void Game::Reshape(int width, int height)
 {
 	glViewport(0, 0, width, height);
-	ra = (float)width/(float)height;
-	setProjection();
-}
-
-void Game::setProjection() {
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-
-	if (mode == MENU) {
-		if (currentScreen) currentScreen->setRatio(ra);
-		glOrtho(-10.0*ra/2.0, 10.0*ra/2.0, -5, 5, 0.1, 15);
-	}
-	else {
-		float radius;
-		Point center;
-		scene.boundingSphere(center, radius);
-
-		gluPerspective(60, ra, 0.1, 5*radius);
-	}
+	aspectRatio = (float)width/(float)height;
+	currentCamera->reshape(aspectRatio);
+	if (currentScreen) currentScreen->setRatio(aspectRatio);
 }
 
 // Input
 void Game::ReadKeyboard(unsigned char key, int x, int y, bool press)
 {
-	keyUp = (keys[GLUT_KEY_UP] && !press);
-	keyDown = (keys[GLUT_KEY_DOWN] && !press);
-	keys[key] = press;
+	keys[key] = (press)?GLUT_KEY_PRESS:GLUT_KEY_RELEASE;
 }
 
 void Game::ReadMouse(int button, int state, int x, int y)
@@ -175,31 +162,74 @@ bool Game::Process()
 	switch(mode) {
 	case MENU:
 		// Process Input
-		if (keyUp) {
+		if (keys[GLUT_KEY_UP] == GLUT_KEY_RELEASE)
+		{
 			currentScreen->up();
-			keyUp = false;
+			keys[GLUT_KEY_UP] = GLUT_KEY_NONE;
 		}
-		if (keyDown) {
+		if (keys[GLUT_KEY_DOWN] == GLUT_KEY_RELEASE)
+		{
 			currentScreen->down();
-			keyDown = false;
+			keys[GLUT_KEY_DOWN] = GLUT_KEY_NONE;
 		}
 		break;
 	case GAME:
 		// Process Input
-		if (keys[GLUT_KEY_LEFT]) player->move(-0.2);
-		if (keys[GLUT_KEY_RIGHT]) player->move(0.2);
-		if (keys[GLUT_KEY_UP]) player->jump();
+		if (keys[GLUT_KEY_LEFT] == GLUT_KEY_PRESS) scene.movePlayer(-0.2);
+		else keys[GLUT_KEY_LEFT] = GLUT_KEY_NONE;
+		if (keys[GLUT_KEY_RIGHT] == GLUT_KEY_PRESS) scene.movePlayer(0.2);
+		else keys[GLUT_KEY_RIGHT] = GLUT_KEY_NONE;
+		if (keys[GLUT_KEY_UP] == GLUT_KEY_PRESS) scene.jumpPlayer();
+		else keys[GLUT_KEY_UP] = GLUT_KEY_NONE;
 
-		//Game logic
-		player->advance();
+		// Game logic
+		scene.advancePlayer();
 		break;
 	case DEBUG:
+		// Process Input
+		if (keys[GLUT_KEY_LEFT] == GLUT_KEY_PRESS) currentCamera->move(-0.2, 0.);
+		else keys[GLUT_KEY_LEFT] = GLUT_KEY_NONE;
+		if (keys[GLUT_KEY_RIGHT] == GLUT_KEY_PRESS) currentCamera->move(0.2, 0.);
+		else keys[GLUT_KEY_RIGHT] = GLUT_KEY_NONE;
+		if (keys[GLUT_KEY_UP] == GLUT_KEY_PRESS) currentCamera->move(0., -0.2);
+		else keys[GLUT_KEY_UP] = GLUT_KEY_NONE;
+		if (keys[GLUT_KEY_DOWN] == GLUT_KEY_PRESS) currentCamera->move(0., 0.2);
+		else keys[GLUT_KEY_DOWN] = GLUT_KEY_NONE;
+
+		if (keys['j'] == GLUT_KEY_PRESS) currentCamera->rotate(0.0, -1.0);
+		else keys['j'] = GLUT_KEY_NONE;
+		if (keys['l'] == GLUT_KEY_PRESS) currentCamera->rotate(0.0, 1.0);
+		else keys['l'] = GLUT_KEY_NONE;
+		if (keys['i'] == GLUT_KEY_PRESS) currentCamera->rotate(-1.0, 0.0);
+		else keys['i'] = GLUT_KEY_NONE;
+		if (keys['k'] == GLUT_KEY_PRESS) currentCamera->rotate(1.0, 0.0);
+		else keys['k'] = GLUT_KEY_NONE;
+		break;
+	default:
 		break;
 	}
 
-	if (keys[GLUT_KEY_NUM1]) {mode = MENU; setProjection();}
-	if (keys[GLUT_KEY_NUM2]) {mode = GAME; setProjection();}
-	if (keys[GLUT_KEY_NUM3]) {mode = DEBUG; setProjection();}
+	if (keys[GLUT_KEY_NUM1] == GLUT_KEY_RELEASE)
+	{
+		mode = MENU;
+		currentCamera = menuCamera;
+		currentCamera->init();
+		keys[GLUT_KEY_NUM1] = GLUT_KEY_NONE;
+	}
+	if (keys[GLUT_KEY_NUM2] == GLUT_KEY_RELEASE)
+	{
+		mode = GAME;
+		currentCamera = gameCamera;
+		currentCamera->init();
+		keys[GLUT_KEY_NUM2] = GLUT_KEY_NONE;
+	}
+	if (keys[GLUT_KEY_NUM3] == GLUT_KEY_RELEASE)
+	{
+		mode = DEBUG;
+		currentCamera = debugCamera;
+		currentCamera->init();
+		keys[GLUT_KEY_NUM3] = GLUT_KEY_NONE;
+	}
 
 	return res;
 }
@@ -207,61 +237,10 @@ bool Game::Process()
 // Output
 void Game::Render()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	//CAMERA SETTINGS
-	float radius;
-	Point center;
-	scene.boundingSphere(center, radius);
-
-	Point OBS = player->getPosition() + Vector(0, 1, 10);
-	Point VRP = player->getPosition() + Vector(0, 2, 0);
-	
-	switch (mode) {
-	case MENU:
-		gluLookAt(10.0*ra/2.0, 5, 10, 10.0*ra/2.0, 5, 0, 0, 1, 0);
-		break;
-	case GAME:
-		gluLookAt(OBS.x, OBS.y, OBS.z, VRP.x, VRP.y, VRP.z, 0, 1, 0);
-		break;
-	case DEBUG:
-		gluLookAt(center.x + 2*radius, center.y + 2*radius, center.z, center.x, center.y, center.z, -1, 1, 0);
-		break;
-	}
-
-	//Coordinate system
-	glDisable(GL_LIGHTING);
-	glBegin(GL_LINES);
-		glColor3f(1, 0, 0); glVertex3f(0,0,0); glVertex3f(100, 0, 0);
-		glColor3f(0, 1, 0); glVertex3f(0,0,0); glVertex3f(0, 100, 0);
-		glColor3f(0, 0, 1); glVertex3f(0,0,0); glVertex3f(0, 0, 100);
-	glEnd();
-	glEnable(GL_LIGHTING);
-
-	if (mode == MENU) {
-		//MENUS
-		currentScreen->render();
-	}
-	else {
-		currentScreen->render();
-		//SCENE
-		scene.render();
-
-		//SKYDOME
-		//desactivar iluminació i pintar amb textura
-		glDisable(GL_LIGHTING);
-		glCullFace(GL_FRONT);
-		skydome->render();
-		glCullFace(GL_BACK);
-		glEnable(GL_LIGHTING);
-
-		//PLAYERS
-		glColor3f(1, 0, 0);
-		player->render();
-	}
+	if (mode == MENU) currentScreen->render();
+	else scene.render();
 
 	glutSwapBuffers();
 }

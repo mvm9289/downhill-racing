@@ -1,8 +1,12 @@
 #include "Scene.h"
+#include "Texture.h"
 
 Scene::Scene(void) {}
 
-Scene::~Scene(void) {}
+Scene::~Scene(void)
+{
+	delete player;
+}
 
 Box Scene::boundingBox(void)
 {
@@ -19,9 +23,41 @@ void Scene::boundingSphere(Point& center, float& radius)
 void Scene::render(void)
 {
 	level.render();
+	glColor3f(1., 0., 0.);
+	player->render();
 }
 
 bool Scene::init(string levelPath)
 {
+	if (!level.loadLevel(levelPath)) return false;
+
+	player = new Player(level.startupPoint());
+	Texture playerTexture;
+	playerTexture.load("textures/player4.png", GL_RGBA);
+	//playerTexture.load("textures/player3.png", GL_RGBA);
+	//playerTexture.load("textures/player2.png", GL_RGB);
+	//playerTexture.load("textures/player1.png", GL_RGBA);
+	player->setTextureID(playerTexture.getID());
+
 	return level.loadLevel(levelPath);
+}
+
+Point Scene::getPlayerPosition()
+{
+	return player->getPosition();
+}
+
+void Scene::movePlayer(float dx)
+{
+	player->move(dx);
+}
+
+void Scene::jumpPlayer()
+{
+	player->jump();
+}
+
+void Scene::advancePlayer()
+{
+	player->advance();
 }
