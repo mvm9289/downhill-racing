@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="9,00"
 	Name="downhill-racing"
 	ProjectGUID="{2B107654-ABFE-4244-B8F8-573A312D5791}"
 	RootNamespace="downhillracing"
 	Keyword="Win32Proj"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -63,6 +64,8 @@
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="1"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -82,9 +85,6 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -138,6 +138,8 @@
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -159,9 +161,6 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -179,11 +178,47 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Camera.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Face.cpp"
 				>
 			</File>
 			<File
+				RelativePath=".\Game.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Level.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MItem.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MLabel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MScreen.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MSelectable.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MText.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Player.cpp"
 				>
 			</File>
 			<File
@@ -195,7 +230,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Sphere.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Terrain.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Texture.cpp"
 				>
 			</File>
 			<File
@@ -217,7 +260,43 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Camera.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Face.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Game.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Level.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MItem.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MLabel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MScreen.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MSelectable.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MText.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Player.h"
 				>
 			</File>
 			<File
@@ -229,7 +308,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Sphere.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Terrain.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Texture.h"
 				>
 			</File>
 			<File

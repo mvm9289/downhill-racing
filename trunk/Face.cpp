@@ -37,6 +37,8 @@ void Face::computeNormal(vector<Vertex>& vertices)
 
 void Face::render(const vector<Vertex>& vertices)
 {
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
 	glBegin(GL_QUADS);
 		int nVertices = indices.size();
 		for (int i = 0; i < nVertices; i++)
@@ -47,4 +49,5 @@ void Face::render(const vector<Vertex>& vertices)
 			glVertex3f(v.coord.x, v.coord.y, v.coord.z);
 		}
 	glEnd();
+	glPopMatrix();
 }
