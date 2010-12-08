@@ -23,6 +23,7 @@ void Sphere::render() {
 		glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
 	}
 
+	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 		glTranslatef(center.x, center.y, center.z);
 		gluSphere(quad, radius, DEPTH, DEPTH);

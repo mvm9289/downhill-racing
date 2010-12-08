@@ -46,6 +46,8 @@ void MScreen::render() {
 	glDisable(GL_LIGHTING);
 	glDisable(GL_CULL_FACE);
 	glColor3f(1,1,1);
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
 	glBegin(GL_QUADS);
 		glTexCoord2d(0, 0);
 		glVertex3f(0, 0, 0);
@@ -56,6 +58,7 @@ void MScreen::render() {
 		glTexCoord2d(0, 1);
 		glVertex3f(0, 10.0, 0);
 	glEnd();
+	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
 	
 	//items

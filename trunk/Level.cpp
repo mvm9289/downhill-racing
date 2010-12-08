@@ -13,21 +13,35 @@ Level::Level(string level)
 
 Level::Level(void) {}
 
-Level::~Level(void) {}
+Level::~Level(void)
+{
+	delete terrain;
+	delete skydome;
+}
+
+Point Level::startupPoint()
+{
+	return terrain->startupPoint();
+}
 
 bool Level::loadLevel(string level)
 {
-	bool res = false;
-
 	ifstream inputFile;
 	inputFile.open(level.c_str());
 
 	if (inputFile.is_open())
 	{
 		string textureBitMap;
+
 		if (!inputFile.eof()) inputFile >> textureBitMap;
-		Texture texture;
-		if (!texture.load((char *)("textures/" + textureBitMap).c_str(), GL_RGB)) return false;
+		Texture terrainTexture;
+		if (!terrainTexture.load((char *)("textures/" + textureBitMap).c_str(), GL_RGB))
+			return false;
+
+		if (!inputFile.eof()) inputFile >> textureBitMap;
+		Texture skydomeTexture;
+		if (!skydomeTexture.load((char *)("textures/" + textureBitMap).c_str(), GL_RGBA))
+			return false;
 
 		vector<double> terrainPoints;
 		while (!inputFile.eof()) {
@@ -37,12 +51,23 @@ bool Level::loadLevel(string level)
 		}
 		inputFile.close();
 
-		terrain = new Terrain(terrainPoints, texture.getID());
+		terrain = new Terrain(terrainPoints, terrainTexture.getID());
 
-		res = true;
+		Point center;
+		float radius;
+		boundingSphere(center, radius);
+		skydome = new Sphere(center, radius*1.1);
+		skydome->setTextureID(skydomeTexture.getID());
 	}
 
-	return res;
+	return true;
+}
+
+void Level::boundingSphere(Point& center, float& radius)
+{
+	Box box = boundingBox();
+	center = (box.maximum + box.minimum)/2;
+	radius = (box.maximum - center).length();
 }
 
 Box Level::boundingBox()
@@ -54,4 +79,12 @@ Box Level::boundingBox()
 void Level::render()
 {
 	if (terrain != NULL) terrain->render();
+	if (skydome != NULL)
+	{
+		glDisable(GL_LIGHTING);
+		glCullFace(GL_FRONT);
+		skydome->render();
+		glCullFace(GL_BACK);
+		glEnable(GL_LIGHTING);
+	}
 }
