@@ -37,4 +37,7 @@ public:
 	Point startupPoint();
 	Box boundingBox(void);
 	void render(void);
+	Point getPosition(unsigned int platform, float offset);
+	float getPlatformLength(unsigned int platform);
+	Vector getDirection(unsigned int platform);
 };

@@ -21,4 +21,5 @@ public:
 	void boundingSphere(Point& center, float& radius);
 	Box boundingBox();
 	void render();
+	Terrain* getTerrain();
 };
