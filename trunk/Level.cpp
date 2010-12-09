@@ -88,3 +88,7 @@ void Level::render()
 		glEnable(GL_LIGHTING);
 	}
 }
+
+Terrain* Level::getTerrain() {
+	return terrain;
+}

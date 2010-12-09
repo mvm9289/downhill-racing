@@ -16,7 +16,7 @@ void Terrain::createTerrain(vector<double> terrainPoints)
 {
 	int firstMax = 0;
 	bool found = false;
-	for (int i = 2; i < (terrainPoints.size() - 1) && !found; i+=2)
+	for (unsigned int i = 2; i < (terrainPoints.size() - 1) && !found; i+=2)
 	{
 		if (terrainPoints[i + 1] >= terrainPoints[firstMax + 1])
 			firstMax = i;
@@ -68,7 +68,7 @@ void Terrain::createDisplayList()
 	glNewList(displayList, GL_COMPILE);
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, texture);
-		for (int i = 0; i < faces.size(); i++)
+		for (unsigned int i = 0; i < faces.size(); i++)
 			faces[i].render(vertices);
 		glDisable(GL_TEXTURE_2D);
 	glEndList();
@@ -103,4 +103,22 @@ Box Terrain::boundingBox(void)
 void Terrain::render(void)
 {
 	glCallList(displayList);
+}
+
+Point Terrain::getPosition(unsigned int platform, float offset) {
+	Point pini = vertices[faces[platform].indices[0]].coord;
+	Point pfin = vertices[faces[platform].indices[3]].coord;
+	Vector dir = pfin - pini;
+	dir.normalize();
+	return pini + offset*dir;
+}
+
+float Terrain::getPlatformLength(unsigned int platform) {
+	return getDirection(platform).length();
+}
+
+Vector Terrain::getDirection(unsigned int platform) {
+	Point pini = vertices[faces[platform].indices[0]].coord;
+	Point pfin = vertices[faces[platform].indices[3]].coord;
+	return pfin - pini;
 }

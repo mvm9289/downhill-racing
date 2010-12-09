@@ -184,6 +184,7 @@ bool Game::Process()
 
 		// Game logic
 		scene.advancePlayer();
+		//update camera!!
 		break;
 	case DEBUG:
 		// Process Input
