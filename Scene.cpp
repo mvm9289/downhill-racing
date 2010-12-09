@@ -29,7 +29,8 @@ void Scene::render(void)
 
 bool Scene::init(string levelPath)
 {
-	if (!level.loadLevel(levelPath)) return false;
+	bool loadOK = level.loadLevel(levelPath);
+	if (!loadOK) return false;
 
 	player = new Player(level.startupPoint());
 	Texture playerTexture;
@@ -39,7 +40,10 @@ bool Scene::init(string levelPath)
 	//playerTexture.load("textures/player1.png", GL_RGBA);
 	player->setTextureID(playerTexture.getID());
 
-	return level.loadLevel(levelPath);
+	player->setTerrain(level.getTerrain());
+	player->init();
+
+	return true;
 }
 
 Point Scene::getPlayerPosition()
