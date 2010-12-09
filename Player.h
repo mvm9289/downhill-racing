@@ -17,5 +17,7 @@ private:
 	float weight;
 	bool jumping;
 	float jumped;
+	float platform; //of the terrain
+	float offset; //inside platform
 };
 
