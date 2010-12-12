@@ -9,7 +9,8 @@ class Scene
 {
 private:
 	Level level;
-	Player *player;
+	Player *player1;
+	Player *player2;
 
 public:
 	Scene(void);
