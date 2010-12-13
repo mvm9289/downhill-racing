@@ -5,12 +5,14 @@
 #include "Point.h"
 #include "Player.h"
 
+#include <vector>
+using namespace std;
+
 class Scene
 {
 private:
 	Level level;
-	Player *player1;
-	Player *player2;
+	vector<Player*> players;
 
 public:
 	Scene(void);

@@ -108,3 +108,7 @@ void Vector::normalize(void)
 	y*=inv;
 	z*=inv;
 }
+
+float Vector::slopeYZ() {
+	return y/z;
+}
