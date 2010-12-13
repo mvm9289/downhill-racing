@@ -83,7 +83,7 @@ void Level::render()
 	{
 		glDisable(GL_LIGHTING);
 		glCullFace(GL_FRONT);
-		skydome->render();
+		skydome->render(false);
 		glCullFace(GL_BACK);
 		glEnable(GL_LIGHTING);
 	}
