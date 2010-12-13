@@ -33,4 +33,5 @@ public:
 	void reshape(double ar);
 	void rotate(double x, double y);
 	void move(double x, double z);
+	void move(Point p);
 };
