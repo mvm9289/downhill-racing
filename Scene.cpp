@@ -5,8 +5,9 @@ Scene::Scene(void) {}
 
 Scene::~Scene(void)
 {
-	delete player1;
-	delete player2;
+	vector<Player*>::iterator it = players.begin();
+	for (; it != players.end(); ++it)
+		delete *it;
 }
 
 Box Scene::boundingBox(void)
@@ -25,8 +26,9 @@ void Scene::render(void)
 {
 	level.render();
 	glColor3f(1., 0., 0.);
-	player1->render();
-	player2->render();
+	vector<Player*>::iterator it = players.begin();
+	for (; it != players.end(); ++it)
+		(*it)->render();
 }
 
 bool Scene::init(string levelPath)
@@ -34,8 +36,8 @@ bool Scene::init(string levelPath)
 	bool loadOK = level.loadLevel(levelPath);
 	if (!loadOK) return false;
 
-	player1 = new Player(level.startupPoint());
-	player2 = new Player(level.startupPoint() + Point(3, 0, 0), 1.5);
+	Player *player1 = new Player(level.startupPoint());
+	Player *player2 = new Player(level.startupPoint() + Point(3, 0, 0), 1.2);
 	Texture playerTexture1;
 	Texture playerTexture2;
 	playerTexture1.load("textures/player4.png", GL_RGBA);
@@ -50,26 +52,29 @@ bool Scene::init(string levelPath)
 	player1->init();
 	player2->init();
 
+	players.push_back(player1);
+	players.push_back(player2);
+
 	return true;
 }
 
 Point Scene::getPlayerPosition()
 {
-	return player1->getPosition();
+	return players[0]->getPosition();
 }
 
 void Scene::movePlayer(float dx)
 {
-	player1->move(dx);
+	players[0]->move(dx, players, 0);
 }
 
 void Scene::jumpPlayer()
 {
-	player1->jump();
+	players[0]->jump();
 }
 
 void Scene::advancePlayer()
 {
-	player1->advance();
-	player2->advance();
+	for (int i = 0; i != players.size(); ++i)
+		players[i]->advance(players, i);
 }
