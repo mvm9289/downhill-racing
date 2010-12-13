@@ -184,7 +184,7 @@ bool Game::Process()
 
 		// Game logic
 		scene.advancePlayer();
-		//update camera!!
+		currentCamera->move(scene.getPlayerPosition() + Vector(0, 2, 0));
 		break;
 	case DEBUG:
 		// Process Input

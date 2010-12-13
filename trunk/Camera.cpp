@@ -132,3 +132,14 @@ void Camera::move(double x, double z)
 	glTranslatef(-x, 0, -z);
 	glMultMatrixf(&m[0][0]);
 }
+
+void Camera::move(Point p)
+{
+	Vector dir = p - VRP;
+	float dist = (VRP - pos).length();
+
+	VRP += dir;
+	dir.normalize();
+	pos = VRP - dist*dir;
+	init();
+}

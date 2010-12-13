@@ -5,6 +5,8 @@
 #include <vector>
 using namespace std;
 
+#define TEX_REPEAT_FACTOR 0.1
+
 class Face
 {
 public:
