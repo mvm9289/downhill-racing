@@ -45,7 +45,7 @@ void Face::render(const vector<Vertex>& vertices)
 		{
 			Vertex v = vertices[indices[i]];
 			glNormal3f(v.normal.x, v.normal.y, v.normal.z);
-			glTexCoord2f(v.coord.x, v.coord.z);
+			glTexCoord2f(v.coord.x*TEX_REPEAT_FACTOR, v.coord.z*TEX_REPEAT_FACTOR);
 			glVertex3f(v.coord.x, v.coord.y, v.coord.z);
 		}
 	glEnd();
