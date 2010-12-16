@@ -5,7 +5,7 @@
 class MText : public MLabel, public MSelectable
 {
 public:
-	MText(Point p, std::string str, float c[3], float cSel[3], bool sel = false);
+	MText(Point p, std::string str, float c[3], float cSel[3], float s, bool sel = false);
 	~MText();
 	void render();
 private:

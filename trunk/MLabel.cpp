@@ -10,7 +10,7 @@ void MLabel::render_string(void* font, const char* string)
 		glutStrokeCharacter(font, string[i]);
 }
 
-MLabel::MLabel(Point p, std::string str, float c1[3]) : MItem(p), text(str)
+MLabel::MLabel(Point p, std::string str, float c1[3], float s) : MItem(p), text(str), scale(s)
 {
 	memcpy(color, c1, 3*sizeof(float));
 }
@@ -21,10 +21,12 @@ MLabel::~MLabel()
 }
 
 void MLabel::render() {
+	glDisable(GL_LIGHTING);
 	glPushMatrix();
 		glColor3fv(color);
-		glTranslatef(position.x, position.y, 0.1);
-		glScalef(0.01, 0.01, 0.01);
+		glTranslatef(position.x, position.y, position.z);
+		glScalef(scale, scale, scale);
 		render_string(GLUT_STROKE_ROMAN, text.c_str());
 	glPopMatrix();
+	glEnable(GL_LIGHTING);
 }

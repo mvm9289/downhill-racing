@@ -2,10 +2,11 @@
 #include "Terrain.h"
 #include <cmath>
 
-Player::Player(Point c, float r): Sphere(Point(c.x, c.y + r, c.z), r), jumping(false), jumpAvailable(true) {
+Player::Player(Point c, float r, bool comp): Sphere(Point(c.x, c.y + r, c.z), r), jumping(false), jumpAvailable(true), IA(comp) {
 }
 
 void Player::init() {
+	speed = (SPEED_MAX + SPEED_MIN)/2.0;
 	platform = 0;
 	offsetZ = terrain->getPlatformLength(platform)/2.0;
 	offsetX = center.x;
@@ -30,6 +31,7 @@ void Player::jump() {
 		jumping = true;
 		jumpAvailable = false;
 		jumped = 0;
+		speed = SPEED_MAX;
 	}
 }
 
@@ -39,8 +41,12 @@ Point Player::getPosition() {
 
 void Player::advance(vector<Player*> &pl, int me) {
 	if (!blocked) {
-		float advance = radius*PLAYER_STEP;
-		if (terrain->getDirection(platform).slopeYZ() > 1) advance = PLAYER_STEP/radius;
+		if (me != 0) doIA(pl, me);
+		float advance = (radius)*speed;
+
+		if (terrain->getDirection(platform).slopeYZ() > 0) speed = (speed + SPEED_MAX)/2.0 - (radius - 1)*0.3;
+		else speed = (speed + SPEED_MIN)/2.0 - (radius - 1)*0.3;
+
 		while (advance > 0) {
 			if (advance < terrain->getPlatformLength(platform) - offsetZ) {
 				offsetZ += advance;
@@ -78,6 +84,11 @@ void Player::advance(vector<Player*> &pl, int me) {
 	checkColisions(pl, me);
 }
 
+void Player::doIA(vector<Player*> &pl, int me) {
+	int minD = (pl[0]->getPosition() - pl[me]->getPosition()).length();
+	unsigned int closest;
+}
+
 void Player::setTerrain(Terrain *t) {
 	terrain = t;
 }
@@ -98,4 +109,8 @@ void Player::checkColisions(vector<Player*> &pl, int me) {
 		}
 	}
 	blocked = false;
+}
+
+bool Player::isJumping() {
+	return jumping;
 }
