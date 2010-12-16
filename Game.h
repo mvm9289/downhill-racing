@@ -4,6 +4,9 @@
 #include "MScreen.h"
 #include "Camera.h"
 
+#include <vector>
+using namespace std;
+
 #define GAME_WIDTH	640
 #define GAME_HEIGHT 480
 
@@ -24,6 +27,7 @@ class Game {
 private:
 	Scene scene;
 	MScreen *currentScreen;
+	vector<MLabel*> pNames; //player name's
 	Camera *menuCamera;
 	Camera *gameCamera;
 	Camera *debugCamera;
@@ -36,6 +40,7 @@ private:
 
 	unsigned int mode;
 	void createMenus();
+	void createGUI();
 public:
 	Game(void);
 	virtual ~Game(void);

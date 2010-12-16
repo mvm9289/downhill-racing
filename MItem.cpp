@@ -11,3 +11,7 @@ MItem::~MItem()
 }
 
 void MItem::render () {}
+
+void MItem::setPosition(Point p) {
+	position = p;
+}
