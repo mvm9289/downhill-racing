@@ -75,6 +75,9 @@ bool Game::Init()
 	currentCamera = menuCamera;
 	currentCamera->init();
 
+	//XBOX controller
+	gamepad = new CXBOXController(1);
+
 	return true;
 }
 
@@ -196,6 +199,13 @@ bool Game::Process()
 		else keys[GLUT_KEY_RIGHT] = GLUT_KEY_NONE;
 		if (keys[GLUT_KEY_UP] == GLUT_KEY_PRESS) scene.jumpPlayer();
 		else keys[GLUT_KEY_UP] = GLUT_KEY_NONE;
+
+		// XBOX input
+		if (gamepad->IsConnected()) {
+			if (gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A) scene.jumpPlayer();
+			float mv = gamepad->GetState().Gamepad.sThumbLX/(2*32767.0);
+			if (mv > 0.1 || mv < -0.1) scene.movePlayer(mv);
+		}
 
 		// Game logic
 		scene.advancePlayer();

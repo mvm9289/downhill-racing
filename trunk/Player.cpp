@@ -41,7 +41,6 @@ Point Player::getPosition() {
 
 void Player::advance(vector<Player*> &pl, int me) {
 	if (!blocked) {
-		if (me != 0) doIA(pl, me);
 		float advance = (radius)*speed;
 
 		if (terrain->getDirection(platform).slopeYZ() > 0) speed = (speed + SPEED_MAX)/2.0 - (radius - 1)*0.3;
@@ -74,19 +73,14 @@ void Player::advance(vector<Player*> &pl, int me) {
 		else {
 			offsetY -= 1.5*PLAYER_STEP;
 		}
-		if (offsetY <= terrain->getPosition(platform, offsetZ).y + radius) {
+		if (offsetY <= terrain->getPosition(platform, offsetZ).y) {
 			jumping = false;
 			jumpAvailable = true;
-			offsetY = terrain->getPosition(platform, offsetZ).y + radius;
+			offsetY = terrain->getPosition(platform, offsetZ).y;
 		}
 		computeCenter();
 	}
 	checkColisions(pl, me);
-}
-
-void Player::doIA(vector<Player*> &pl, int me) {
-	int minD = (pl[0]->getPosition() - pl[me]->getPosition()).length();
-	unsigned int closest;
 }
 
 void Player::setTerrain(Terrain *t) {
@@ -95,15 +89,17 @@ void Player::setTerrain(Terrain *t) {
 
 void Player::computeCenter() {
 	center = terrain->getPosition(platform, offsetZ);
+	Vector normal = terrain->getNormal(platform);
 	center.x = offsetX;
-	center.y = offsetY;
+	center.y = offsetY + radius*normal.y;
+	center.z += radius*normal.z;
 }
 
 void Player::checkColisions(vector<Player*> &pl, int me) {
 	for (unsigned int i = 0; i < pl.size(); ++i) {
 		if (i != me) {
 			if ((pl[i]->getPosition() - center).length() < pl[i]->radius + radius){
-				blocked = true;
+				if (pl[i]->getPosition().z < pl[me]->getPosition().z) blocked = true;
 				return;
 			}
 		}
@@ -113,4 +109,40 @@ void Player::checkColisions(vector<Player*> &pl, int me) {
 
 bool Player::isJumping() {
 	return jumping;
+}
+
+void Player::render() {
+	GLUquadricObj *quad;
+	quad = gluNewQuadric();
+	gluQuadricNormals(quad, GLU_SMOOTH);
+	
+	if (textID > 0) {
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, textID);
+		gluQuadricTexture(quad, GL_TRUE);
+
+		glEnable(GL_TEXTURE_GEN_S);
+		glEnable(GL_TEXTURE_GEN_T);
+		glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR); //OBJECT for rotations
+		glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+	}
+	
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+		glTranslatef(center.x, center.y, center.z);
+		glRotatef(-alpha, 1, 0, 0);
+		gluSphere(quad, radius, DEPTH, DEPTH);
+	glPopMatrix();
+	glDisable(GL_TEXTURE_GEN_S);
+	glDisable(GL_TEXTURE_GEN_T);
+	glDisable(GL_TEXTURE_2D);
+	alpha += 10;
+}
+
+void Player::setBlocked(bool b) {
+	blocked = b;
+}
+
+bool Player::getBlocked() {
+	return blocked;
 }

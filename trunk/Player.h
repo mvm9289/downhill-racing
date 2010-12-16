@@ -24,6 +24,9 @@ public:
 	Point getPosition();
 	void setTerrain(Terrain *t);
 	bool isJumping();
+	void render();
+	void setBlocked(bool b);
+	bool getBlocked();
 
 private:
 	//float weight; //not used, we use radius instead
@@ -41,6 +44,5 @@ private:
 
 	void computeCenter();
 	void checkColisions(vector<Player*> &pl, int me);
-	void doIA(vector<Player*> &pl, int me);
 };
 
