@@ -25,7 +25,6 @@ void Scene::boundingSphere(Point& center, float& radius)
 void Scene::render(void)
 {
 	level.render();
-	glColor3f(1., 0., 0.);
 	vector<Player*>::iterator it = players.begin();
 	for (; it != players.end(); ++it)
 		(*it)->render();
