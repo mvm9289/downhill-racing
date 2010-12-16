@@ -122,3 +122,7 @@ Vector Terrain::getDirection(unsigned int platform) {
 	Point pfin = vertices[faces[platform].indices[3]].coord;
 	return pfin - pini;
 }
+
+Vector Terrain::getNormal(unsigned int platform) {
+	return faces[platform].normal;
+}

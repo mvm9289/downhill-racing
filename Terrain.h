@@ -40,4 +40,5 @@ public:
 	Point getPosition(unsigned int platform, float offset);
 	float getPlatformLength(unsigned int platform);
 	Vector getDirection(unsigned int platform);
+	Vector getNormal(unsigned int platform);
 };

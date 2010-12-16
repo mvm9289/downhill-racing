@@ -3,6 +3,7 @@
 #include "Scene.h"
 #include "MScreen.h"
 #include "Camera.h"
+#include "CXBOXController.h"
 
 #include <vector>
 using namespace std;
@@ -35,6 +36,8 @@ private:
 	float aspectRatio;
 	int xAnt;
 	int yAnt;
+
+	CXBOXController* gamepad;
 
 	unsigned char keys[256];
 

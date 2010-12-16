@@ -10,7 +10,7 @@ public:
 	Sphere(Point c = Point(0,0,0), float r = 1);
 	~Sphere(void);
 
-	void render(bool r = true);
+	virtual void render();
 	void setTextureID(GLuint id);
 protected:
 	float radius;
