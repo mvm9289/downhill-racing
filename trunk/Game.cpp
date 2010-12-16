@@ -67,6 +67,9 @@ bool Game::Init()
 	createMenus();
 	currentScreen->setRatio(aspectRatio);
 
+	// GUI initialization
+	createGUI();
+
 	// Game mode initialization
 	mode = MENU;
 	currentCamera = menuCamera;
@@ -86,12 +89,12 @@ void Game::createMenus() {
 	MScreen *creditsScreen = new MScreen(menuTexture.getID(), aspectRatio);
 
 	//title
-	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0), "Downhill Racing", c1);
+	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "Downhill Racing", c1, 0.01);
 	
 	//create menu items
-	MText *opPlay = new MText(Point(4.5*aspectRatio, 5, 0), "Play", c1, c2, true);
-	MText *opOptions = new MText(Point(4*aspectRatio, 4, 0), "Options", c1, c2);
-	MText *opCredits = new MText(Point(4*aspectRatio, 3, 0), "Credits", c1, c2);
+	MText *opPlay = new MText(Point(4.5*aspectRatio, 5, 0), "Play", c1, c2, 0.005, true);
+	MText *opOptions = new MText(Point(4*aspectRatio, 4, 0), "Options", c1, c2, 0.005);
+	MText *opCredits = new MText(Point(4*aspectRatio, 3, 0), "Credits", c1, c2, 0.005);
 
 	//set menu directions
 	opPlay->setUp(opCredits);
@@ -110,6 +113,18 @@ void Game::createMenus() {
 
 	//set current menu screen
 	currentScreen = mainScreen;
+}
+
+void Game::createGUI() {
+	float c1[] = {1, 0, 0};
+	float c2[] = {1, 1, 1};
+
+	MLabel *p1 = new MLabel(Point(0, 0, 0), "Player", c2, 0.003);
+	MLabel *p2 = new MLabel(Point(0, 0, 0), "Comp 1", c1, 0.003);
+	MLabel *p3 = new MLabel(Point(0, 0, 0), "Comp 2", c1, 0.003);
+	pNames.push_back(p1);
+	pNames.push_back(p2);
+	pNames.push_back(p3);
 }
 
 bool Game::Loop()
@@ -235,13 +250,33 @@ bool Game::Process()
 	return res;
 }
 
+// Render a string
+void render_string(void* font, const char* string)
+{
+	int i,len = strlen(string);
+	for(i=0;i<len;i++)
+		glutBitmapCharacter(font, string[i]);
+}
+
 // Output
 void Game::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (mode == MENU) currentScreen->render();
-	else scene.render();
+	else {
+		scene.render();
+
+		vector<Player*> pl = scene.getPlayers();
+		vector<Player*>::iterator it = pl.begin();
+		vector<MLabel*>::iterator lit = pNames.begin();
+
+		for (; it != pl.end(); ++it, ++lit) {
+			Point p = (*it)->getPosition() + Vector(-1, 1.5, 0);
+			(*lit)->setPosition(p);
+			(*lit)->render();
+		}
+	}
 
 	glutSwapBuffers();
 }

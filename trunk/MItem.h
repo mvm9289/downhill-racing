@@ -7,6 +7,7 @@ public:
 	MItem(Point p);
 	~MItem();
 	virtual void render();
+	void setPosition(Point p);
 protected:
 	Point position;
 };

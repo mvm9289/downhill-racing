@@ -20,7 +20,7 @@ public:
 	void setSelected(MSelectable *item);
 	void setRatio(float ratio);
 private:
-	GLuint texture;
+	int texture;
 	float ra;
 	vector<MItem*> items;
 	MSelectable *selectedItem;

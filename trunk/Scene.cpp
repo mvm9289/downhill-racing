@@ -36,7 +36,7 @@ bool Scene::init(string levelPath)
 	bool loadOK = level.loadLevel(levelPath);
 	if (!loadOK) return false;
 
-	Player *player1 = new Player(level.startupPoint());
+	Player *player1 = new Player(level.startupPoint(), 1, false);
 	Player *player2 = new Player(level.startupPoint() + Point(3, 0, 0), 1.2);
 	Texture playerTexture1;
 	Texture playerTexture2;
@@ -58,6 +58,10 @@ bool Scene::init(string levelPath)
 	return true;
 }
 
+vector<Player*> Scene::getPlayers() {
+	return players;
+}
+
 Point Scene::getPlayerPosition()
 {
 	return players[0]->getPosition();
@@ -75,6 +79,6 @@ void Scene::jumpPlayer()
 
 void Scene::advancePlayer()
 {
-	for (int i = 0; i != players.size(); ++i)
+	for (unsigned int i = 0; i != players.size(); ++i)
 		players[i]->advance(players, i);
 }
