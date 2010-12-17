@@ -20,12 +20,14 @@ MLabel::~MLabel()
 {
 }
 
-void MLabel::render() {
+void MLabel::render(bool pname, float angle) {
 	glDisable(GL_LIGHTING);
+	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
-		glColor3fv(color);
 		glTranslatef(position.x, position.y, position.z);
 		glScalef(scale, scale, scale);
+		if (pname) glRotatef(-angle, 1, 0, 0);
+		glColor3fv(color);
 		render_string(GLUT_STROKE_ROMAN, text.c_str());
 	glPopMatrix();
 	glEnable(GL_LIGHTING);
