@@ -31,7 +31,6 @@ void Player::jump() {
 		jumping = true;
 		jumpAvailable = false;
 		jumped = 0;
-		//peed = SPEED_MAX;
 	}
 }
 
@@ -41,10 +40,10 @@ Point Player::getPosition() {
 
 void Player::advance(vector<Player*> &pl, int me) {
 	if (!blocked) {
-		float advance = speed;
+		float advance = speed*radius;
 
-		if (terrain->getDirection(platform).slopeYZ() > 0) speed = (speed + SPEED_MAX)/2.0 - (radius - 1)*0.1;
-		else speed = (speed + SPEED_MIN)/2.0 - (radius - 1)*0.1;
+		if (terrain->getDirection(platform).slopeYZ() > 0) speed = (speed + SPEED_MAX)/2.0 - (radius - 1)*0.3;
+		else speed = (speed + SPEED_MIN)/2.0 - (radius - 1)*0.3;
 
 		while (advance > 0) {
 			if (advance < terrain->getPlatformLength(platform) - offsetZ) {
@@ -137,6 +136,10 @@ void Player::render() {
 	glDisable(GL_TEXTURE_GEN_T);
 	glDisable(GL_TEXTURE_2D);
 	alpha += 10;
+}
+
+void Player::stopPlayer() {
+	speed /= 2;
 }
 
 void Player::setBlocked(bool b) {

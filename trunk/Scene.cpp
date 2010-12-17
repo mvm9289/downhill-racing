@@ -81,3 +81,7 @@ void Scene::advancePlayer()
 	for (unsigned int i = 0; i != players.size(); ++i)
 		players[i]->advance(players, i);
 }
+
+void Scene::stopPlayer() {
+	players[0]->stopPlayer();
+}

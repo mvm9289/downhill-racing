@@ -12,6 +12,7 @@ private:
 	int type;
 	Point sceneCenter;
 	Point pos;
+	Point falsePos;
 	Point VRP;
 	Vector up;
 	double fovy;
