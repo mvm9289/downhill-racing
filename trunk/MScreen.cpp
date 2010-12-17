@@ -68,3 +68,7 @@ void MScreen::render() {
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_LIGHTING);
 }
+
+int MScreen::getAction() {
+	return selectedItem->getAction();
+}

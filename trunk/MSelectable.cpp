@@ -31,3 +31,11 @@ MSelectable* MSelectable::getDown(bool select) {
 void MSelectable::setSelected(bool s) {
 	selected = s;
 }
+
+void MSelectable::setAction(int a) {
+	action = a;
+}
+
+int MSelectable::getAction() {
+	return action;
+}

@@ -12,9 +12,12 @@ public:
 	MSelectable* getDown(bool select = false);
 
 	void setSelected(bool s);
+	void setAction(int a);
+	int getAction();
 protected:
 	bool selected;
 	MSelectable *up;
 	MSelectable *down;
+	int action;
 };
 
