@@ -8,7 +8,7 @@ using namespace std;
 
 #define PLAYER_STEP 0.8
 #define SPEED_MIN 0.5
-#define SPEED_MAX 0.9
+#define SPEED_MAX 1
 #define JUMP_STEPS 10.0
 #define JUMP_FACTOR 0.5
 #define TURBO_STEPS 10
