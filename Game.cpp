@@ -35,7 +35,7 @@ bool Game::Init()
 	glColorMaterial(GL_FRONT, GL_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
 
-	glLineWidth(4.0);
+	glLineWidth(2.0);
 
 	// Scene initialization
 	if (!scene.init("levels/level3.txt")) return false; /////////////////////////solo cuando se selecciona un level
@@ -122,7 +122,7 @@ void Game::createGUI() {
 	float c1[] = {1, 0, 0};
 	float c2[] = {1, 1, 1};
 
-	MLabel *p1 = new MLabel(Point(0, 0, 0), "Player", c2, 0.003);
+	MLabel *p1 = new MLabel(Point(0, 0, 0), "Player", c1, 0.003);
 	MLabel *p2 = new MLabel(Point(0, 0, 0), "Comp 1", c1, 0.003);
 	MLabel *p3 = new MLabel(Point(0, 0, 0), "Comp 2", c1, 0.003);
 	pNames.push_back(p1);
@@ -280,11 +280,15 @@ void Game::Render()
 		vector<Player*> pl = scene.getPlayers();
 		vector<Player*>::iterator it = pl.begin();
 		vector<MLabel*>::iterator lit = pNames.begin();
+		
+		Vector camDir = currentCamera->getVisionDir();
+		float angle = acos(-camDir.z)*180.0/3.14159265;
+		//if (camDir.y > 0)  angle = acos(camDir.z)*180.0/3.14159265;
 
 		for (; it != pl.end(); ++it, ++lit) {
-			Point p = (*it)->getPosition() + Vector(-1, 1.5, 0);
+			Point p = (*it)->getPosition() + Vector(-0.9, 1.5, 0);
 			(*lit)->setPosition(p);
-			(*lit)->render();
+			(*lit)->render(true, angle);
 		}
 	}
 

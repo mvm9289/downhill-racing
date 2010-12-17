@@ -7,7 +7,7 @@ class MLabel : public MItem
 public:
 	MLabel(Point p, std::string str, float c1[3], float s);
 	~MLabel();
-	void render();
+	void render(bool pname = false, float angle = 0.0);
 protected:
 	std::string text;
 	float color[3];
