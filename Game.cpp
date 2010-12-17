@@ -53,7 +53,7 @@ bool Game::Init()
 	float radius;
 	Point center;
 	scene.boundingSphere(center, radius);
-	obs = scene.getPlayerPosition() + Vector(0, 20, 10);
+	obs = scene.getPlayerPosition() + Vector(0, 5, 7);
 	vrp = scene.getPlayerPosition() + Vector(0, 2, 0);
 	gameCamera = new Camera(center, obs, vrp, up, 60, aspectRatio, 0.1, 5*radius); /////////////////////////solo cuando se selecciona un level
 
@@ -199,6 +199,8 @@ bool Game::Process()
 		else keys[GLUT_KEY_RIGHT] = GLUT_KEY_NONE;
 		if (keys[GLUT_KEY_UP] == GLUT_KEY_PRESS) scene.jumpPlayer();
 		else keys[GLUT_KEY_UP] = GLUT_KEY_NONE;
+		if (keys[GLUT_KEY_DOWN] == GLUT_KEY_PRESS) scene.stopPlayer();
+		else keys[GLUT_KEY_DOWN] = GLUT_KEY_NONE;
 
 		// XBOX input
 		if (gamepad->IsConnected()) {
@@ -209,17 +211,17 @@ bool Game::Process()
 
 		// Game logic
 		scene.advancePlayer();
-		currentCamera->move(scene.getPlayerPosition());
+		if (!scene.getPlayers()[0]->getBlocked()) currentCamera->move(scene.getPlayerPosition());
 		break;
 	case DEBUG:
 		// Process Input
-		if (keys[GLUT_KEY_LEFT] == GLUT_KEY_PRESS) currentCamera->move(-0.2, 0.);
+		if (keys[GLUT_KEY_LEFT] == GLUT_KEY_PRESS) currentCamera->move(-2, 0.);
 		else keys[GLUT_KEY_LEFT] = GLUT_KEY_NONE;
-		if (keys[GLUT_KEY_RIGHT] == GLUT_KEY_PRESS) currentCamera->move(0.2, 0.);
+		if (keys[GLUT_KEY_RIGHT] == GLUT_KEY_PRESS) currentCamera->move(2, 0.);
 		else keys[GLUT_KEY_RIGHT] = GLUT_KEY_NONE;
-		if (keys[GLUT_KEY_UP] == GLUT_KEY_PRESS) currentCamera->move(0., -0.2);
+		if (keys[GLUT_KEY_UP] == GLUT_KEY_PRESS) currentCamera->move(0., -2);
 		else keys[GLUT_KEY_UP] = GLUT_KEY_NONE;
-		if (keys[GLUT_KEY_DOWN] == GLUT_KEY_PRESS) currentCamera->move(0., 0.2);
+		if (keys[GLUT_KEY_DOWN] == GLUT_KEY_PRESS) currentCamera->move(0., 2);
 		else keys[GLUT_KEY_DOWN] = GLUT_KEY_NONE;
 
 		if (keys['j'] == GLUT_KEY_PRESS) currentCamera->rotate(0.0, -1.0);
