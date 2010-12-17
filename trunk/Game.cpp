@@ -53,7 +53,7 @@ bool Game::Init()
 	float radius;
 	Point center;
 	scene.boundingSphere(center, radius);
-	obs = scene.getPlayerPosition() + Vector(0, 1, 10);
+	obs = scene.getPlayerPosition() + Vector(0, 20, 10);
 	vrp = scene.getPlayerPosition() + Vector(0, 2, 0);
 	gameCamera = new Camera(center, obs, vrp, up, 60, aspectRatio, 0.1, 5*radius); /////////////////////////solo cuando se selecciona un level
 
@@ -209,7 +209,7 @@ bool Game::Process()
 
 		// Game logic
 		scene.advancePlayer();
-		currentCamera->move(scene.getPlayerPosition() + Vector(0, 2, 0));
+		currentCamera->move(scene.getPlayerPosition());
 		break;
 	case DEBUG:
 		// Process Input
@@ -286,7 +286,7 @@ void Game::Render()
 		//if (camDir.y > 0)  angle = acos(camDir.z)*180.0/3.14159265;
 
 		for (; it != pl.end(); ++it, ++lit) {
-			Point p = (*it)->getPosition() + Vector(-0.9, 1.5, 0);
+			Point p = (*it)->getPosition() + Vector(-0.5, 1.5, 0);
 			(*lit)->setPosition(p);
 			(*lit)->render(true, angle);
 		}
