@@ -135,11 +135,18 @@ void Camera::move(double x, double z)
 
 void Camera::move(Point p)
 {
-	Vector dir = p - VRP;
-	float dist = (VRP - pos).length();
-
+	Vector dir = (p + Vector(0, 2, 0)) - VRP;
+	Vector dirNorm = dir;
+	dirNorm.normalize();
+	Vector visio = getVisionDir();
 	VRP += dir;
-	dir.normalize();
-	pos = VRP - dist*dir;
+	pos += dir;
+	pos.y += (visio.y - dirNorm.y);
 	init();
+}
+
+Vector Camera::getVisionDir() {
+	Vector visio = VRP - pos;
+	visio.normalize();
+	return visio;
 }

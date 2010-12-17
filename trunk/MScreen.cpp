@@ -40,13 +40,13 @@ void MScreen::setRatio(float ratio) {
 
 void MScreen::render() {
 	//background
-	
+	glDisable(GL_LIGHTING);
+	glDisable(GL_CULL_FACE);
+	glMatrixMode(GL_MODELVIEW);
 	if (texture > 0) {
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glEnable(GL_TEXTURE_2D);
-		glDisable(GL_LIGHTING);
-		glDisable(GL_CULL_FACE);
-		glMatrixMode(GL_MODELVIEW);
+		
 		glPushMatrix();
 		glBegin(GL_QUADS);
 			glTexCoord2d(0, 0);

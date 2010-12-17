@@ -8,8 +8,8 @@ using namespace std;
 
 #define PLAYER_STEP 0.8
 #define SPEED_MIN 0.5
-#define SPEED_MAX 0.8
-#define JUMP_STEPS 15.0
+#define SPEED_MAX 0.9
+#define JUMP_STEPS 10.0
 #define JUMP_FACTOR 0.5
 
 class Player : public Sphere {

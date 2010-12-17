@@ -10,7 +10,7 @@ MItem::~MItem()
 {
 }
 
-void MItem::render () {}
+void MItem::render (bool pname, float angle) {}
 
 void MItem::setPosition(Point p) {
 	position = p;
