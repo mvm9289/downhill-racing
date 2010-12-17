@@ -28,4 +28,5 @@ public:
 	void movePlayer(float dx);
 	void jumpPlayer();
 	void advancePlayer();
+	void stopPlayer();
 };

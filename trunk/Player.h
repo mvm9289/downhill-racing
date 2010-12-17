@@ -11,6 +11,7 @@ using namespace std;
 #define SPEED_MAX 0.9
 #define JUMP_STEPS 10.0
 #define JUMP_FACTOR 0.5
+#define TURBO_STEPS 10
 
 class Player : public Sphere {
 public:
@@ -20,6 +21,7 @@ public:
 	void move(float dx, vector<Player*> &pl, int me);
 	void jump();
 	void advance(vector<Player*> &pl, int me);
+	void stopPlayer();
 	
 	Point getPosition();
 	void setTerrain(Terrain *t);

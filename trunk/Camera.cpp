@@ -7,6 +7,7 @@ Camera::Camera(void)
 	type = PERSPECTIVE;
 	sceneCenter = Point();
 	pos = Point();
+	falsePos = Point();
 	VRP = Point();
 	up = Vector();
 	fovy = 0.0;
@@ -27,6 +28,8 @@ Camera::Camera(Point c, Point p, Point vrp, Vector u, double f, double ar, doubl
 
 	sceneCenter = c;
 	pos = p;
+	falsePos = p;
+	falsePos.y = vrp.y;
 	VRP = vrp;
 	up = u;
 
@@ -49,6 +52,8 @@ Camera::Camera(Point p, Point vrp, Vector u, double l, double r, double b, doubl
 	type = ORTHO;
 
 	pos = p;
+	falsePos = p;
+	falsePos.y = vrp.y;
 	VRP = vrp;
 	up = u;
 
@@ -110,21 +115,6 @@ void Camera::rotate(double x, double y)
 
 void Camera::move(double x, double z)
 {
-	//float m[4][4];
-	//glGetFloatv(GL_MODELVIEW_MATRIX, &m[0][0]);
-	//Vector xObs, zObs;
-	//xObs.x = m[0][0];
-	//xObs.y = m[1][0];
-	//xObs.z = m[2][0];
-	//zObs.x = m[0][2];
-	//zObs.y = m[1][2];
-	//zObs.z = m[2][2];
-
-	//Vector mov = x*xObs + z*zObs;
-	//pos+=mov;
-	//VRP+=mov;
-
-	//init();
 	float m[4][4];
 	glGetFloatv(GL_MODELVIEW_MATRIX, &m[0][0]);
 	glMatrixMode(GL_MODELVIEW);
@@ -138,10 +128,13 @@ void Camera::move(Point p)
 	Vector dir = (p + Vector(0, 2, 0)) - VRP;
 	Vector dirNorm = dir;
 	dirNorm.normalize();
-	Vector visio = getVisionDir();
+	Vector moveDir = VRP - falsePos;
+	moveDir.normalize();
 	VRP += dir;
 	pos += dir;
-	pos.y += (visio.y - dirNorm.y);
+	falsePos += dir;
+	pos.y += (moveDir.y - dirNorm.y);
+	falsePos.y += (moveDir.y - dirNorm.y);
 	init();
 }
 
