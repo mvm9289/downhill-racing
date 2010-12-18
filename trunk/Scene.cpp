@@ -35,13 +35,11 @@ bool Scene::init(string levelPath)
 	bool loadOK = level.loadLevel(levelPath);
 	if (!loadOK) return false;
 
-	Player *player1 = new Player(level.startupPoint(), 1, false);
-	Player *player2 = new Player(level.startupPoint() + Point(3, 0, 0), 1.2);
+	Player *player1 = new Player(0, level.startupPoint(), 1.2, false);
+	Player *player2 = new Player(1, level.startupPoint() + Point(3, 0, 0), 1);
 	Texture playerTexture1;
 	Texture playerTexture2;
 	playerTexture1.load("textures/player4.png", GL_RGBA);
-	//playerTexture.load("textures/player3.png", GL_RGBA);
-	//playerTexture.load("textures/player2.png", GL_RGB);
 	playerTexture2.load("textures/player1.png", GL_RGBA);
 	player1->setTextureID(playerTexture1.getID());
 	player2->setTextureID(playerTexture2.getID());
@@ -68,7 +66,7 @@ Point Scene::getPlayerPosition()
 
 void Scene::movePlayer(float dx)
 {
-	players[0]->move(dx, players, 0);
+	players[0]->move(dx, players);
 }
 
 void Scene::jumpPlayer()
@@ -79,9 +77,13 @@ void Scene::jumpPlayer()
 void Scene::advancePlayer()
 {
 	for (unsigned int i = 0; i != players.size(); ++i)
-		players[i]->advance(players, i);
+		players[i]->advance(players);
 }
 
 void Scene::stopPlayer() {
 	players[0]->stopPlayer();
+}
+
+void Scene::turboPlayer() {
+	players[0]->activateTurbo();
 }

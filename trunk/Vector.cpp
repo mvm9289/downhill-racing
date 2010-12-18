@@ -110,5 +110,5 @@ void Vector::normalize(void)
 }
 
 float Vector::slopeYZ() {
-	return y/z;
+	return -y/z;
 }

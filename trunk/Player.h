@@ -6,22 +6,25 @@
 #include <vector>
 using namespace std;
 
-#define PLAYER_STEP 0.8
-#define SPEED_MIN 0.5
-#define SPEED_MAX 1
+#define PLAYER_STEP 0.2
+#define FALL_STEP 0.8
+#define SPEED_MIN 2
+#define SPEED_MAX 5
 #define JUMP_STEPS 10.0
 #define JUMP_FACTOR 0.5
-#define TURBO_STEPS 10
+#define TURBO_STEPS 100
+#define TURBO_TIME 500
 
 class Player : public Sphere {
 public:
-	Player(Point c = Point(0,0,0), float r = 1, bool comp = true);
+	Player(unsigned int id, Point c = Point(0,0,0), float r = 1, bool comp = true);
 	~Player(void);
 	void init();
-	void move(float dx, vector<Player*> &pl, int me);
+	void move(float dx, vector<Player*> &pl);
 	void jump();
-	void advance(vector<Player*> &pl, int me);
+	void advance(vector<Player*> &pl);
 	void stopPlayer();
+	void activateTurbo();
 	
 	Point getPosition();
 	void setTerrain(Terrain *t);
@@ -41,10 +44,14 @@ private:
 	float offsetY; //for jumping (absolute)
 	float offsetZ; //inside platform Z
 	Terrain *terrain;
-	bool IA;
-	float speed;
+	unsigned int speed;
+
+	int turboLeft;
+	int turboWait;
+
+	unsigned int playerID;
 
 	void computeCenter();
-	void checkColisions(vector<Player*> &pl, int me);
+	void checkColisions(vector<Player*> &pl);
 };
 
