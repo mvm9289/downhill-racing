@@ -60,8 +60,6 @@ void Player::advance(vector<Player*> &pl) {
 			if (--speed < SPEED_MIN) speed = SPEED_MIN;
 		}
 
-		//if (playerID == 0) cout << "Speed: " << speed << " Platform: " << platform << " Offset: " << offsetZ << endl;
-
 		if (turboLeft) {
 			--turboLeft;
 			if (!turboLeft) turboWait = TURBO_TIME;

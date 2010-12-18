@@ -97,7 +97,7 @@ void Game::initMusic() {
 				result = sys->createSound("sounds/jump.wav", FMOD_HARDWARE, 0, &sJump);
 				result = sys->createSound("sounds/pause.mp3", FMOD_HARDWARE, 0, &sPause);
 				result = sys->createSound("sounds/menu.mp3", FMOD_HARDWARE, 0, &sMenu);
-				result = sys->createSound("sounds/turbo2.wav", FMOD_HARDWARE, 0, &sTurbo);
+				result = sys->createSound("sounds/turbo.wav", FMOD_HARDWARE, 0, &sTurbo);
 				result = sys->createSound("sounds/stop.wav", FMOD_HARDWARE, 0, &sStop);
 				result = sys->createSound("sounds/level1.", FMOD_HARDWARE, 0, &sL1);
 				result = sys->createSound("sounds/level2.mp3", FMOD_HARDWARE, 0, &sL2);
@@ -394,11 +394,10 @@ void Game::initCameras()
 }
 
 
-bool Game::loadLevel(string level, int l)
+bool Game::loadLevel(string level)
 {
 	channel->stop();
-	if (l == 1) sys->playSound(FMOD_CHANNEL_FREE, sL1, false, &channel);
-	else if (l == 2) sys->playSound(FMOD_CHANNEL_FREE, sL2, false, &channel);
+	sys->playSound(FMOD_CHANNEL_FREE, sLevel, false, &channel);
 	
 	if (scene.init(level))
 	{
@@ -438,15 +437,18 @@ bool Game::Process()
 				currentScreen = levelsScreen;
 				break;
 			case ACTION_LEVEL_1:
-				res = loadLevel("levels/level1.txt", 1);
+				sLevel = sL1;
+				res = loadLevel("levels/level1.txt");
 				for (int i = 0; i < 256; i++) keys[i] = GLUT_KEY_NONE;
 				break;
 			case ACTION_LEVEL_2:
-				res = loadLevel("levels/level2.txt", 2);
+				sLevel = sL2;
+				res = loadLevel("levels/level2.txt");
 				for (int i = 0; i < 256; i++) keys[i] = GLUT_KEY_NONE;
 				break;
 			case ACTION_RESUME:
 				channel->stop();
+				sys->playSound(FMOD_CHANNEL_FREE, sLevel, false, &channel);
 				mode = GAME;
 				currentCamera = gameCamera;
 				currentCamera->init();
@@ -454,6 +456,7 @@ bool Game::Process()
 				break;
 			case ACTION_RESTART:
 				channel->stop();
+				sys->playSound(FMOD_CHANNEL_FREE, sLevel, false, &channel);
 				scene.restartLevel();
 				initCameras();
 				for (int i = 0; i < 256; i++) keys[i] = GLUT_KEY_NONE;
