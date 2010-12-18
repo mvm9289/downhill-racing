@@ -10,7 +10,7 @@
 using namespace std;
 
 #define TERRAIN_WIDTH 10.0
-#define STARTUP_DEPTH 20.0
+#define STARTUP_DEPTH 40.0
 #define SCALE_FACTOR 3.0
 
 class Terrain
@@ -20,6 +20,7 @@ private:
 	vector<Face> faces;
 	Box _boundingBox;
 	GLuint texture;
+	GLuint goalTexture;
 	GLuint displayList;
 
 public:
@@ -31,7 +32,7 @@ private:
 	void updateBoundingBox();
 
 public:
-	Terrain(vector<double> terrainPoints, GLuint textureID);
+	Terrain(vector<double> terrainPoints, GLuint textureID, GLuint goalTextureID);
 	Terrain(void);
 	~Terrain(void);
 	Point startupPoint();
