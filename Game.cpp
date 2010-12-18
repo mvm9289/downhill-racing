@@ -349,6 +349,7 @@ bool Game::Process()
 			float mv = gamepad->GetState().Gamepad.sThumbLX/(2*32767.0);
 			if (mv > 0.1 || mv < -0.1) scene.movePlayer(mv);
 			if (gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_X) scene.turboPlayer();
+			if (gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_B) scene.stopPlayer();
 		}
 
 		// Game logic
