@@ -24,6 +24,11 @@ Point Level::startupPoint()
 	return terrain->startupPoint();
 }
 
+Point Level::endPoint()
+{
+	return terrain->endPoint();
+}
+
 bool Level::loadLevel(string level)
 {
 	ifstream inputFile;
