@@ -23,13 +23,13 @@ int IA::compute(unsigned int i, vector<Player*> pl) {
 
 	if (dZ < 0) { //player > computer
 		r = rand() % 100;
-		if (abs(dZ) > 10 && r > 70) ret += IA_TURBO;
+		if (abs(dZ) > 10 && r > 95) ret += IA_TURBO;
 		r = rand() % 100;
 		if (abs(dZ) < 10 && r > 30 && !pl[0]->isJumping() && !pl[i]->isJumping()) ret += IA_JUMP;
 	}
 	else { //computer > player
 		r = rand() % 100;
-		if (abs(dZ) < 5 && r > 70) ret += IA_TURBO;
+		if (abs(dZ) < 5 && r > 95) ret += IA_TURBO;
 		r = rand() % 100;
 		if (abs(dZ) < 5 && r > 80 && pl[0]->isJumping() && !pl[i]->isJumping()) ret += IA_JUMP;
 	}

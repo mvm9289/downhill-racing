@@ -17,7 +17,7 @@ using namespace std;
 
 class Player : public Sphere {
 public:
-	Player(unsigned int id, Point c = Point(0,0,0), float r = 1, bool comp = true);
+	Player(unsigned int id, Point c = Point(0,0,0), float r = 1);
 	~Player(void);
 	void init();
 	void move(float dx, vector<Player*> &pl);
