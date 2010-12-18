@@ -194,6 +194,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\IA.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Level.cpp"
 				>
 			</File>
@@ -277,6 +281,10 @@
 			</File>
 			<File
 				RelativePath=".\Game.h"
+				>
+			</File>
+			<File
+				RelativePath=".\IA.h"
 				>
 			</File>
 			<File

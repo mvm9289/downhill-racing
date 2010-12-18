@@ -36,6 +36,7 @@ public:
 	Terrain(void);
 	~Terrain(void);
 	Point startupPoint();
+	Point endPoint();
 	Box boundingBox(void);
 	void render(void);
 	Point getPosition(unsigned int platform, float offset);
