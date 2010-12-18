@@ -29,8 +29,8 @@ public:
 	vector<Player*> getPlayers();
 	Point getPlayerPosition();
 	void movePlayer(unsigned int i, float dx);
-	void jumpPlayer(unsigned int i);
+	bool jumpPlayer(unsigned int i);
 	void advancePlayers();
-	void stopPlayer(unsigned int i);
-	void turboPlayer(unsigned int i);
+	bool stopPlayer(unsigned int i);
+	bool turboPlayer(unsigned int i);
 };

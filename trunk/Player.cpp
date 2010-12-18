@@ -34,12 +34,14 @@ void Player::move(float dx, vector<Player*> &pl) {
 	checkColisions(pl);
 }
 
-void Player::jump() {
+bool Player::jump() {
 	if (!jumping && jumpAvailable && platform) {
 		jumping = true;
 		jumpAvailable = false;
 		jumped = 0;
+		return true;
 	}
+	return false;
 }
 
 Point Player::getPosition() {
@@ -194,8 +196,12 @@ void Player::render() {
 	//glDisable(GL_BLEND);
 }
 
-void Player::stopPlayer() {
-	speed /= 2;
+bool Player::stopPlayer() {
+	if (platform) {
+		speed /= 2;
+		return true;
+	}
+	return false;
 }
 
 void Player::setBlocked(bool b) {
@@ -206,10 +212,12 @@ bool Player::getBlocked() {
 	return blocked;
 }
 
-void Player::activateTurbo() {
+bool Player::activateTurbo() {
 	if (!turboLeft && !turboWait && jumpAvailable && platform) {
 		turboLeft = TURBO_STEPS;
+		return true;
 	}
+	return false;
 }
 
 bool Player::getJumpAvailable() {

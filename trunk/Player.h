@@ -6,13 +6,13 @@
 #include <vector>
 using namespace std;
 
-#define PLAYER_STEP 0.1
+#define PLAYER_STEP 0.2
 #define FALL_STEP 0.8
-#define SPEED_MIN 4
-#define SPEED_MAX 10
+#define SPEED_MIN 2
+#define SPEED_MAX 5
 #define JUMP_STEPS 10.0
 #define JUMP_FACTOR 0.5
-#define TURBO_STEPS 100
+#define TURBO_STEPS 150
 #define TURBO_TIME 500
 
 class Player : public Sphere {
@@ -21,10 +21,10 @@ public:
 	~Player(void);
 	void init();
 	void move(float dx, vector<Player*> &pl);
-	void jump();
+	bool jump();
 	void advance(vector<Player*> &pl);
-	void stopPlayer();
-	void activateTurbo();
+	bool stopPlayer();
+	bool activateTurbo();
 	
 	Point getPosition();
 	void setTerrain(Terrain *t);

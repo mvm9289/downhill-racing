@@ -83,21 +83,21 @@ void Scene::movePlayer(unsigned int i, float dx)
 	players[i]->move(dx, players);
 }
 
-void Scene::jumpPlayer(unsigned int i)
+bool Scene::jumpPlayer(unsigned int i)
 {
-	players[i]->jump();
+	return players[i]->jump();
 }
 
 void Scene::advancePlayers()
 {
 	for (unsigned int i = 0; i != players.size(); ++i)
-		players[i]->advance(players);
+		if (level.endPoint().z < players[i]->getPosition().z) players[i]->advance(players);
 }
 
-void Scene::stopPlayer(unsigned int i) {
-	players[i]->stopPlayer();
+bool Scene::stopPlayer(unsigned int i) {
+	return players[i]->stopPlayer();
 }
 
-void Scene::turboPlayer(unsigned int i) {
-	players[i]->activateTurbo();
+bool Scene::turboPlayer(unsigned int i) {
+	return players[i]->activateTurbo();
 }
