@@ -5,6 +5,8 @@
 // Delete console
 //#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
 
+#pragma comment(lib, "fmod/fmodex_vc.lib")
+
 Game game;
 
 void AppRender()
