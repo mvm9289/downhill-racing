@@ -79,7 +79,13 @@ bool Game::Init()
 
 	//XBOX controller
 	gamepad = new CXBOXController(1);
+	
+	initMusic();
 
+	return true;
+}
+
+void Game::initMusic() {
 	//FMOD init
 	result = FMOD::System_Create(&sys);
 	if (result == FMOD_OK) {
@@ -90,16 +96,18 @@ bool Game::Init()
 			if (result == FMOD_OK) {
 				result = sys->createSound("sounds/jump.wav", FMOD_HARDWARE, 0, &sJump);
 				result = sys->createSound("sounds/pause.mp3", FMOD_HARDWARE, 0, &sPause);
-				result = sys->createSound("sounds/menu.wav", FMOD_HARDWARE, 0, &sMenu);
-				sMenu->setMode(FMOD_LOOP_NORMAL);
+				result = sys->createSound("sounds/menu.mp3", FMOD_HARDWARE, 0, &sMenu);
 				result = sys->createSound("sounds/turbo2.wav", FMOD_HARDWARE, 0, &sTurbo);
 				result = sys->createSound("sounds/stop.wav", FMOD_HARDWARE, 0, &sStop);
+				result = sys->createSound("sounds/level1.", FMOD_HARDWARE, 0, &sL1);
+				result = sys->createSound("sounds/level2.mp3", FMOD_HARDWARE, 0, &sL2);
+				sMenu->setMode(FMOD_LOOP_NORMAL);
+				sL1->setMode(FMOD_LOOP_NORMAL);
+				sL2->setMode(FMOD_LOOP_NORMAL);
 			}
 		}
 	}
 	sys->playSound(FMOD_CHANNEL_FREE, sMenu, false, &channel);
-	
-	return true;
 }
 
 void Game::createMainMenu()
@@ -386,9 +394,11 @@ void Game::initCameras()
 }
 
 
-bool Game::loadLevel(string level)
+bool Game::loadLevel(string level, int l)
 {
 	channel->stop();
+	if (l == 1) sys->playSound(FMOD_CHANNEL_FREE, sL1, false, &channel);
+	else if (l == 2) sys->playSound(FMOD_CHANNEL_FREE, sL2, false, &channel);
 	
 	if (scene.init(level))
 	{
@@ -428,11 +438,11 @@ bool Game::Process()
 				currentScreen = levelsScreen;
 				break;
 			case ACTION_LEVEL_1:
-				res = loadLevel("levels/level1.txt");
+				res = loadLevel("levels/level1.txt", 1);
 				for (int i = 0; i < 256; i++) keys[i] = GLUT_KEY_NONE;
 				break;
 			case ACTION_LEVEL_2:
-				res = loadLevel("levels/level2.txt");
+				res = loadLevel("levels/level2.txt", 2);
 				for (int i = 0; i < 256; i++) keys[i] = GLUT_KEY_NONE;
 				break;
 			case ACTION_RESUME:
@@ -504,7 +514,12 @@ bool Game::Process()
 				sys->playSound(FMOD_CHANNEL_FREE, sTurbo, false, &channel);
 		}
 		else keys[GLUT_KEY_UP] = GLUT_KEY_NONE;
-		if (keys[GLUT_KEY_DOWN] == GLUT_KEY_PRESS) scene.stopPlayer(0);
+		if (keys[GLUT_KEY_DOWN] == GLUT_KEY_PRESS) {
+			if (scene.stopPlayer(0) && !stopWait) {
+				sys->playSound(FMOD_CHANNEL_FREE, sStop, false, &channel);
+				stopWait = 50;
+			}
+		}
 		else keys[GLUT_KEY_DOWN] = GLUT_KEY_NONE;
 		if (keys[GLUT_KEY_SPACE] == GLUT_KEY_PRESS) {
 			if (scene.jumpPlayer(0))

@@ -53,6 +53,8 @@ private:
 	CXBOXController* gamepad;
 
 	FMOD::System *sys;
+	FMOD::Sound *sL1;
+	FMOD::Sound *sL2;
 	FMOD::Sound *sJump;
 	FMOD::Sound *sPause;
 	FMOD::Sound *sMenu;
@@ -66,7 +68,8 @@ private:
 
 	unsigned int mode;
 	void initCameras();
-	bool loadLevel(string level);
+	void initMusic();
+	bool loadLevel(string level, int l);
 	void createMenus();
 	void createMainMenu();
 	void createLevelsMenu();
