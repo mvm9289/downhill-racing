@@ -27,6 +27,10 @@ Game::~Game(void)
 	if (gameCamera) delete gameCamera;
 	if (debugCamera) delete debugCamera;
 	if (gamepad) delete gamepad;
+	sJump->release();
+	sPause->release();
+	sys->close();
+	sys->release();
 }
 
 bool Game::Init()
@@ -77,7 +81,16 @@ bool Game::Init()
 
 	//FMOD init
 	result = FMOD::System_Create(&sys);
-
+	if (result == FMOD_OK) {
+		unsigned int version;
+		result = sys->getVersion(&version);
+		if (result == FMOD_OK && version >= FMOD_VERSION) {
+			result = sys->init(32, FMOD_INIT_NORMAL, 0);
+			if (result == FMOD_OK) {
+				result = sys->createSound("sounds/starman.mp3", FMOD_SOFTWARE, 0, &sJump);
+				result = sys->createSound("sounds/pause.mp3", FMOD_SOFTWARE, 0, &sPause);
+			}
+		}
 
 	return true;
 }
@@ -443,13 +456,17 @@ bool Game::Process()
 
 		// XBOX Input
 		if (gamepad->IsConnected()) {
-			if (gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A) scene.jumpPlayer(0);
+			if (gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A) {
+				scene.jumpPlayer(0);
+				sys->playSound(FMOD_CHANNEL_FREE, sJump, false, &channel);
+			}
 			float mv = gamepad->GetState().Gamepad.sThumbLX/(2*32767.0);
 			if (mv > 0.1 || mv < -0.1) scene.movePlayer(0, mv);
 			if (gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_X) scene.turboPlayer(0);
 			if (gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_B) scene.stopPlayer(0);
 			if (gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_START)
 			{
+				sys->playSound(FMOD_CHANNEL_FREE, sPause, false, &channel);
 				currentScreen = pauseScreen;
 				currentCamera = menuCamera;
 				currentCamera->init();
