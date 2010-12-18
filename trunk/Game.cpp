@@ -203,6 +203,8 @@ void Game::createHowToMenu()
 	float c1[] = {1, 0, 0};
 	float c2[] = {1, 1, 1};
 	float c3[] = {1, 1, 0};
+	float c4[] = {1, 0.5, 0};
+	float c5[] = {1, 0, 1};
 
 	//Menu screens
 	Texture menuTexture;
@@ -213,12 +215,26 @@ void Game::createHowToMenu()
 	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "How to play", c3, 0.01, 15);
 
 	//create menu items
+	MLabel *keyboard = new MLabel(Point(4.5*aspectRatio, 6.7, 0.1), "Keyboard", c4, 0.003, 2.2);
+	MLabel *xboxControl = new MLabel(Point(6.5*aspectRatio, 6.7, 0.1), "Xbox Controller", c4, 0.003, 2.2);
 	MLabel *moveLeft = new MLabel(Point(2*aspectRatio, 6, 0.1), "Move left", c1, 0.003, 2.2);
+	MLabel *leftArrow = new MLabel(Point(4.4*aspectRatio, 6, 0.1), "Left arrow", c5, 0.003, 2.2);
+	MLabel *joystickLeft = new MLabel(Point(6.6*aspectRatio, 6, 0.1), "Joystick left", c5, 0.003, 2.2);
 	MLabel *moveRight = new MLabel(Point(2*aspectRatio, 5.5, 0.1), "Move right", c1, 0.003, 2.2);
+	MLabel *rightArrow = new MLabel(Point(4.32*aspectRatio, 5.5, 0.1), "Right arrow", c5, 0.003, 2.2);
+	MLabel *joystickRight = new MLabel(Point(6.5*aspectRatio, 5.5, 0.1), "Joystick right", c5, 0.003, 2.2);
 	MLabel *jump = new MLabel(Point(2*aspectRatio, 5, 0.1), "Jump", c1, 0.003, 2.2);
+	MLabel *spaceBar = new MLabel(Point(4.4*aspectRatio, 5, 0.1), "Space bar", c5, 0.003, 2.2);
+	MLabel *aButton = new MLabel(Point(6.8*aspectRatio, 5, 0.1), "A button", c5, 0.003, 2.2);
 	MLabel *turbo = new MLabel(Point(2*aspectRatio, 4.5, 0.1), "Turbo", c1, 0.003, 2.2);
+	MLabel *upArrow = new MLabel(Point(4.46*aspectRatio, 4.5, 0.1), "Up arrow", c5, 0.003, 2.2);
+	MLabel *xButton = new MLabel(Point(6.8*aspectRatio, 4.5, 0.1), "X button", c5, 0.003, 2.2);
 	MLabel *stop = new MLabel(Point(2*aspectRatio, 4, 0.1), "Stop", c1, 0.003, 2.2);
+	MLabel *downArrow = new MLabel(Point(4.32*aspectRatio, 4, 0.1), "Down arrow", c5, 0.003, 2.2);
+	MLabel *bButton = new MLabel(Point(6.8*aspectRatio, 4, 0.1), "B button", c5, 0.003, 2.2);
 	MLabel *pause = new MLabel(Point(2*aspectRatio, 3.5, 0.1), "Pause", c1, 0.003, 2.2);
+	MLabel *escape = new MLabel(Point(4.65*aspectRatio, 3.5, 0.1), "Escape", c5, 0.003, 2.2);
+	MLabel *startButton = new MLabel(Point(6.6*aspectRatio, 3.5, 0.1), "Start button", c5, 0.003, 2.2);
 	MText *opBack = new MText(Point(5*aspectRatio, 2, 0), "Back", c1, c2, 0.005, 3, true);
 
 	//set menu directions
@@ -230,12 +246,26 @@ void Game::createHowToMenu()
 
 	//add to main screen
 	howToScreen->add(mainTitle);
+	howToScreen->add(keyboard);
+	howToScreen->add(xboxControl);
 	howToScreen->add(moveLeft);
+	howToScreen->add(leftArrow);
+	howToScreen->add(joystickLeft);
 	howToScreen->add(moveRight);
+	howToScreen->add(rightArrow);
+	howToScreen->add(joystickRight);
 	howToScreen->add(jump);
+	howToScreen->add(spaceBar);
+	howToScreen->add(aButton);
 	howToScreen->add(turbo);
+	howToScreen->add(upArrow);
+	howToScreen->add(xButton);
 	howToScreen->add(stop);
+	howToScreen->add(downArrow);
+	howToScreen->add(bButton);
 	howToScreen->add(pause);
+	howToScreen->add(escape);
+	howToScreen->add(startButton);
 	howToScreen->add(opBack);
 	howToScreen->setSelected(opBack);
 }
