@@ -22,6 +22,7 @@ public:
 	Scene(void);
 	~Scene(void);
 	bool init(string level);
+	void restartLevel();
 	Box boundingBox(void);
 	void boundingSphere(Point& center, float& radius);
 	void render(void);

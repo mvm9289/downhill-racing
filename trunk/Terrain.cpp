@@ -1,8 +1,5 @@
 #include "Terrain.h"
 
-#include <iostream>
-using namespace std;
-
 Terrain::Terrain(vector<double> terrainPoints, GLuint textureID, GLuint goalTextureID)
 {
 	texture = textureID;
@@ -27,7 +24,7 @@ void Terrain::createTerrain(vector<double> terrainPoints)
 		else found = true;
 	}
 	if (!found) firstMax = 0;
-	cout << firstMax << endl;
+
 	Point p1f(0, terrainPoints[firstMax + 1]*SCALE_FACTOR,
 		(-terrainPoints[firstMax] + STARTUP_DEPTH)*SCALE_FACTOR);
 	Point p2f(TERRAIN_WIDTH*SCALE_FACTOR,
