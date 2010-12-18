@@ -35,7 +35,7 @@ bool Scene::init(string levelPath)
 	bool loadOK = level.loadLevel(levelPath);
 	if (!loadOK) return false;
 
-	Player *player1 = new Player(0, level.startupPoint(), 1.2, false);
+	Player *player1 = new Player(0, level.startupPoint(), 1.2);
 	Player *player2 = new Player(1, level.startupPoint() + Point(3, 0, 0), 1);
 	Player *player3 = new Player(2, level.startupPoint() + Point(-3, 0, 0), 1);
 	Texture playerTexture1;
