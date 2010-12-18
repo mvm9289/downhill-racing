@@ -5,15 +5,15 @@
 #include <iostream>
 using namespace std;
 
-Player::Player(unsigned int id, Point c, float r, bool comp): playerID(id), Sphere(Point(c.x, c.y + r, c.z), r) {
+Player::Player(unsigned int id, Point c, float r, bool comp): playerID(id), Sphere(Point(c.x, c.y + r, c.z), r), initPoint(c) {
 }
 
 void Player::init() {
 	speed = SPEED_MIN;
 	platform = 0;
 	offsetZ = terrain->getPlatformLength(platform)/2.0;
-	offsetX = center.x;
-	offsetY = center.y + radius;
+	offsetX = iniPoint.x;
+	offsetY = initPoint.y + radius;
 	computeCenter();
 	turboLeft = 0;
 	turboWait = 0;
@@ -211,8 +211,4 @@ void Player::activateTurbo() {
 
 bool Player::getJumpAvailable() {
 	return jumpAvailable;
-}
-
-void Player::setPosition(Point p) {
-	center = p;
 }
