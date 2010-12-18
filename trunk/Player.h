@@ -27,7 +27,6 @@ public:
 	void activateTurbo();
 	
 	Point getPosition();
-	void setPosition(Point p);
 	void setTerrain(Terrain *t);
 	bool isJumping();
 	void render();
@@ -38,6 +37,7 @@ public:
 
 private:
 	//float weight; //not used, we use radius instead
+	Point initPoint;
 	bool jumping;
 	bool jumpAvailable;
 	float jumped;
