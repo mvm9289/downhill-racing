@@ -62,6 +62,12 @@ bool Scene::init(string levelPath)
 	return true;
 }
 
+void Scene::restartLevel()
+{
+	int n = players.size();
+	for (int i = 0; i < n; i++) players[i]->init();
+}
+
 vector<Player*> Scene::getPlayers() {
 	return players;
 }

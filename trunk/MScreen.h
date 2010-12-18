@@ -11,6 +11,9 @@ using namespace std;
 #define ACTION_CREDITS 4
 #define ACTION_BACK 5
 #define ACTION_EXIT 6
+#define ACTION_RESUME 7
+#define ACTION_RESTART 8
+#define ACTION_MENU 9
 
 #pragma once
 class MScreen
