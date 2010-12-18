@@ -12,7 +12,7 @@ void Player::init() {
 	speed = SPEED_MIN;
 	platform = 0;
 	offsetZ = terrain->getPlatformLength(platform)/2.0;
-	offsetX = iniPoint.x;
+	offsetX = initPoint.x;
 	offsetY = initPoint.y + radius;
 	computeCenter();
 	turboLeft = 0;
@@ -204,7 +204,7 @@ bool Player::getBlocked() {
 }
 
 void Player::activateTurbo() {
-	if (!turboWait && jumpAvailable && platform) {
+	if (!turboLeft && !turboWait && jumpAvailable && platform) {
 		turboLeft = TURBO_STEPS;
 	}
 }
