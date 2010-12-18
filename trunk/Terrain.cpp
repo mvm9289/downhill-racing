@@ -1,8 +1,12 @@
 #include "Terrain.h"
 
-Terrain::Terrain(vector<double> terrainPoints, GLuint textureID)
+#include <iostream>
+using namespace std;
+
+Terrain::Terrain(vector<double> terrainPoints, GLuint textureID, GLuint goalTextureID)
 {
 	texture = textureID;
+	goalTexture = goalTextureID;
 	createTerrain(terrainPoints);
 	createDisplayList();
 	updateBoundingBox();
@@ -23,8 +27,9 @@ void Terrain::createTerrain(vector<double> terrainPoints)
 		else found = true;
 	}
 	if (!found) firstMax = 0;
+	cout << firstMax << endl;
 	Point p1f(0, terrainPoints[firstMax + 1]*SCALE_FACTOR,
-		-(terrainPoints[firstMax] - STARTUP_DEPTH)*SCALE_FACTOR);
+		(-terrainPoints[firstMax] + STARTUP_DEPTH)*SCALE_FACTOR);
 	Point p2f(TERRAIN_WIDTH*SCALE_FACTOR,
 		terrainPoints[firstMax + 1]*SCALE_FACTOR,
 		-(terrainPoints[firstMax] - STARTUP_DEPTH)*SCALE_FACTOR);
@@ -33,12 +38,21 @@ void Terrain::createTerrain(vector<double> terrainPoints)
 	vertices.push_back(v1f);
 	vertices.push_back(v2f);
 
-
-	int n2Dpoints = terrainPoints.size()/2 - firstMax/2;
-	for (int i = 0; i < n2Dpoints; i++)
+	int lastMax = terrainPoints.size() - 2;
+	found = false;
+	for (unsigned int i = terrainPoints.size() - 4; i > 0 && !found; i-=2)
 	{
-		int x = 2*i + firstMax;
-		int y = x + 1;
+		if (terrainPoints[i + 1] >= terrainPoints[lastMax + 1])
+			lastMax = i;
+		else found = true;
+	}
+	if (!found) lastMax = terrainPoints.size() - 2;
+
+	int x, y;
+	for (int i = firstMax/2; i <= lastMax/2; i++)
+	{
+		x = 2*i;
+		y = x + 1;
 		Point p1(0, terrainPoints[y]*SCALE_FACTOR,
 			-terrainPoints[x]*SCALE_FACTOR);
 		Point p2(TERRAIN_WIDTH*SCALE_FACTOR,
@@ -49,6 +63,17 @@ void Terrain::createTerrain(vector<double> terrainPoints)
 		vertices.push_back(v1);
 		vertices.push_back(v2);
 	}
+
+	Point p1l(0, terrainPoints[y]*SCALE_FACTOR,
+		(-terrainPoints[x] - STARTUP_DEPTH)*SCALE_FACTOR);
+	Point p2l(TERRAIN_WIDTH*SCALE_FACTOR,
+		terrainPoints[y]*SCALE_FACTOR,
+		(-terrainPoints[x] - STARTUP_DEPTH)*SCALE_FACTOR);
+	Vertex v1l(p1l);
+	Vertex v2l(p2l);
+	vertices.push_back(v1l);
+	vertices.push_back(v2l);
+
 	int nVertices = vertices.size();
 	for (int i = 0; i < nVertices - 3; i+=2)
 	{
@@ -67,9 +92,13 @@ void Terrain::createDisplayList()
 	displayList = glGenLists(1);
 	glNewList(displayList, GL_COMPILE);
 		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, goalTexture);
+		faces[0].render(vertices);
 		glBindTexture(GL_TEXTURE_2D, texture);
-		for (unsigned int i = 0; i < faces.size(); i++)
+		for (unsigned int i = 1; i < faces.size() - 1; i++)
 			faces[i].render(vertices);
+		glBindTexture(GL_TEXTURE_2D, goalTexture);
+		faces[faces.size() - 1].render(vertices);
 		glDisable(GL_TEXTURE_2D);
 	glEndList();
 }
