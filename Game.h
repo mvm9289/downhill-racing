@@ -23,19 +23,24 @@ using namespace std;
 #define GLUT_KEY_NUM1 49
 #define GLUT_KEY_NUM2 50
 #define GLUT_KEY_NUM3 51
+#define GLUT_KEY_SPACE 32
+#define GLUT_KEY_ENTER 13
 
 class Game {
 private:
 	Scene scene;
 	MScreen *currentScreen;
+	MScreen *mainScreen;
+	MScreen *levelsScreen;
+	MScreen *creditsScreen;
 	vector<MLabel*> pNames; //player name's
 	Camera *menuCamera;
 	Camera *gameCamera;
 	Camera *debugCamera;
 	Camera *currentCamera;
 	float aspectRatio;
-	int xAnt;
-	int yAnt;
+
+	bool gameStarted;
 
 	CXBOXController* gamepad;
 
@@ -43,6 +48,9 @@ private:
 
 	unsigned int mode;
 	void createMenus();
+	void createMainMenu();
+	void createLevelsMenu();
+	void createCreditsMenu();
 	void createGUI();
 public:
 	Game(void);
