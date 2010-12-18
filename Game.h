@@ -6,6 +6,7 @@
 #include "CXBOXController.h"
 #include "IA.h"
 
+#include <string>
 #include <vector>
 using namespace std;
 
@@ -35,6 +36,7 @@ private:
 	MScreen *mainScreen;
 	MScreen *levelsScreen;
 	MScreen *creditsScreen;
+	MScreen *pauseScreen;
 	vector<MLabel*> pNames; //player name's
 	Camera *menuCamera;
 	Camera *gameCamera;
@@ -49,10 +51,13 @@ private:
 	unsigned char keys[256];
 
 	unsigned int mode;
+	void initCameras();
+	bool loadLevel(string level);
 	void createMenus();
 	void createMainMenu();
 	void createLevelsMenu();
 	void createCreditsMenu();
+	void createPauseMenu();
 	void createGUI();
 public:
 	Game(void);
