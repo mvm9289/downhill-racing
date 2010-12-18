@@ -99,7 +99,7 @@ void Game::initMusic() {
 				result = sys->createSound("sounds/menu.mp3", FMOD_HARDWARE, 0, &sMenu);
 				result = sys->createSound("sounds/turbo.wav", FMOD_HARDWARE, 0, &sTurbo);
 				result = sys->createSound("sounds/stop.wav", FMOD_HARDWARE, 0, &sStop);
-				result = sys->createSound("sounds/level1.", FMOD_HARDWARE, 0, &sL1);
+				result = sys->createSound("sounds/level1.mp3", FMOD_HARDWARE, 0, &sL1);
 				result = sys->createSound("sounds/level2.mp3", FMOD_HARDWARE, 0, &sL2);
 				sMenu->setMode(FMOD_LOOP_NORMAL);
 				sL1->setMode(FMOD_LOOP_NORMAL);
@@ -213,12 +213,12 @@ void Game::createHowToMenu()
 	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "How to play", c3, 0.01, 15);
 
 	//create menu items
-	MLabel *moveLeft = new MLabel(Point(5*aspectRatio, 6, 0.1), "Move left", c1, 0.003, 2.2);
-	MLabel *moveRight = new MLabel(Point(5*aspectRatio, 5.5, 0.1), "Move right", c1, 0.003, 2.2);
-	MLabel *jump = new MLabel(Point(5*aspectRatio, 5, 0.1), "Jump", c1, 0.003, 2.2);
-	MLabel *turbo = new MLabel(Point(5*aspectRatio, 4.5, 0.1), "Turbo", c1, 0.003, 2.2);
-	MLabel *stop = new MLabel(Point(5*aspectRatio, 4, 0.1), "Stop", c1, 0.003, 2.2);
-	MLabel *pause = new MLabel(Point(5*aspectRatio, 3.5, 0.1), "Pause", c1, 0.003, 2.2);
+	MLabel *moveLeft = new MLabel(Point(2*aspectRatio, 6, 0.1), "Move left", c1, 0.003, 2.2);
+	MLabel *moveRight = new MLabel(Point(2*aspectRatio, 5.5, 0.1), "Move right", c1, 0.003, 2.2);
+	MLabel *jump = new MLabel(Point(2*aspectRatio, 5, 0.1), "Jump", c1, 0.003, 2.2);
+	MLabel *turbo = new MLabel(Point(2*aspectRatio, 4.5, 0.1), "Turbo", c1, 0.003, 2.2);
+	MLabel *stop = new MLabel(Point(2*aspectRatio, 4, 0.1), "Stop", c1, 0.003, 2.2);
+	MLabel *pause = new MLabel(Point(2*aspectRatio, 3.5, 0.1), "Pause", c1, 0.003, 2.2);
 	MText *opBack = new MText(Point(5*aspectRatio, 2, 0), "Back", c1, c2, 0.005, 3, true);
 
 	//set menu directions
