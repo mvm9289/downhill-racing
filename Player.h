@@ -6,10 +6,10 @@
 #include <vector>
 using namespace std;
 
-#define PLAYER_STEP 0.2
+#define PLAYER_STEP 0.1
 #define FALL_STEP 0.8
-#define SPEED_MIN 2
-#define SPEED_MAX 5
+#define SPEED_MIN 4
+#define SPEED_MAX 10
 #define JUMP_STEPS 10.0
 #define JUMP_FACTOR 0.5
 #define TURBO_STEPS 100
@@ -32,6 +32,8 @@ public:
 	void render();
 	void setBlocked(bool b);
 	bool getBlocked();
+
+	bool getJumpAvailable();
 
 private:
 	//float weight; //not used, we use radius instead

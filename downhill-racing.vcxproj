@@ -87,6 +87,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Face.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="IA.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MItem.cpp" />
@@ -109,6 +110,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Face.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="IA.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="MItem.h" />
     <ClInclude Include="MLabel.h" />

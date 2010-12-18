@@ -31,7 +31,7 @@ void Player::move(float dx, vector<Player*> &pl) {
 		if (offsetX > TERRAIN_WIDTH*SCALE_FACTOR - radius) offsetX = TERRAIN_WIDTH*SCALE_FACTOR - radius;
 		computeCenter();
 	}
-	//checkColisions(pl);
+	checkColisions(pl);
 }
 
 void Player::jump() {
@@ -58,7 +58,7 @@ void Player::advance(vector<Player*> &pl) {
 			if (--speed < SPEED_MIN) speed = SPEED_MIN;
 		}
 
-		if (playerID == 0) cout << "Speed: " << speed << " Platform: " << platform << " Offset: " << offsetZ << endl;
+		//if (playerID == 0) cout << "Speed: " << speed << " Platform: " << platform << " Offset: " << offsetZ << endl;
 
 		if (turboLeft) {
 			--turboLeft;
@@ -93,7 +93,7 @@ void Player::advance(vector<Player*> &pl) {
 		computeCenter();
 		alpha += 10;
 	}
-	//checkColisions(pl);
+	checkColisions(pl);
 }
 
 void Player::setTerrain(Terrain *t) {
@@ -112,7 +112,11 @@ void Player::checkColisions(vector<Player*> &pl) {
 	for (unsigned int i = 0; i < pl.size(); ++i) {
 		if (i != playerID) {
 			if ((pl[i]->getPosition() - center).length() < pl[i]->radius + radius){
-				if (pl[i]->getPosition().z < pl[playerID]->getPosition().z) blocked = true;
+				if (pl[i]->getPosition().z < pl[playerID]->getPosition().z) {
+					blocked = true;
+					speed = SPEED_MIN;
+				}
+				else ++speed;
 				return;
 			}
 		}
@@ -121,14 +125,18 @@ void Player::checkColisions(vector<Player*> &pl) {
 }
 
 bool Player::isJumping() {
-	return jumping;
+	return !jumpAvailable;
 }
 
 void Player::render() {
 	GLUquadricObj *quad;
 	quad = gluNewQuadric();
 	gluQuadricNormals(quad, GLU_SMOOTH);
-	
+	/*
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
+	glColor4f(1, 1, 1, 0.8);
+	*/
 	if (textID > 0) {
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, textID);
@@ -149,6 +157,8 @@ void Player::render() {
 	glDisable(GL_TEXTURE_GEN_S);
 	glDisable(GL_TEXTURE_GEN_T);
 	glDisable(GL_TEXTURE_2D);
+
+	//glDisable(GL_BLEND);
 }
 
 void Player::stopPlayer() {
@@ -164,7 +174,11 @@ bool Player::getBlocked() {
 }
 
 void Player::activateTurbo() {
-	if (!turboWait) {
+	if (!turboWait && jumpAvailable) {
 		turboLeft = TURBO_STEPS;
 	}
+}
+
+bool Player::getJumpAvailable() {
+	return jumpAvailable;
 }
