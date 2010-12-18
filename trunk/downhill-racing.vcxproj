@@ -82,9 +82,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Downloads\XBOX360Test\XBOX360Test\CXBOXController.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CXBOXController.cpp" />
     <ClCompile Include="Face.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="IA.cpp" />
@@ -105,9 +105,9 @@
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Downloads\XBOX360Test\XBOX360Test\CXBOXController.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CXBOXController.h" />
     <ClInclude Include="Face.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="IA.h" />
