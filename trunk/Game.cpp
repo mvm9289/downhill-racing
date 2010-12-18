@@ -25,6 +25,7 @@ Game::~Game(void)
 	if (menuCamera) delete menuCamera;
 	if (gameCamera) delete gameCamera;
 	if (debugCamera) delete debugCamera;
+	if (gamepad) delete gamepad;
 }
 
 bool Game::Init()
