@@ -1,7 +1,7 @@
 #include "MText.h"
 #include <gl/glut.h>
 
-MText::MText(Point p, std::string str, float c[3], float cSel[3], float s, bool sel) : MLabel(p, str, c, s), MSelectable(sel)
+MText::MText(Point p, std::string str, float c[3], float cSel[3], float s, float lw, bool sel) : MLabel(p, str, c, s, lw), MSelectable(sel)
 {
 	memcpy(colorSel, cSel, 3*sizeof(float));
 }

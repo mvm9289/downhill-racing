@@ -7,7 +7,7 @@ Scene::~Scene(void)
 {
 	vector<Player*>::iterator it = players.begin();
 	for (; it != players.end(); ++it)
-		delete *it;
+		if (*it) delete *it;
 }
 
 Box Scene::boundingBox(void)
@@ -55,6 +55,7 @@ bool Scene::init(string levelPath)
 	player2->init();
 	player3->init();
 
+	players.clear();
 	players.push_back(player1);
 	players.push_back(player2);
 	players.push_back(player3);

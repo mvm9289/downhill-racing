@@ -106,12 +106,12 @@ void Game::createMainMenu()
 	mainScreen = new MScreen(menuTexture.getID(), aspectRatio);
 
 	//title
-	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "Downhill Racing", c1, 0.01);
+	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "Downhill Racing", c1, 0.01, 4);
 	
 	//create menu items
-	MText *opPlay = new MText(Point(5*aspectRatio, 5, 0), "Play", c1, c2, 0.005, true);
-	MText *opCredits = new MText(Point(5*aspectRatio, 4, 0), "Credits", c1, c2, 0.005);
-	MText *opExit = new MText(Point(5*aspectRatio, 2, 0), "Exit", c1, c2, 0.005);
+	MText *opPlay = new MText(Point(5*aspectRatio, 5, 0), "Play", c1, c2, 0.005, 2, true);
+	MText *opCredits = new MText(Point(5*aspectRatio, 4, 0), "Credits", c1, c2, 0.005, 2);
+	MText *opExit = new MText(Point(5*aspectRatio, 2, 0), "Exit", c1, c2, 0.005, 2);
 
 	//set menu directions
 	opPlay->setUp(opExit);
@@ -148,12 +148,12 @@ void Game::createLevelsMenu()
 	levelsScreen = new MScreen(menuTexture.getID(), aspectRatio);
 
 	//title
-	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "Choose a level", c1, 0.01);
+	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "Choose a level", c1, 0.01, 4);
 	
 	//create menu items
-	MText *level1 = new MText(Point(5*aspectRatio, 5, 0), "Level 1", c1, c2, 0.005, true);
-	MText *level2 = new MText(Point(5*aspectRatio, 4, 0), "Level 2", c1, c2, 0.005);
-	MText *opBack = new MText(Point(5*aspectRatio, 2, 0), "Back", c1, c2, 0.005);
+	MText *level1 = new MText(Point(5*aspectRatio, 5, 0), "Level 1", c1, c2, 0.005, 2, true);
+	MText *level2 = new MText(Point(5*aspectRatio, 4, 0), "Level 2", c1, c2, 0.005, 2);
+	MText *opBack = new MText(Point(5*aspectRatio, 2, 0), "Back", c1, c2, 0.005, 2);
 
 	//set menu directions
 	level1->setUp(opBack);
@@ -187,12 +187,12 @@ void Game::createCreditsMenu()
 	creditsScreen = new MScreen(menuTexture.getID(), aspectRatio);
 
 	//title
-	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "Credits", c1, 0.01);
+	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "Credits", c1, 0.01, 4);
 
 	//create menu items
-	MLabel *name1 = new MLabel(Point(5*aspectRatio, 5, 0.1), "Albert Arnedo", c1, 0.005);
-	MLabel *name2 = new MLabel(Point(5*aspectRatio, 4, 0.1), "Miguel Angel Vico", c1, 0.005);
-	MText *opBack = new MText(Point(5*aspectRatio, 2, 0), "Back", c1, c2, 0.005, true);
+	MLabel *name1 = new MLabel(Point(5*aspectRatio, 5, 0.1), "Albert Arnedo", c1, 0.005, 2);
+	MLabel *name2 = new MLabel(Point(5*aspectRatio, 4, 0.1), "Miguel Angel Vico", c1, 0.005, 2);
+	MText *opBack = new MText(Point(5*aspectRatio, 2, 0), "Back", c1, c2, 0.005, 2, true);
 
 	//set menu directions
 	opBack->setUp(opBack);
@@ -220,12 +220,12 @@ void Game::createPauseMenu()
 	pauseScreen = new MScreen(menuTexture.getID(), aspectRatio);
 
 	//title
-	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "Game paused", c1, 0.01);
+	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "Game paused", c1, 0.01, 4);
 
 	//create menu items
-	MText *opResume = new MText(Point(5*aspectRatio, 5, 0), "Resume", c1, c2, 0.005, true);
-	MText *opRestart = new MText(Point(5*aspectRatio, 4, 0), "Restart", c1, c2, 0.005);
-	MText *opMenu = new MText(Point(5*aspectRatio, 2, 0), "Go to menu", c1, c2, 0.005);
+	MText *opResume = new MText(Point(5*aspectRatio, 5, 0), "Resume", c1, c2, 0.005, 2, true);
+	MText *opRestart = new MText(Point(5*aspectRatio, 4, 0), "Restart", c1, c2, 0.005, 2);
+	MText *opMenu = new MText(Point(5*aspectRatio, 2, 0), "Go to menu", c1, c2, 0.005, 2);
 
 	//set menu directions
 	opResume->setUp(opMenu);
@@ -260,9 +260,9 @@ void Game::createGUI() {
 	float c1[] = {1, 0, 0};
 	float c2[] = {1, 1, 1};
 
-	MLabel *p1 = new MLabel(Point(0, 0, 0), "Player", c1, 0.003);
-	MLabel *p2 = new MLabel(Point(0, 0, 0), "Comp 1", c1, 0.003);
-	MLabel *p3 = new MLabel(Point(0, 0, 0), "Comp 2", c1, 0.003);
+	MLabel *p1 = new MLabel(Point(0, 0, 0), "Player", c1, 0.003, 2);
+	MLabel *p2 = new MLabel(Point(0, 0, 0), "Comp 1", c1, 0.003, 2);
+	MLabel *p3 = new MLabel(Point(0, 0, 0), "Comp 2", c1, 0.003, 2);
 	pNames.push_back(p1);
 	pNames.push_back(p2);
 	pNames.push_back(p3);
