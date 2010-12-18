@@ -25,7 +25,7 @@ void Player::init() {
 Player::~Player(void) {}
 
 void Player::move(float dx, vector<Player*> &pl) {
-	if (!blocked) {
+	if (!blocked && platform) {
 		offsetX += dx;
 		if (offsetX < radius) offsetX = radius;
 		if (offsetX > TERRAIN_WIDTH*SCALE_FACTOR - radius) offsetX = TERRAIN_WIDTH*SCALE_FACTOR - radius;
@@ -35,7 +35,7 @@ void Player::move(float dx, vector<Player*> &pl) {
 }
 
 void Player::jump() {
-	if (!jumping && jumpAvailable) {
+	if (!jumping && jumpAvailable && platform) {
 		jumping = true;
 		jumpAvailable = false;
 		jumped = 0;
@@ -117,7 +117,6 @@ void Player::checkColisions(vector<Player*> &pl) {
 					speed = SPEED_MIN;
 				}
 				else ++speed;
-				return;
 			}
 		}
 	}
@@ -174,7 +173,7 @@ bool Player::getBlocked() {
 }
 
 void Player::activateTurbo() {
-	if (!turboWait && jumpAvailable) {
+	if (!turboWait && jumpAvailable && platform) {
 		turboLeft = TURBO_STEPS;
 	}
 }
