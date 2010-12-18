@@ -55,6 +55,9 @@ private:
 	FMOD::Sound *sJump;
 	FMOD::Sound *sPause;
 	FMOD::Sound *sMenu;
+	FMOD::Sound *sTurbo;
+	FMOD::Sound *sStop;
+	int stopWait;
 	FMOD::Channel *channel;
 	FMOD_RESULT result;
 
