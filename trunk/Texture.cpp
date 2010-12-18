@@ -52,7 +52,7 @@ bool Texture::load(char *filename,int type,int wraps,int wrapt,int magf,int minf
 		gluBuild2DMipmaps(GL_TEXTURE_2D,components,width,height,type,
 			GL_UNSIGNED_BYTE,img->getPixels());
 	}
-	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	return true;
 }

@@ -4,6 +4,7 @@
 #include "MScreen.h"
 #include "Camera.h"
 #include "CXBOXController.h"
+#include "IA.h"
 
 #include <vector>
 using namespace std;
@@ -29,6 +30,7 @@ using namespace std;
 class Game {
 private:
 	Scene scene;
+	IA ai;
 	MScreen *currentScreen;
 	MScreen *mainScreen;
 	MScreen *levelsScreen;

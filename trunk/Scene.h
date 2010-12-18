@@ -8,6 +8,8 @@
 #include <vector>
 using namespace std;
 
+#define NUM_PLAYERS 3
+
 class Scene
 {
 private:
@@ -25,9 +27,9 @@ public:
 	void render(void);
 	vector<Player*> getPlayers();
 	Point getPlayerPosition();
-	void movePlayer(float dx);
-	void jumpPlayer();
-	void advancePlayer();
-	void stopPlayer();
-	void turboPlayer();
+	void movePlayer(unsigned int i, float dx);
+	void jumpPlayer(unsigned int i);
+	void advancePlayers();
+	void stopPlayer(unsigned int i);
+	void turboPlayer(unsigned int i);
 };

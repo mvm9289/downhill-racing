@@ -31,4 +31,5 @@ void MLabel::render(bool pname, float angle) {
 		render_string(GLUT_STROKE_ROMAN, text.c_str());
 	glPopMatrix();
 	glEnable(GL_LIGHTING);
+	glColor3f(1,1,1);
 }

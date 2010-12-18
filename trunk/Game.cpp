@@ -1,5 +1,4 @@
 #include "Game.h"
-#include <gl/glut.h>
 
 #include "Sphere.h"
 #include "Player.h"
@@ -9,8 +8,12 @@
 #include "MText.h"
 
 #include <cmath>
+#include <gl/glut.h>
 
-Game::Game(void)
+#include <iostream>
+using namespace std;
+
+Game::Game(void) : ai(NUM_PLAYERS)
 {
 }
 
@@ -38,6 +41,9 @@ bool Game::Init()
 	glEnable(GL_LIGHT0);
 	glColorMaterial(GL_FRONT, GL_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
+
+	float ambient[] = {1, 1, 1, 1};
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
 
 	glLineWidth(2.0);
 
@@ -273,7 +279,7 @@ bool Game::Process()
 				break;
 			case ACTION_LEVEL_1:
 				// Scene initialization
-				if (scene.init("levels/level3.txt"))
+				if (scene.init("levels/level1.txt"))
 				{
 					// Game camera initialization
 					float radius;
@@ -295,7 +301,7 @@ bool Game::Process()
 				break;
 			case ACTION_LEVEL_2:
 				// Scene initialization
-				if (scene.init("levels/level3.txt"))
+				if (scene.init("levels/level2.txt"))
 				{
 					// Game camera initialization
 					float radius;
@@ -332,28 +338,50 @@ bool Game::Process()
 		break;
 	case GAME:
 		// Process Input
-		if (keys[GLUT_KEY_LEFT] == GLUT_KEY_PRESS) scene.movePlayer(-0.2);
+		if (keys[GLUT_KEY_LEFT] == GLUT_KEY_PRESS) scene.movePlayer(0, -0.2);
 		else keys[GLUT_KEY_LEFT] = GLUT_KEY_NONE;
-		if (keys[GLUT_KEY_RIGHT] == GLUT_KEY_PRESS) scene.movePlayer(0.2);
+		if (keys[GLUT_KEY_RIGHT] == GLUT_KEY_PRESS) scene.movePlayer(0, 0.2);
 		else keys[GLUT_KEY_RIGHT] = GLUT_KEY_NONE;
-		if (keys[GLUT_KEY_UP] == GLUT_KEY_PRESS) scene.turboPlayer();
+		if (keys[GLUT_KEY_UP] == GLUT_KEY_PRESS) scene.turboPlayer(0);
 		else keys[GLUT_KEY_UP] = GLUT_KEY_NONE;
-		if (keys[GLUT_KEY_DOWN] == GLUT_KEY_PRESS) scene.stopPlayer();
+		if (keys[GLUT_KEY_DOWN] == GLUT_KEY_PRESS) scene.stopPlayer(0);
 		else keys[GLUT_KEY_DOWN] = GLUT_KEY_NONE;
-		if (keys[GLUT_KEY_SPACE] == GLUT_KEY_PRESS) scene.jumpPlayer();
+		if (keys[GLUT_KEY_SPACE] == GLUT_KEY_PRESS) scene.jumpPlayer(0);
 		else keys[GLUT_KEY_SPACE] = GLUT_KEY_NONE;
 
 		// XBOX input
 		if (gamepad->IsConnected()) {
-			if (gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A) scene.jumpPlayer();
+			if (gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A) scene.jumpPlayer(0);
 			float mv = gamepad->GetState().Gamepad.sThumbLX/(2*32767.0);
-			if (mv > 0.1 || mv < -0.1) scene.movePlayer(mv);
-			if (gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_X) scene.turboPlayer();
-			if (gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_B) scene.stopPlayer();
+			if (mv > 0.1 || mv < -0.1) scene.movePlayer(0, mv);
+			if (gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_X) scene.turboPlayer(0);
+			if (gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_B) scene.stopPlayer(0);
 		}
 
+		cout << "IA: ";
+		for (unsigned int i = 1; i < scene.getPlayers().size(); ++i) {
+			int val = ai.compute(i, scene.getPlayers());
+			if (val & IA_TURBO) {
+				scene.turboPlayer(i);
+			}
+			if (val & IA_JUMP) {
+				scene.jumpPlayer(i);
+			}
+			if (val & IA_TURN_LEFT) {
+				scene.movePlayer(i, -0.2);
+			}
+			if (val & IA_TURN_RIGHT) {
+				scene.movePlayer(i, 0.2);
+			}
+			if (val & IA_STOP) {
+				scene.stopPlayer(i);
+			}
+			cout << "[" << i << "]" << val << " ";
+		}
+		cout << endl;
+
 		// Game logic
-		scene.advancePlayer();
+		scene.advancePlayers();
 		if (!scene.getPlayers()[0]->getBlocked()) currentCamera->move(scene.getPlayerPosition());
 
 		if (keys[GLUT_KEY_F11] == GLUT_KEY_RELEASE)
