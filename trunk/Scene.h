@@ -29,4 +29,5 @@ public:
 	void jumpPlayer();
 	void advancePlayer();
 	void stopPlayer();
+	void turboPlayer();
 };

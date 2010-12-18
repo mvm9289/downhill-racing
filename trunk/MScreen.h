@@ -7,8 +7,10 @@ using namespace std;
 
 #define ACTION_START 1
 #define ACTION_LEVEL_1 2
-#define ACTION_LEVEL_1 3
-#define ACTION_CREDITS
+#define ACTION_LEVEL_2 3
+#define ACTION_CREDITS 4
+#define ACTION_BACK 5
+#define ACTION_EXIT 6
 
 #pragma once
 class MScreen

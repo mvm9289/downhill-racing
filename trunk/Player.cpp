@@ -2,28 +2,36 @@
 #include "Terrain.h"
 #include <cmath>
 
-Player::Player(Point c, float r, bool comp): Sphere(Point(c.x, c.y + r, c.z), r), jumping(false), jumpAvailable(true), IA(comp) {
+#include <iostream>
+using namespace std;
+
+Player::Player(unsigned int id, Point c, float r, bool comp): playerID(id), Sphere(Point(c.x, c.y + r, c.z), r) {
 }
 
 void Player::init() {
-	speed = (SPEED_MAX + SPEED_MIN)/2.0;
+	speed = SPEED_MIN;
 	platform = 0;
 	offsetZ = terrain->getPlatformLength(platform)/2.0;
 	offsetX = center.x;
 	offsetY = center.y + radius;
+	computeCenter();
+	turboLeft = 0;
+	turboWait = 0;
+	jumping =false;
+	jumpAvailable = true;
 	blocked = false;
 }
 
 Player::~Player(void) {}
 
-void Player::move(float dx, vector<Player*> &pl, int me) {
+void Player::move(float dx, vector<Player*> &pl) {
 	if (!blocked) {
 		offsetX += dx;
 		if (offsetX < radius) offsetX = radius;
 		if (offsetX > TERRAIN_WIDTH*SCALE_FACTOR - radius) offsetX = TERRAIN_WIDTH*SCALE_FACTOR - radius;
 		computeCenter();
 	}
-	checkColisions(pl, me);
+	//checkColisions(pl);
 }
 
 void Player::jump() {
@@ -38,39 +46,44 @@ Point Player::getPosition() {
 	return center;
 }
 
-void Player::advance(vector<Player*> &pl, int me) {
+void Player::advance(vector<Player*> &pl) {
 	if (!blocked) {
-		float advance = speed*radius;
+		float advance = (float)speed*PLAYER_STEP;
+		if (turboLeft) advance += 2.0*PLAYER_STEP;
 
-		if (terrain->getDirection(platform).slopeYZ() > 0) speed = (speed + SPEED_MAX)/2.0 - (radius - 1)*0.3;
-		else speed = (speed + SPEED_MIN)/2.0 - (radius - 1)*0.3;
+		if (terrain->getDirection(platform).slopeYZ() < 0) {
+			if (++speed > SPEED_MAX) speed = SPEED_MAX;
+		}
+		else {
+			if (--speed < SPEED_MIN) speed = SPEED_MIN;
+		}
 
-		while (advance > 0) {
-			if (advance < terrain->getPlatformLength(platform) - offsetZ) {
-				offsetZ += advance;
-				advance = 0;
-			}
-			else {
-				advance -= offsetZ;
-				offsetZ = 0;
-				++platform;
-			}
+		if (playerID == 0) cout << "Speed: " << speed << " Platform: " << platform << " Offset: " << offsetZ << endl;
+
+		if (turboLeft) {
+			--turboLeft;
+			if (!turboLeft) turboWait = TURBO_TIME;
+		}
+		else if (turboWait) {
+			--turboWait;
+		}
+
+		offsetZ += advance;
+		while (offsetZ > terrain->getPlatformLength(platform)) {
+			offsetZ -= terrain->getPlatformLength(platform);
+			++platform;
 		}
 	
 		if (jumping) {
-			if (jumped < JUMP_STEPS) {
+			if (jumped < JUMP_STEPS)
 				offsetY += JUMP_FACTOR*cos(jumped/JUMP_STEPS);
-			}
-			else if (jumped > JUMP_STEPS) {
+			else if (jumped > JUMP_STEPS)
 				offsetY += JUMP_FACTOR*cos(jumped/JUMP_STEPS);
-			}
-			if (++jumped == 2*JUMP_STEPS) {
-				//offsetY = 0;
+			if (++jumped == 2*JUMP_STEPS)
 				jumping = false;
-			}
 		}
 		else {
-			offsetY -= 1.5*PLAYER_STEP;
+			offsetY -= 1.5*FALL_STEP;
 		}
 		if (offsetY <= terrain->getPosition(platform, offsetZ).y) {
 			jumping = false;
@@ -78,8 +91,9 @@ void Player::advance(vector<Player*> &pl, int me) {
 			offsetY = terrain->getPosition(platform, offsetZ).y;
 		}
 		computeCenter();
+		alpha += 10;
 	}
-	checkColisions(pl, me);
+	//checkColisions(pl);
 }
 
 void Player::setTerrain(Terrain *t) {
@@ -94,11 +108,11 @@ void Player::computeCenter() {
 	center.z += radius*normal.z;
 }
 
-void Player::checkColisions(vector<Player*> &pl, int me) {
+void Player::checkColisions(vector<Player*> &pl) {
 	for (unsigned int i = 0; i < pl.size(); ++i) {
-		if (i != me) {
+		if (i != playerID) {
 			if ((pl[i]->getPosition() - center).length() < pl[i]->radius + radius){
-				if (pl[i]->getPosition().z < pl[me]->getPosition().z) blocked = true;
+				if (pl[i]->getPosition().z < pl[playerID]->getPosition().z) blocked = true;
 				return;
 			}
 		}
@@ -135,7 +149,6 @@ void Player::render() {
 	glDisable(GL_TEXTURE_GEN_S);
 	glDisable(GL_TEXTURE_GEN_T);
 	glDisable(GL_TEXTURE_2D);
-	alpha += 10;
 }
 
 void Player::stopPlayer() {
@@ -148,4 +161,10 @@ void Player::setBlocked(bool b) {
 
 bool Player::getBlocked() {
 	return blocked;
+}
+
+void Player::activateTurbo() {
+	if (!turboWait) {
+		turboLeft = TURBO_STEPS;
+	}
 }
