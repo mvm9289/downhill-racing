@@ -155,3 +155,16 @@ Vector Terrain::getDirection(unsigned int platform) {
 Vector Terrain::getNormal(unsigned int platform) {
 	return faces[platform].normal;
 }
+
+Point Terrain::endPoint()
+{
+	Point p1 = vertices[faces[faces.size() - 1].indices[0]].coord;
+	Point p2 = vertices[faces[faces.size() - 1].indices[1]].coord;
+	Point p3 = vertices[faces[faces.size() - 1].indices[2]].coord;
+	Point p4 = vertices[faces[faces.size() - 1].indices[3]].coord;
+
+	Point p12 = (p1 + p2)/2;
+	Point p34 = (p3 + p4)/2;
+
+	return (p12 + p34)/2;
+}
