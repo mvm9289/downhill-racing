@@ -10,6 +10,8 @@ MScreen::MScreen(GLuint textureID, float ratio)
 
 MScreen::~MScreen()
 {
+	for (vector<MItem*>::iterator it = items.begin(); it != items.end(); ++it)
+		delete *it;
 }
 
 void MScreen::add(MItem *item) {
