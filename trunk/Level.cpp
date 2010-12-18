@@ -39,8 +39,13 @@ bool Level::loadLevel(string level)
 			return false;
 
 		if (!inputFile.eof()) inputFile >> textureBitMap;
+		Texture goalTexture;
+		if (!goalTexture.load((char *)("textures/" + textureBitMap).c_str(), GL_RGB))
+			return false;
+
+		if (!inputFile.eof()) inputFile >> textureBitMap;
 		Texture skydomeTexture;
-		if (!skydomeTexture.load((char *)("textures/" + textureBitMap).c_str(), GL_RGBA))
+		if (!skydomeTexture.load((char *)("textures/" + textureBitMap).c_str(), GL_RGB))
 			return false;
 
 		vector<double> terrainPoints;
@@ -51,7 +56,7 @@ bool Level::loadLevel(string level)
 		}
 		inputFile.close();
 
-		terrain = new Terrain(terrainPoints, terrainTexture.getID());
+		terrain = new Terrain(terrainPoints, terrainTexture.getID(), goalTexture.getID());
 
 		Point center;
 		float radius;
