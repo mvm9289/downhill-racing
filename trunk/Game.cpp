@@ -106,6 +106,7 @@ void Game::createMainMenu()
 {
 	float c1[] = {1, 0, 0};
 	float c2[] = {1, 1, 1};
+	float c3[] = {1, 1, 0};
 
 	//Menu screens
 	Texture menuTexture;
@@ -113,29 +114,34 @@ void Game::createMainMenu()
 	mainScreen = new MScreen(menuTexture.getID(), aspectRatio);
 
 	//title
-	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "Downhill Racing", c1, 0.01, 4);
+	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "Downhill Racing", c3, 0.01, 15);
 	
 	//create menu items
-	MText *opPlay = new MText(Point(5*aspectRatio, 5, 0), "Play", c1, c2, 0.005, 2, true);
-	MText *opCredits = new MText(Point(5*aspectRatio, 4, 0), "Credits", c1, c2, 0.005, 2);
-	MText *opExit = new MText(Point(5*aspectRatio, 2, 0), "Exit", c1, c2, 0.005, 2);
+	MText *opPlay = new MText(Point(5*aspectRatio, 6, 0), "Play", c1, c2, 0.005, 3, true);
+	MText *opHowTo = new MText(Point(5*aspectRatio, 5, 0), "How to play", c1, c2, 0.005, 3);
+	MText *opCredits = new MText(Point(5*aspectRatio, 4, 0), "Credits", c1, c2, 0.005, 3);
+	MText *opExit = new MText(Point(5*aspectRatio, 2, 0), "Exit", c1, c2, 0.005, 3);
 
 	//set menu directions
 	opPlay->setUp(opExit);
-	opPlay->setDown(opCredits);
-	opCredits->setUp(opPlay);
+	opPlay->setDown(opHowTo);
+	opHowTo->setUp(opPlay);
+	opHowTo->setDown(opCredits);
+	opCredits->setUp(opHowTo);
 	opCredits->setDown(opExit);
 	opExit->setUp(opCredits);
 	opExit->setDown(opPlay);
 
 	//set menu actions
 	opPlay->setAction(ACTION_START);
+	opHowTo->setAction(ACTION_HOW_TO);
 	opCredits->setAction(ACTION_CREDITS);
 	opExit->setAction(ACTION_EXIT);
 
 	//add to main screen
 	mainScreen->add(mainTitle);
 	mainScreen->add(opPlay);
+	mainScreen->add(opHowTo);
 	mainScreen->add(opCredits);
 	mainScreen->add(opExit);
 	mainScreen->setSelected(opPlay);
@@ -148,6 +154,7 @@ void Game::createLevelsMenu()
 {
 	float c1[] = {1, 0, 0};
 	float c2[] = {1, 1, 1};
+	float c3[] = {1, 1, 0};
 
 	//Menu screens
 	Texture menuTexture;
@@ -155,12 +162,12 @@ void Game::createLevelsMenu()
 	levelsScreen = new MScreen(menuTexture.getID(), aspectRatio);
 
 	//title
-	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "Choose a level", c1, 0.01, 4);
+	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "Choose a level", c3, 0.01, 15);
 	
 	//create menu items
-	MText *level1 = new MText(Point(5*aspectRatio, 5, 0), "Level 1", c1, c2, 0.005, 2, true);
-	MText *level2 = new MText(Point(5*aspectRatio, 4, 0), "Level 2", c1, c2, 0.005, 2);
-	MText *opBack = new MText(Point(5*aspectRatio, 2, 0), "Back", c1, c2, 0.005, 2);
+	MText *level1 = new MText(Point(5*aspectRatio, 5, 0), "Level 1", c1, c2, 0.005, 3, true);
+	MText *level2 = new MText(Point(5*aspectRatio, 4, 0), "Level 2", c1, c2, 0.005, 3);
+	MText *opBack = new MText(Point(5*aspectRatio, 2, 0), "Back", c1, c2, 0.005, 3);
 
 	//set menu directions
 	level1->setUp(opBack);
@@ -183,10 +190,53 @@ void Game::createLevelsMenu()
 	levelsScreen->setSelected(level1);
 }
 
+void Game::createHowToMenu()
+{
+	float c1[] = {1, 0, 0};
+	float c2[] = {1, 1, 1};
+	float c3[] = {1, 1, 0};
+
+	//Menu screens
+	Texture menuTexture;
+	menuTexture.load("textures/bkg.png", GL_RGBA);
+	howToScreen = new MScreen(menuTexture.getID(), aspectRatio);
+
+	//title
+	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "How to play", c3, 0.01, 15);
+
+	//create menu items
+	MLabel *moveLeft = new MLabel(Point(5*aspectRatio, 6, 0.1), "Move left", c1, 0.003, 2.2);
+	MLabel *moveRight = new MLabel(Point(5*aspectRatio, 5.5, 0.1), "Move right", c1, 0.003, 2.2);
+	MLabel *jump = new MLabel(Point(5*aspectRatio, 5, 0.1), "Jump", c1, 0.003, 2.2);
+	MLabel *turbo = new MLabel(Point(5*aspectRatio, 4.5, 0.1), "Turbo", c1, 0.003, 2.2);
+	MLabel *stop = new MLabel(Point(5*aspectRatio, 4, 0.1), "Stop", c1, 0.003, 2.2);
+	MLabel *pause = new MLabel(Point(5*aspectRatio, 3.5, 0.1), "Pause", c1, 0.003, 2.2);
+	MText *opBack = new MText(Point(5*aspectRatio, 2, 0), "Back", c1, c2, 0.005, 3, true);
+
+	//set menu directions
+	opBack->setUp(opBack);
+	opBack->setDown(opBack);
+
+	//set menu actions
+	opBack->setAction(ACTION_BACK);
+
+	//add to main screen
+	howToScreen->add(mainTitle);
+	howToScreen->add(moveLeft);
+	howToScreen->add(moveRight);
+	howToScreen->add(jump);
+	howToScreen->add(turbo);
+	howToScreen->add(stop);
+	howToScreen->add(pause);
+	howToScreen->add(opBack);
+	howToScreen->setSelected(opBack);
+}
+
 void Game::createCreditsMenu()
 {
 	float c1[] = {1, 0, 0};
 	float c2[] = {1, 1, 1};
+	float c3[] = {1, 1, 0};
 
 	//Menu screens
 	Texture menuTexture;
@@ -194,12 +244,12 @@ void Game::createCreditsMenu()
 	creditsScreen = new MScreen(menuTexture.getID(), aspectRatio);
 
 	//title
-	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "Credits", c1, 0.01, 4);
+	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "Credits", c3, 0.01, 15);
 
 	//create menu items
-	MLabel *name1 = new MLabel(Point(5*aspectRatio, 5, 0.1), "Albert Arnedo", c1, 0.005, 2);
-	MLabel *name2 = new MLabel(Point(5*aspectRatio, 4, 0.1), "Miguel Angel Vico", c1, 0.005, 2);
-	MText *opBack = new MText(Point(5*aspectRatio, 2, 0), "Back", c1, c2, 0.005, 2, true);
+	MLabel *name1 = new MLabel(Point(5*aspectRatio, 5, 0.1), "Albert Arnedo", c1, 0.005, 3);
+	MLabel *name2 = new MLabel(Point(5*aspectRatio, 4, 0.1), "Miguel Angel Vico", c1, 0.005, 3);
+	MText *opBack = new MText(Point(5*aspectRatio, 2, 0), "Back", c1, c2, 0.005, 3, true);
 
 	//set menu directions
 	opBack->setUp(opBack);
@@ -220,6 +270,7 @@ void Game::createPauseMenu()
 {
 	float c1[] = {1, 0, 0};
 	float c2[] = {1, 1, 1};
+	float c3[] = {1, 1, 0};
 
 	//Menu screens
 	Texture menuTexture;
@@ -227,12 +278,12 @@ void Game::createPauseMenu()
 	pauseScreen = new MScreen(menuTexture.getID(), aspectRatio);
 
 	//title
-	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "Game paused", c1, 0.01, 4);
+	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "Game paused", c3, 0.01, 15);
 
 	//create menu items
-	MText *opResume = new MText(Point(5*aspectRatio, 5, 0), "Resume", c1, c2, 0.005, 2, true);
-	MText *opRestart = new MText(Point(5*aspectRatio, 4, 0), "Restart", c1, c2, 0.005, 2);
-	MText *opMenu = new MText(Point(5*aspectRatio, 2, 0), "Go to menu", c1, c2, 0.005, 2);
+	MText *opResume = new MText(Point(5*aspectRatio, 5, 0), "Resume", c1, c2, 0.005, 3, true);
+	MText *opRestart = new MText(Point(5*aspectRatio, 4, 0), "Restart", c1, c2, 0.005, 3);
+	MText *opMenu = new MText(Point(5*aspectRatio, 2, 0), "Go to menu", c1, c2, 0.005, 3);
 
 	//set menu directions
 	opResume->setUp(opMenu);
@@ -261,13 +312,14 @@ void Game::createMenus()
 	createLevelsMenu();
 	createCreditsMenu();
 	createPauseMenu();
+	createHowToMenu();
 }
 
 void Game::createGUI() {
 	float c1[] = {1, 0, 0};
-	float c2[] = {1, 1, 1};
+	float c2[] = {0, 1, 0};
 
-	MLabel *p1 = new MLabel(Point(0, 0, 0), "Player", c1, 0.003, 2);
+	MLabel *p1 = new MLabel(Point(0, 0, 0), "Player", c2, 0.003, 2);
 	MLabel *p2 = new MLabel(Point(0, 0, 0), "Comp 1", c1, 0.003, 2);
 	MLabel *p3 = new MLabel(Point(0, 0, 0), "Comp 2", c1, 0.003, 2);
 	pNames.push_back(p1);
@@ -408,6 +460,9 @@ bool Game::Process()
 				break;
 			case ACTION_EXIT:
 				res = false;
+				break;
+			case ACTION_HOW_TO:
+				currentScreen = howToScreen;
 				break;
 			default:
 				break;

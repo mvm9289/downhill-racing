@@ -14,6 +14,7 @@ using namespace std;
 #define ACTION_RESUME 7
 #define ACTION_RESTART 8
 #define ACTION_MENU 9
+#define ACTION_HOW_TO 10
 
 #pragma once
 class MScreen
