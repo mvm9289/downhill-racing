@@ -6,6 +6,9 @@
 #include "CXBOXController.h"
 #include "IA.h"
 
+#include "fmod/fmod.hpp"
+#include "fmod/fmod_errors.h"
+
 #include <string>
 #include <vector>
 using namespace std;
@@ -47,6 +50,11 @@ private:
 	bool gameStarted;
 
 	CXBOXController* gamepad;
+
+	FMOD::System *sys;
+	FMOD::Sound *sJump;
+	FMOD::Channel *channel;
+	FMOD_RESULT result;
 
 	unsigned char keys[256];
 

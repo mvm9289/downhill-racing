@@ -75,6 +75,10 @@ bool Game::Init()
 	//XBOX controller
 	gamepad = new CXBOXController(1);
 
+	//FMOD init
+	result = FMOD::System_Create(&sys);
+
+
 	return true;
 }
 
