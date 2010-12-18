@@ -40,6 +40,7 @@ private:
 	MScreen *levelsScreen;
 	MScreen *creditsScreen;
 	MScreen *pauseScreen;
+	MScreen *howToScreen;
 	vector<MLabel*> pNames; //player name's
 	Camera *menuCamera;
 	Camera *gameCamera;
@@ -71,6 +72,7 @@ private:
 	void createLevelsMenu();
 	void createCreditsMenu();
 	void createPauseMenu();
+	void createHowToMenu();
 	void createGUI();
 public:
 	Game(void);
