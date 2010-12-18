@@ -53,6 +53,7 @@ private:
 
 	FMOD::System *sys;
 	FMOD::Sound *sJump;
+	FMOD::Sound *sPause;
 	FMOD::Channel *channel;
 	FMOD_RESULT result;
 
