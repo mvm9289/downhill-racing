@@ -27,6 +27,7 @@ public:
 	void activateTurbo();
 	
 	Point getPosition();
+	void setPosition(Point p);
 	void setTerrain(Terrain *t);
 	bool isJumping();
 	void render();
