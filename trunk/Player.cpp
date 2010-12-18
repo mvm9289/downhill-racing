@@ -150,12 +150,43 @@ void Player::render() {
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 		glTranslatef(center.x, center.y, center.z);
-		glRotatef(-alpha, 1, 0, 0);
-		gluSphere(quad, radius, DEPTH, DEPTH);
+		glPushMatrix();
+			glRotatef(-alpha, 1, 0, 0);
+			gluSphere(quad, radius, DEPTH, DEPTH);
+		glPopMatrix();
+
+		//Turbo bars
+		glLineWidth(6.0);
+		glDisable(GL_TEXTURE_GEN_S);
+		glDisable(GL_TEXTURE_GEN_T);
+		glDisable(GL_TEXTURE_2D);
+		glDisable(GL_LIGHTING);
+		glTranslatef(0, -radius, 0);
+		if (turboWait) {
+			glColor3f(1, 1, 0);
+			glBegin(GL_LINES);
+				glVertex3f(radius + 0.1, 0, 0);
+				glVertex3f(radius + 0.1, 2*radius*(TURBO_TIME - turboWait)/TURBO_TIME, 0);
+			glEnd();
+		}
+		else if (!turboLeft) {
+			glColor3f(0, 1, 0);
+			glBegin(GL_LINES);
+				glVertex3f(radius + 0.1, 0, 0);
+				glVertex3f(radius + 0.1, 2*radius, 0);
+			glEnd();
+			glEnable(GL_LIGHTING);
+		}
+		else {
+			glColor3f(0, 1, 0);
+			glBegin(GL_LINES);
+				glVertex3f(radius + 0.1, 0, 0);
+				glVertex3f(radius + 0.1, 2*radius*(turboLeft)/TURBO_STEPS, 0);
+			glEnd();
+			glEnable(GL_LIGHTING);
+		}
 	glPopMatrix();
-	glDisable(GL_TEXTURE_GEN_S);
-	glDisable(GL_TEXTURE_GEN_T);
-	glDisable(GL_TEXTURE_2D);
+	glColor3f(1, 1, 1);
 
 	//glDisable(GL_BLEND);
 }
@@ -180,4 +211,8 @@ void Player::activateTurbo() {
 
 bool Player::getJumpAvailable() {
 	return jumpAvailable;
+}
+
+void Player::setPosition(Point p) {
+	center = p;
 }
