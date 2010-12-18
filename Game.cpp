@@ -29,6 +29,7 @@ Game::~Game(void)
 	if (gamepad) delete gamepad;
 	sJump->release();
 	sPause->release();
+	sMenu->release();
 	sys->close();
 	sys->release();
 }
@@ -87,11 +88,13 @@ bool Game::Init()
 		if (result == FMOD_OK && version >= FMOD_VERSION) {
 			result = sys->init(32, FMOD_INIT_NORMAL, 0);
 			if (result == FMOD_OK) {
-				result = sys->createSound("sounds/starman.mp3", FMOD_SOFTWARE, 0, &sJump);
-				result = sys->createSound("sounds/pause.mp3", FMOD_SOFTWARE, 0, &sPause);
+				result = sys->createSound("sounds/starman.mp3", FMOD_HARDWARE, 0, &sJump);
+				result = sys->createSound("sounds/pause.mp3", FMOD_HARDWARE, 0, &sPause);
+				result = sys->createSound("sounds/menu.wav", FMOD_HARDWARE, 0, &sMenu);
+				sMenu->setMode(FMOD_LOOP_NORMAL);
 			}
 		}
-
+	}
 	return true;
 }
 
@@ -467,6 +470,7 @@ bool Game::Process()
 			if (gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_START)
 			{
 				sys->playSound(FMOD_CHANNEL_FREE, sPause, false, &channel);
+				sys->playSound(FMOD_CHANNEL_FREE, sMenu, false, &channel);
 				currentScreen = pauseScreen;
 				currentCamera = menuCamera;
 				currentCamera->init();

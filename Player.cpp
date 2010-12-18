@@ -5,7 +5,7 @@
 #include <iostream>
 using namespace std;
 
-Player::Player(unsigned int id, Point c, float r, bool comp): playerID(id), Sphere(Point(c.x, c.y + r, c.z), r), initPoint(c) {
+Player::Player(unsigned int id, Point c, float r): playerID(id), Sphere(Point(c.x, c.y + r, c.z), r), initPoint(c) {
 }
 
 void Player::init() {
@@ -111,12 +111,15 @@ void Player::computeCenter() {
 void Player::checkColisions(vector<Player*> &pl) {
 	for (unsigned int i = 0; i < pl.size(); ++i) {
 		if (i != playerID) {
-			if ((pl[i]->getPosition() - center).length() < pl[i]->radius + radius){
+			if ((pl[i]->getPosition() - center).length() < pl[i]->radius + radius) {
 				if (pl[i]->getPosition().z < pl[playerID]->getPosition().z) {
 					blocked = true;
 					speed = SPEED_MIN;
 				}
-				else ++speed;
+				else {
+					blocked = false;
+					speed += 2;
+				}
 			}
 		}
 	}
