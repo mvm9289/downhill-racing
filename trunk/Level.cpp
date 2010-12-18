@@ -56,11 +56,13 @@ bool Level::loadLevel(string level)
 		}
 		inputFile.close();
 
+		if (terrain) delete terrain;
 		terrain = new Terrain(terrainPoints, terrainTexture.getID(), goalTexture.getID());
 
 		Point center;
 		float radius;
 		boundingSphere(center, radius);
+		if (skydome) delete skydome;
 		skydome = new Sphere(center, radius*1.1);
 		skydome->setTextureID(skydomeTexture.getID());
 	}
