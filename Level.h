@@ -17,6 +17,7 @@ public:
 	Level(void);
 	virtual ~Level(void);
 	Point startupPoint();
+	Point endPoint();
 	bool loadLevel(string level);
 	void boundingSphere(Point& center, float& radius);
 	Box boundingBox();
