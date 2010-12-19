@@ -50,14 +50,16 @@ Point Player::getPosition() {
 
 void Player::advance(vector<Player*> &pl) {
 	if (!blocked) {
-		float advance = (float)speed*PLAYER_STEP;
+		float advance = speed*PLAYER_STEP;
 		if (turboLeft) advance += 2.0*PLAYER_STEP;
 
-		if (terrain->getDirection(platform).slopeYZ() < 0) {
-			if (++speed > SPEED_MAX) speed = SPEED_MAX;
+		if (platform && terrain->getDirection(platform).slopeYZ() < 0) {
+			speed += 0.03*radius;
+			if (speed > (SPEED_MAX + radius - 1)) speed = (SPEED_MAX + radius - 1);
 		}
-		else {
-			if (--speed < SPEED_MIN) speed = SPEED_MIN;
+		else if (platform) {
+			speed -= 0.03*radius;
+			if (speed < (SPEED_MIN - radius + 1)) speed = (SPEED_MIN - radius + 1);
 		}
 
 		if (turboLeft) {
@@ -114,11 +116,11 @@ void Player::checkColisions(vector<Player*> &pl) {
 			if ((pl[i]->getPosition() - center).length() < pl[i]->radius + radius) {
 				if (pl[i]->getPosition().z < pl[playerID]->getPosition().z) {
 					blocked = true;
-					speed = SPEED_MIN;
+					speed -= 0.1*radius;
 				}
 				else {
 					blocked = false;
-					speed += 2;
+					speed += 0.1*radius;
 				}
 			}
 		}
@@ -190,7 +192,8 @@ void Player::render(bool hellMode) {
 
 bool Player::stopPlayer() {
 	if (platform) {
-		speed /= 2;
+		speed -= 0.05*radius;
+		if (speed < (SPEED_MIN - radius + 1)) speed = (SPEED_MIN - radius + 1);
 		return true;
 	}
 	return false;
