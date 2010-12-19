@@ -3,9 +3,6 @@
 #include <ctime>
 #include <cmath>
 
-#include <iostream>
-using namespace std;
-
 IA::IA(unsigned int n) : nPlayers(n)
 {
 	srand(clock());
