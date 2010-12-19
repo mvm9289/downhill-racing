@@ -9,7 +9,7 @@ using namespace std;
 #define PLAYER_STEP 0.2
 #define FALL_STEP 0.8
 #define SPEED_MIN 2
-#define SPEED_MAX 5
+#define SPEED_MAX 6
 #define JUMP_STEPS 10.0
 #define JUMP_FACTOR 0.5
 #define TURBO_STEPS 150
@@ -47,7 +47,7 @@ private:
 	float offsetY; //for jumping (absolute)
 	float offsetZ; //inside platform Z
 	Terrain *terrain;
-	unsigned int speed;
+	float speed;
 
 	int turboLeft;
 	int turboWait;
