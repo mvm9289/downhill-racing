@@ -107,7 +107,7 @@ void Game::initMusic() {
 			}
 		}
 	}
-	sys->playSound(FMOD_CHANNEL_FREE, sMenu, false, &cMenu);
+	sys->playSound(FMOD_CHANNEL_REUSE, sMenu, false, &cMenu);
 }
 
 void Game::createMainMenu()
@@ -561,7 +561,7 @@ void Game::initCameras()
 bool Game::loadLevel(string level)
 {
 	cMenu->setPaused(true);
-	sys->playSound(FMOD_CHANNEL_FREE, sLevel, false, &cLevel);
+	sys->playSound(FMOD_CHANNEL_REUSE, sLevel, false, &cLevel);
 	
 	if (scene.init(level))
 	{
@@ -638,7 +638,9 @@ bool Game::Process()
 			case ACTION_RESUME:
 				cMenu->setPaused(true);
 				cLevel->setPaused(false);
-				channel->setPaused(false);
+				cJump->setPaused(false);
+				cTurbo->setPaused(false);
+				cStop->setPaused(false);
 				mode = GAME;
 				currentCamera = gameCamera;
 				currentCamera->init();
@@ -647,8 +649,10 @@ bool Game::Process()
 			case ACTION_RESTART:
 				cMenu->setPaused(true);
 				cLevel->stop();
-				sys->playSound(FMOD_CHANNEL_FREE, sLevel, false, &cLevel);
-				channel->stop();
+				sys->playSound(FMOD_CHANNEL_REUSE, sLevel, false, &cLevel);
+				cJump->stop();
+				cTurbo->stop();
+				cStop->stop();
 				scene.restartLevel();
 				initCameras();
 				for (int i = 0; i < 256; i++) keys[i] = GLUT_KEY_NONE;
@@ -743,19 +747,19 @@ bool Game::Process()
 		else keys[GLUT_KEY_RIGHT] = GLUT_KEY_NONE;
 		if (keys[GLUT_KEY_UP] == GLUT_KEY_PRESS) {
 			if (scene.turboPlayer(0))
-				sys->playSound(FMOD_CHANNEL_FREE, sTurbo, false, &channel);
+				sys->playSound(FMOD_CHANNEL_REUSE, sTurbo, false, &cTurbo);
 		}
 		else keys[GLUT_KEY_UP] = GLUT_KEY_NONE;
 		if (keys[GLUT_KEY_DOWN] == GLUT_KEY_PRESS) {
 			if (scene.stopPlayer(0) && !stopWait) {
-				sys->playSound(FMOD_CHANNEL_FREE, sStop, false, &channel);
+				sys->playSound(FMOD_CHANNEL_REUSE, sStop, false, &cStop);
 				stopWait = 50;
 			}
 		}
 		else keys[GLUT_KEY_DOWN] = GLUT_KEY_NONE;
 		if (keys[GLUT_KEY_SPACE] == GLUT_KEY_PRESS) {
 			if (scene.jumpPlayer(0))
-				sys->playSound(FMOD_CHANNEL_FREE, sJump, false, &channel);
+				sys->playSound(FMOD_CHANNEL_REUSE, sJump, false, &cJump);
 		}
 		else keys[GLUT_KEY_SPACE] = GLUT_KEY_NONE;
 		if (keys[GLUT_KEY_F11] == GLUT_KEY_RELEASE)
@@ -767,9 +771,11 @@ bool Game::Process()
 		if (keys[GLUT_KEY_SCAPE] == GLUT_KEY_RELEASE)
 		{
 			cLevel->setPaused(true);
-			channel->setPaused(true);
+			cJump->setPaused(true);
+			cTurbo->setPaused(true);
+			cStop->setPaused(true);
 			cMenu->setPaused(false);
-			sys->playSound(FMOD_CHANNEL_FREE, sPause, false, &channel);
+			sys->playSound(FMOD_CHANNEL_REUSE, sPause, false, &cPause);
 			currentScreen = pauseScreen;
 			currentCamera = menuCamera;
 			currentCamera->init();
@@ -781,7 +787,7 @@ bool Game::Process()
 		if (gamepad->IsConnected()) {
 			if (!waitRelease && gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A) {
 				if (scene.jumpPlayer(0))
-					sys->playSound(FMOD_CHANNEL_FREE, sJump, false, &channel);
+					sys->playSound(FMOD_CHANNEL_REUSE, sJump, false, &cJump);
 			}
 
 			float mv = gamepad->GetState().Gamepad.sThumbLX/(2*32767.0);
@@ -789,11 +795,11 @@ bool Game::Process()
 
 			if (gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_X) {
 				if (scene.turboPlayer(0))
-					sys->playSound(FMOD_CHANNEL_FREE, sTurbo, false, &channel);
+					sys->playSound(FMOD_CHANNEL_REUSE, sTurbo, false, &cTurbo);
 			}
 			if (gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_B) {
 				if (scene.stopPlayer(0) && !stopWait) {
-					sys->playSound(FMOD_CHANNEL_FREE, sStop, false, &channel);
+					sys->playSound(FMOD_CHANNEL_REUSE, sStop, false, &cStop);
 					stopWait = 50;
 				}
 			}
@@ -801,8 +807,10 @@ bool Game::Process()
 			{
 				cLevel->setPaused(true);
 				cMenu->setPaused(false);
-				channel->setPaused(true);
-				sys->playSound(FMOD_CHANNEL_FREE, sPause, false, &channel);
+				cJump->setPaused(true);
+				cTurbo->setPaused(true);
+				cStop->setPaused(true);
+				sys->playSound(FMOD_CHANNEL_REUSE, sPause, false, &cPause);
 				currentScreen = pauseScreen;
 				currentCamera = menuCamera;
 				currentCamera->init();
