@@ -31,6 +31,8 @@ using namespace std;
 #define GLUT_KEY_SPACE 32
 #define GLUT_KEY_ENTER 13
 
+#define XBOX_WAIT 20
+
 class Game {
 private:
 	Scene scene;
@@ -53,6 +55,7 @@ private:
 	bool gameStarted;
 
 	CXBOXController* gamepad;
+	int waitRelease;
 
 	FMOD::System *sys;
 	FMOD::Sound *sL1;

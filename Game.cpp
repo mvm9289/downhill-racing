@@ -79,6 +79,7 @@ bool Game::Init()
 
 	//XBOX controller
 	gamepad = new CXBOXController(1);
+	waitRelease = 0;
 	
 	initMusic();
 
@@ -520,6 +521,19 @@ bool Game::Process()
 
 	switch(mode) {
 	case MENU:
+		// Xbox
+		if (!waitRelease && gamepad->IsConnected()) {
+			float mv = gamepad->GetState().Gamepad.sThumbLY/(2*32767.0);
+			if (mv > 0.1) {
+				currentScreen->up();
+				waitRelease = XBOX_WAIT;
+			}
+			else if (mv < -0.1) {
+				currentScreen->down();
+				waitRelease = XBOX_WAIT;
+			}
+		}
+
 		// Process Input
 		if (keys[GLUT_KEY_UP] == GLUT_KEY_RELEASE)
 		{
@@ -531,8 +545,10 @@ bool Game::Process()
 			currentScreen->down();
 			keys[GLUT_KEY_DOWN] = GLUT_KEY_NONE;
 		}
-		if (keys[GLUT_KEY_ENTER] == GLUT_KEY_RELEASE)
+		if (keys[GLUT_KEY_ENTER] == GLUT_KEY_RELEASE ||
+			(!waitRelease && gamepad->IsConnected() && (gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A)))
 		{
+			waitRelease = XBOX_WAIT;
 			int action = currentScreen->getAction();
 			switch(action)
 			{
@@ -685,8 +701,10 @@ bool Game::Process()
 				if (scene.jumpPlayer(0))
 					sys->playSound(FMOD_CHANNEL_FREE, sJump, false, &channel);
 			}
+
 			float mv = gamepad->GetState().Gamepad.sThumbLX/(2*32767.0);
 			if (mv > 0.1 || mv < -0.1) scene.movePlayer(0, mv);
+
 			if (gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_X) {
 				if (scene.turboPlayer(0))
 					sys->playSound(FMOD_CHANNEL_FREE, sTurbo, false, &channel);
@@ -743,6 +761,7 @@ bool Game::Process()
 	}
 
 	if (stopWait) --stopWait;
+	if (waitRelease) --waitRelease;
 
 	return res;
 }
