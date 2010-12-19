@@ -134,11 +134,7 @@ void Player::render(bool hellMode) {
 	GLUquadricObj *quad;
 	quad = gluNewQuadric();
 	gluQuadricNormals(quad, GLU_SMOOTH);
-	if (hellMode) {
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glColor4f(1, 0, 0, 0.8);
-	}
+	if (hellMode) glColor3f(1, 0, 0);
 	if (textID > 0) {
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, textID);
@@ -164,7 +160,6 @@ void Player::render(bool hellMode) {
 		glDisable(GL_TEXTURE_GEN_T);
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_LIGHTING);
-		glDisable(GL_BLEND);
 		glTranslatef(0, -radius, 0);
 		if (turboWait) {
 			glColor4f(1, 1, 0, 1);
