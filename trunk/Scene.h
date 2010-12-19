@@ -29,7 +29,7 @@ public:
 	void restartLevel();
 	Box boundingBox(void);
 	void boundingSphere(Point& center, float& radius);
-	void render(void);
+	void render(float angle = 0);
 	vector<Player*> getPlayers();
 	Point getPlayerPosition();
 	void movePlayer(unsigned int i, float dx);

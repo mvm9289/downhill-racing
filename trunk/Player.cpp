@@ -132,7 +132,7 @@ bool Player::isJumping() {
 	return !jumpAvailable;
 }
 
-void Player::render(bool hellMode) {
+void Player::render(bool hellMode, float angle) {
 	GLUquadricObj *quad;
 	quad = gluNewQuadric();
 	gluQuadricNormals(quad, GLU_SMOOTH);
@@ -163,26 +163,27 @@ void Player::render(bool hellMode) {
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_LIGHTING);
 		glTranslatef(0, -radius, 0);
+		glRotatef(-angle, 1, 0, 0);
 		if (turboWait) {
 			glColor4f(1, 1, 0, 1);
 			glBegin(GL_LINES);
-				glVertex3f(radius + 0.1, 0, 0);
-				glVertex3f(radius + 0.1, 2*radius*(TURBO_TIME - turboWait)/TURBO_TIME, 0);
+				glVertex3f(radius + 0.15, 0, 0);
+				glVertex3f(radius + 0.15, 2*radius*(TURBO_TIME - turboWait)/TURBO_TIME, 0);
 			glEnd();
 		}
 		else if (!turboLeft) {
 			glColor4f(0, 1, 0, 1);
 			glBegin(GL_LINES);
-				glVertex3f(radius + 0.1, 0, 0);
-				glVertex3f(radius + 0.1, 2*radius, 0);
+				glVertex3f(radius + 0.15, 0, 0);
+				glVertex3f(radius + 0.15, 2*radius, 0);
 			glEnd();
 			glEnable(GL_LIGHTING);
 		}
 		else {
 			glColor4f(0, 1, 0, 1);
 			glBegin(GL_LINES);
-				glVertex3f(radius + 0.1, 0, 0);
-				glVertex3f(radius + 0.1, 2*radius*(turboLeft)/TURBO_STEPS, 0);
+				glVertex3f(radius + 0.15, 0, 0);
+				glVertex3f(radius + 0.15, 2*radius*(turboLeft)/TURBO_STEPS, 0);
 			glEnd();
 			glEnable(GL_LIGHTING);
 		}
@@ -217,4 +218,9 @@ bool Player::activateTurbo() {
 
 bool Player::getJumpAvailable() {
 	return jumpAvailable;
+}
+
+float Player::getRadius()
+{
+	return radius;
 }

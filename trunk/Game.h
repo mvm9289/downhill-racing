@@ -90,6 +90,7 @@ private:
 	void createLoseMenu();
 	void createOptionsMenu();
 	void createGUI();
+	Vector getYobs();
 public:
 	Game(void);
 	virtual ~Game(void);
