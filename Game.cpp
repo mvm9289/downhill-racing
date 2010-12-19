@@ -107,7 +107,7 @@ void Game::initMusic() {
 			}
 		}
 	}
-	sys->playSound(FMOD_CHANNEL_FREE, sMenu, false, &channel);
+	sys->playSound(FMOD_CHANNEL_FREE, sMenu, false, &cMenu);
 }
 
 void Game::createMainMenu()
@@ -498,8 +498,8 @@ void Game::initCameras()
 
 bool Game::loadLevel(string level)
 {
-	channel->stop();
-	sys->playSound(FMOD_CHANNEL_FREE, sLevel, false, &channel);
+	cMenu->setPaused(true);
+	sys->playSound(FMOD_CHANNEL_FREE, sLevel, false, &cLevel);
 	
 	if (scene.init(level))
 	{
@@ -540,26 +540,31 @@ bool Game::Process()
 				currentScreen = levelsScreen;
 				break;
 			case ACTION_LEVEL_1:
+				cMenu->setPaused(true);
 				sLevel = sL1;
 				res = loadLevel("levels/level1.txt");
 				for (int i = 0; i < 256; i++) keys[i] = GLUT_KEY_NONE;
 				break;
 			case ACTION_LEVEL_2:
+				cMenu->setPaused(true);
 				sLevel = sL2;
 				res = loadLevel("levels/level2.txt");
 				for (int i = 0; i < 256; i++) keys[i] = GLUT_KEY_NONE;
 				break;
 			case ACTION_RESUME:
-				channel->stop();
-				sys->playSound(FMOD_CHANNEL_FREE, sLevel, false, &channel);
+				cMenu->setPaused(true);
+				cLevel->setPaused(false);
+				channel->setPaused(false);
 				mode = GAME;
 				currentCamera = gameCamera;
 				currentCamera->init();
 				for (int i = 0; i < 256; i++) keys[i] = GLUT_KEY_NONE;
 				break;
 			case ACTION_RESTART:
+				cMenu->setPaused(true);
+				cLevel->stop();
+				sys->playSound(FMOD_CHANNEL_FREE, sLevel, false, &cLevel);
 				channel->stop();
-				sys->playSound(FMOD_CHANNEL_FREE, sLevel, false, &channel);
 				scene.restartLevel();
 				initCameras();
 				for (int i = 0; i < 256; i++) keys[i] = GLUT_KEY_NONE;
@@ -610,6 +615,8 @@ bool Game::Process()
 		switch (status)
 		{
 			case WINNER:
+				cMenu->setPaused(false);
+				cLevel->stop();
 				currentScreen = winScreen;
 				currentCamera = menuCamera;
 				currentCamera->init();
@@ -617,6 +624,8 @@ bool Game::Process()
 				for (int i = 0; i < 256; i++) keys[i] = GLUT_KEY_NONE;
 				break;
 			case LOSER:
+				cMenu->setPaused(false);
+				cLevel->stop();
 				currentScreen = loseScreen;
 				currentCamera = menuCamera;
 				currentCamera->init();
@@ -659,9 +668,10 @@ bool Game::Process()
 		}
 		if (keys[GLUT_KEY_SCAPE] == GLUT_KEY_RELEASE)
 		{
-			channel->stop();
+			cLevel->setPaused(true);
+			channel->setPaused(true);
+			cMenu->setPaused(false);
 			sys->playSound(FMOD_CHANNEL_FREE, sPause, false, &channel);
-			sys->playSound(FMOD_CHANNEL_FREE, sMenu, false, &channel);
 			currentScreen = pauseScreen;
 			currentCamera = menuCamera;
 			currentCamera->init();
@@ -689,9 +699,10 @@ bool Game::Process()
 			}
 			if (gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_START)
 			{
-				channel->stop();
+				cLevel->setPaused(true);
+				cMenu->setPaused(false);
+				channel->setPaused(true);
 				sys->playSound(FMOD_CHANNEL_FREE, sPause, false, &channel);
-				sys->playSound(FMOD_CHANNEL_FREE, sMenu, false, &channel);
 				currentScreen = pauseScreen;
 				currentCamera = menuCamera;
 				currentCamera->init();

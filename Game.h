@@ -64,6 +64,8 @@ private:
 	FMOD::Sound *sTurbo;
 	FMOD::Sound *sStop;
 	int stopWait;
+	FMOD::Channel *cLevel;
+	FMOD::Channel *cMenu;
 	FMOD::Channel *channel;
 	FMOD_RESULT result;
 
