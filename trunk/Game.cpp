@@ -102,9 +102,11 @@ void Game::initMusic() {
 				result = sys->createSound("sounds/stop.wav", FMOD_HARDWARE, 0, &sStop);
 				result = sys->createSound("sounds/level1.mp3", FMOD_HARDWARE, 0, &sL1);
 				result = sys->createSound("sounds/level2.mp3", FMOD_HARDWARE, 0, &sL2);
+				result = sys->createSound("sounds/level3.wav", FMOD_HARDWARE, 0, &sL3);
 				sMenu->setMode(FMOD_LOOP_NORMAL);
 				sL1->setMode(FMOD_LOOP_NORMAL);
 				sL2->setMode(FMOD_LOOP_NORMAL);
+				sL3->setMode(FMOD_LOOP_NORMAL);
 			}
 		}
 	}
@@ -621,7 +623,7 @@ bool Game::Process()
 				break;
 			case ACTION_LEVEL_3:
 				cMenu->setPaused(true);
-				sLevel = sL2;
+				sLevel = sL3;
 				res = loadLevel("levels/level3.txt");
 				for (int i = 0; i < 256; i++) keys[i] = GLUT_KEY_NONE;
 				break;
