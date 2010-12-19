@@ -8,6 +8,7 @@ using namespace std;
 #define ACTION_START 1
 #define ACTION_LEVEL_1 2
 #define ACTION_LEVEL_2 3
+#define ACTION_OPTIONS 16
 #define ACTION_CREDITS 4
 #define ACTION_BACK 5
 #define ACTION_EXIT 6
@@ -15,6 +16,8 @@ using namespace std;
 #define ACTION_RESTART 8
 #define ACTION_MENU 9
 #define ACTION_HOW_TO 10
+#define ACTION_FULLSCREEN 11
+#define ACTION_WINDOWED 12
 
 #pragma once
 class MScreen
