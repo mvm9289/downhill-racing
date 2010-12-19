@@ -37,7 +37,7 @@ void Terrain::createTerrain(vector<double> terrainPoints)
 
 	int lastMax = terrainPoints.size() - 2;
 	found = false;
-	for (unsigned int i = terrainPoints.size() - 4; i > 0 && !found; i-=2)
+	for (unsigned int i = terrainPoints.size() - 4; i >= 0 && !found; i-=2)
 	{
 		if (terrainPoints[i + 1] >= terrainPoints[lastMax + 1])
 			lastMax = i;
