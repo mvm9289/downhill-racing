@@ -61,6 +61,7 @@ private:
 	FMOD::System *sys;
 	FMOD::Sound *sL1;
 	FMOD::Sound *sL2;
+	FMOD::Sound *sL3;
 	FMOD::Sound *sLevel;
 	FMOD::Sound *sJump;
 	FMOD::Sound *sPause;
