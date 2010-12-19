@@ -11,6 +11,7 @@ class Level
 private:
 	Terrain *terrain;
 	Sphere *skydome;
+	bool hellmode;
 
 public:
 	Level(string level);
@@ -23,4 +24,5 @@ public:
 	Box boundingBox();
 	void render();
 	Terrain* getTerrain();
+	bool isHellMode();
 };
