@@ -9,12 +9,16 @@
 using namespace std;
 
 #define NUM_PLAYERS 3
+#define NOTHING 0
+#define WINNER 1
+#define LOSER 2
 
 class Scene
 {
 private:
 	Level level;
 	vector<Player*> players;
+	int win;
 
 	void createGUI();
 
@@ -30,7 +34,7 @@ public:
 	Point getPlayerPosition();
 	void movePlayer(unsigned int i, float dx);
 	bool jumpPlayer(unsigned int i);
-	void advancePlayers();
+	int advancePlayers();
 	bool stopPlayer(unsigned int i);
 	bool turboPlayer(unsigned int i);
 };
