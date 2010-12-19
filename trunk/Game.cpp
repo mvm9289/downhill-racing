@@ -513,6 +513,7 @@ bool Game::loadLevel(string level)
 bool Game::Process()
 {
 	bool res = true;
+	int status;
 	
 	// Process Input
 	//if (keys[GLUT_KEY_SCAPE]) res = false;
@@ -605,7 +606,7 @@ bool Game::Process()
 				scene.stopPlayer(i);
 			}
 		}
-		int status = scene.advancePlayers();
+		status = scene.advancePlayers();
 		switch (status)
 		{
 			case WINNER:

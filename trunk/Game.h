@@ -79,6 +79,8 @@ private:
 	void createCreditsMenu();
 	void createPauseMenu();
 	void createHowToMenu();
+	void createWinMenu();
+	void createLoseMenu();
 	void createGUI();
 public:
 	Game(void);
