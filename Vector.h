@@ -18,7 +18,6 @@ public:
 	float length(void) const;
 	float squaredLength(void) const;
 	void normalize(void);
-	float slopeYZ(); //compute slope in YZ plane
 };
 
 Vector operator+(const Vector& v1, const Vector& v2);
