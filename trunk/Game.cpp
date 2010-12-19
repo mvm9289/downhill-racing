@@ -771,7 +771,7 @@ bool Game::Process()
 
 		// XBOX Input
 		if (gamepad->IsConnected()) {
-			if (gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A) {
+			if (!waitRelease && gamepad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A) {
 				if (scene.jumpPlayer(0))
 					sys->playSound(FMOD_CHANNEL_FREE, sJump, false, &channel);
 			}
