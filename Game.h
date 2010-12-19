@@ -45,6 +45,7 @@ private:
 	MScreen *howToScreen;
 	MScreen *winScreen;
 	MScreen *loseScreen;
+	MScreen *optionsScreen;
 	vector<MLabel*> pNames; //player name's
 	Camera *menuCamera;
 	Camera *gameCamera;
@@ -86,6 +87,7 @@ private:
 	void createHowToMenu();
 	void createWinMenu();
 	void createLoseMenu();
+	void createOptionsMenu();
 	void createGUI();
 public:
 	Game(void);

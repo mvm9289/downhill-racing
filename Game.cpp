@@ -127,14 +127,17 @@ void Game::createMainMenu()
 	
 	//create menu items
 	MText *opPlay = new MText(Point(5*aspectRatio, 6, 0), "Play", c1, c2, 0.005, 3, true);
-	MText *opHowTo = new MText(Point(5*aspectRatio, 5, 0), "How to play", c1, c2, 0.005, 3);
-	MText *opCredits = new MText(Point(5*aspectRatio, 4, 0), "Credits", c1, c2, 0.005, 3);
-	MText *opExit = new MText(Point(5*aspectRatio, 2, 0), "Exit", c1, c2, 0.005, 3);
+	MText *opOptions = new MText(Point(5*aspectRatio, 5, 0), "Screen options", c1, c2, 0.005, 3);
+	MText *opHowTo = new MText(Point(5*aspectRatio, 4, 0), "How to play", c1, c2, 0.005, 3);
+	MText *opCredits = new MText(Point(5*aspectRatio, 3, 0), "Credits", c1, c2, 0.005, 3);
+	MText *opExit = new MText(Point(5*aspectRatio, 1.5, 0), "Exit", c1, c2, 0.005, 3);
 
 	//set menu directions
 	opPlay->setUp(opExit);
-	opPlay->setDown(opHowTo);
-	opHowTo->setUp(opPlay);
+	opPlay->setDown(opOptions);
+	opOptions->setUp(opPlay);
+	opOptions->setDown(opHowTo);
+	opHowTo->setUp(opOptions);
 	opHowTo->setDown(opCredits);
 	opCredits->setUp(opHowTo);
 	opCredits->setDown(opExit);
@@ -143,6 +146,7 @@ void Game::createMainMenu()
 
 	//set menu actions
 	opPlay->setAction(ACTION_START);
+	opOptions->setAction(ACTION_OPTIONS);
 	opHowTo->setAction(ACTION_HOW_TO);
 	opCredits->setAction(ACTION_CREDITS);
 	opExit->setAction(ACTION_EXIT);
@@ -150,6 +154,7 @@ void Game::createMainMenu()
 	//add to main screen
 	mainScreen->add(mainTitle);
 	mainScreen->add(opPlay);
+	mainScreen->add(opOptions);
 	mainScreen->add(opHowTo);
 	mainScreen->add(opCredits);
 	mainScreen->add(opExit);
@@ -176,7 +181,7 @@ void Game::createLevelsMenu()
 	//create menu items
 	MText *level1 = new MText(Point(5*aspectRatio, 5, 0), "Level 1", c1, c2, 0.005, 3, true);
 	MText *level2 = new MText(Point(5*aspectRatio, 4, 0), "Level 2", c1, c2, 0.005, 3);
-	MText *opBack = new MText(Point(5*aspectRatio, 2, 0), "Back", c1, c2, 0.005, 3);
+	MText *opBack = new MText(Point(5*aspectRatio, 1.5, 0), "Back", c1, c2, 0.005, 3);
 
 	//set menu directions
 	level1->setUp(opBack);
@@ -236,7 +241,7 @@ void Game::createHowToMenu()
 	MLabel *pause = new MLabel(Point(2*aspectRatio, 3.5, 0.1), "Pause", c1, 0.003, 2.2);
 	MLabel *escape = new MLabel(Point(4.65*aspectRatio, 3.5, 0.1), "Escape", c5, 0.003, 2.2);
 	MLabel *startButton = new MLabel(Point(6.6*aspectRatio, 3.5, 0.1), "Start button", c5, 0.003, 2.2);
-	MText *opBack = new MText(Point(5*aspectRatio, 2, 0), "Back", c1, c2, 0.005, 3, true);
+	MText *opBack = new MText(Point(5*aspectRatio, 1.5, 0), "Back", c1, c2, 0.005, 3, true);
 
 	//set menu directions
 	opBack->setUp(opBack);
@@ -288,7 +293,7 @@ void Game::createCreditsMenu()
 	//create menu items
 	MLabel *name1 = new MLabel(Point(5*aspectRatio, 5, 0.1), "Albert Arnedo", c1, 0.005, 3);
 	MLabel *name2 = new MLabel(Point(5*aspectRatio, 4, 0.1), "Miguel Angel Vico", c1, 0.005, 3);
-	MText *opBack = new MText(Point(5*aspectRatio, 2, 0), "Back", c1, c2, 0.005, 3, true);
+	MText *opBack = new MText(Point(5*aspectRatio, 1.5, 0), "Back", c1, c2, 0.005, 3, true);
 
 	//set menu directions
 	opBack->setUp(opBack);
@@ -322,7 +327,7 @@ void Game::createPauseMenu()
 	//create menu items
 	MText *opResume = new MText(Point(5*aspectRatio, 5, 0), "Resume", c1, c2, 0.005, 3, true);
 	MText *opRestart = new MText(Point(5*aspectRatio, 4, 0), "Restart", c1, c2, 0.005, 3);
-	MText *opMenu = new MText(Point(5*aspectRatio, 2, 0), "Go to menu", c1, c2, 0.005, 3);
+	MText *opMenu = new MText(Point(5*aspectRatio, 1.5, 0), "Go to menu", c1, c2, 0.005, 3);
 
 	//set menu directions
 	opResume->setUp(opMenu);
@@ -361,7 +366,7 @@ void Game::createWinMenu()
 
 	//create menu items
 	MText *opRestart = new MText(Point(5*aspectRatio, 5, 0), "Restart", c1, c2, 0.005, 3, true);
-	MText *opMenu = new MText(Point(5*aspectRatio, 2, 0), "Go to menu", c1, c2, 0.005, 3);
+	MText *opMenu = new MText(Point(5*aspectRatio, 1.5, 0), "Go to menu", c1, c2, 0.005, 3);
 
 	//set menu directions
 	opRestart->setUp(opMenu);
@@ -396,7 +401,7 @@ void Game::createLoseMenu()
 
 	//create menu items
 	MText *opRestart = new MText(Point(5*aspectRatio, 5, 0), "Restart", c1, c2, 0.005, 3, true);
-	MText *opMenu = new MText(Point(5*aspectRatio, 2, 0), "Go to menu", c1, c2, 0.005, 3);
+	MText *opMenu = new MText(Point(5*aspectRatio, 1.5, 0), "Go to menu", c1, c2, 0.005, 3);
 
 	//set menu directions
 	opRestart->setUp(opMenu);
@@ -415,6 +420,46 @@ void Game::createLoseMenu()
 	loseScreen->setSelected(opRestart);
 }
 
+void Game::createOptionsMenu()
+{
+	float c1[] = {1, 0, 0};
+	float c2[] = {1, 1, 1};
+	float c3[] = {1, 1, 0};
+
+	//Menu screens
+	Texture menuTexture;
+	menuTexture.load("textures/bkg.png", GL_RGBA);
+	optionsScreen = new MScreen(menuTexture.getID(), aspectRatio);
+
+	//title
+	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "Screen options", c3, 0.01, 15);
+
+	//create menu items
+	MText *fullscreen = new MText(Point(5*aspectRatio, 6, 0), "Fullscreen", c1, c2, 0.005, 3);
+	MText *windowed = new MText(Point(5*aspectRatio, 5, 0), "Windowed", c1, c2, 0.005, 3);
+	MText *opBack = new MText(Point(5*aspectRatio, 1.5, 0), "Back", c1, c2, 0.005, 3, true);
+
+	//set menu directions
+	fullscreen->setUp(opBack);
+	fullscreen->setDown(windowed);
+	windowed->setUp(fullscreen);
+	windowed->setDown(opBack);
+	opBack->setUp(windowed);
+	opBack->setDown(fullscreen);
+
+	//set menu actions
+	fullscreen->setAction(ACTION_FULLSCREEN);
+	windowed->setAction(ACTION_WINDOWED);
+	opBack->setAction(ACTION_BACK);
+
+	//add to main screen
+	optionsScreen->add(mainTitle);
+	optionsScreen->add(fullscreen);
+	optionsScreen->add(windowed);
+	optionsScreen->add(opBack);
+	optionsScreen->setSelected(opBack);
+}
+
 void Game::createMenus()
 {
 	createMainMenu();
@@ -424,6 +469,7 @@ void Game::createMenus()
 	createHowToMenu();
 	createWinMenu();
 	createLoseMenu();
+	createOptionsMenu();
 }
 
 void Game::createGUI() {
@@ -515,6 +561,7 @@ bool Game::Process()
 {
 	bool res = true;
 	int status;
+	int res_x, res_y, pos_x, pos_y;
 	
 	// Process Input
 	//if (keys[GLUT_KEY_SCAPE]) res = false;
@@ -588,6 +635,20 @@ bool Game::Process()
 			case ACTION_MENU:
 				currentScreen = mainScreen;
 				gameStarted = false;
+				break;
+			case ACTION_OPTIONS:
+				currentScreen = optionsScreen;
+				break;
+			case ACTION_FULLSCREEN:
+				glutFullScreen();
+				break;
+			case ACTION_WINDOWED:
+				res_x = glutGet(GLUT_SCREEN_WIDTH);
+				res_y = glutGet(GLUT_SCREEN_HEIGHT);
+				pos_x = (res_x>>1)-(GAME_WIDTH>>1);
+				pos_y = (res_y>>1)-(GAME_HEIGHT>>1);
+				glutPositionWindow(pos_x, pos_y);
+				glutReshapeWindow(GAME_WIDTH, GAME_HEIGHT);
 				break;
 			case ACTION_CREDITS:
 				currentScreen = creditsScreen;
