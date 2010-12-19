@@ -30,7 +30,7 @@ void Scene::render(void)
 	level.render();
 	vector<Player*>::iterator it = players.begin();
 	for (; it != players.end(); ++it)
-		(*it)->render();
+		(*it)->render(level.isHellMode());
 }
 
 bool Scene::init(string levelPath)

@@ -130,15 +130,15 @@ bool Player::isJumping() {
 	return !jumpAvailable;
 }
 
-void Player::render() {
+void Player::render(bool hellMode) {
 	GLUquadricObj *quad;
 	quad = gluNewQuadric();
 	gluQuadricNormals(quad, GLU_SMOOTH);
-	/*
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
-	glColor4f(1, 1, 1, 0.8);
-	*/
+	if (hellMode) {
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glColor4f(1, 0, 0, 0.8);
+	}
 	if (textID > 0) {
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, textID);
@@ -164,16 +164,17 @@ void Player::render() {
 		glDisable(GL_TEXTURE_GEN_T);
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_LIGHTING);
+		glDisable(GL_BLEND);
 		glTranslatef(0, -radius, 0);
 		if (turboWait) {
-			glColor3f(1, 1, 0);
+			glColor4f(1, 1, 0, 1);
 			glBegin(GL_LINES);
 				glVertex3f(radius + 0.1, 0, 0);
 				glVertex3f(radius + 0.1, 2*radius*(TURBO_TIME - turboWait)/TURBO_TIME, 0);
 			glEnd();
 		}
 		else if (!turboLeft) {
-			glColor3f(0, 1, 0);
+			glColor4f(0, 1, 0, 1);
 			glBegin(GL_LINES);
 				glVertex3f(radius + 0.1, 0, 0);
 				glVertex3f(radius + 0.1, 2*radius, 0);
@@ -181,7 +182,7 @@ void Player::render() {
 			glEnable(GL_LIGHTING);
 		}
 		else {
-			glColor3f(0, 1, 0);
+			glColor4f(0, 1, 0, 1);
 			glBegin(GL_LINES);
 				glVertex3f(radius + 0.1, 0, 0);
 				glVertex3f(radius + 0.1, 2*radius*(turboLeft)/TURBO_STEPS, 0);
@@ -189,9 +190,7 @@ void Player::render() {
 			glEnable(GL_LIGHTING);
 		}
 	glPopMatrix();
-	glColor3f(1, 1, 1);
-
-	//glDisable(GL_BLEND);
+	glColor4f(1, 1, 1, 1);
 }
 
 bool Player::stopPlayer() {
