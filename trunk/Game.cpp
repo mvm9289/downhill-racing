@@ -356,7 +356,7 @@ void Game::createWinMenu()
 	winScreen = new MScreen(menuTexture.getID(), aspectRatio);
 
 	//title
-	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "You are the winner!", c3, 0.01, 15);
+	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "You win!", c3, 0.01, 15);
 
 	//create menu items
 	MText *opRestart = new MText(Point(5*aspectRatio, 5, 0), "Restart", c1, c2, 0.005, 3, true);
@@ -391,7 +391,7 @@ void Game::createLoseMenu()
 	loseScreen = new MScreen(menuTexture.getID(), aspectRatio);
 
 	//title
-	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "You are the loser!", c3, 0.01, 15);
+	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "You lose!", c3, 0.01, 15);
 
 	//create menu items
 	MText *opRestart = new MText(Point(5*aspectRatio, 5, 0), "Restart", c1, c2, 0.005, 3, true);
