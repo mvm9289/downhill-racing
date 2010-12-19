@@ -190,8 +190,7 @@ void Player::render(bool hellMode, float angle) {
 
 bool Player::stopPlayer() {
 	if (platform) {
-		speed -= 0.05*radius;
-		if (speed < (SPEED_MIN - radius + 1)) speed = (SPEED_MIN - radius + 1);
+		speed /= 1.1;
 		return true;
 	}
 	return false;
