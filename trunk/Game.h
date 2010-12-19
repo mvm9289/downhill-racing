@@ -41,6 +41,8 @@ private:
 	MScreen *creditsScreen;
 	MScreen *pauseScreen;
 	MScreen *howToScreen;
+	MScreen *winScreen;
+	MScreen *loseScreen;
 	vector<MLabel*> pNames; //player name's
 	Camera *menuCamera;
 	Camera *gameCamera;
