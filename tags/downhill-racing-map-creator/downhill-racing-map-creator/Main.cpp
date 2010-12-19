@@ -89,6 +89,15 @@ void main(int argc, char** argv)
 {
 	int res_x,res_y,pos_x,pos_y;
 
+	cerr << "Usage:" << endl;
+	cerr << "\t 1. Make a line like a saw in horizontal direction" << endl;
+	cerr << "\t 2. Define only maximums and minimums with three points" << endl;
+	cerr << "\t 3. Press B to make the curves" << endl;
+	cerr << "\t 4. Press S to save file" << endl;
+	cerr << "\t 5. File has been created on Map creator path with name map.txt" << endl;
+	cerr << "\t 6. Update map coordinates in one of level file with map.txt content" << endl;
+	cerr << "\t 7. You have created your own map!" << endl << endl;
+
 	// GLUT initialization
 	glutInit(&argc, argv);
 
