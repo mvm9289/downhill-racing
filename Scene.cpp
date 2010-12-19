@@ -1,6 +1,9 @@
 #include "Scene.h"
 #include "Texture.h"
 
+#include <iostream>
+using namespace std;
+
 Scene::Scene(void) {}
 
 Scene::~Scene(void)
@@ -69,6 +72,7 @@ void Scene::restartLevel()
 {
 	int n = players.size();
 	for (int i = 0; i < n; i++) players[i]->init();
+	win = -1;
 }
 
 vector<Player*> Scene::getPlayers() {
@@ -98,10 +102,12 @@ int Scene::advancePlayers()
 		}
 		else {
 			if (win < 0) win = i;
+			cout << win << endl;
 			if (!i && !win) return WINNER;
 			else if (!i && win) return LOSER;
 		}
 	}
+	cout << win << endl;
 	return NOTHING;
 }
 
