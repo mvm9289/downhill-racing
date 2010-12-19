@@ -65,15 +65,15 @@ void main(int argc, char** argv)
 	pos_x = (res_x>>1)-(GAME_WIDTH>>1);
 	pos_y = (res_y>>1)-(GAME_HEIGHT>>1);
 	
-	glutInitWindowPosition(pos_x, pos_y);
-	glutInitWindowSize(GAME_WIDTH,GAME_HEIGHT);
-	glutCreateWindow("My GLUT Application!");
+	//glutInitWindowPosition(pos_x, pos_y);
+	//glutInitWindowSize(GAME_WIDTH,GAME_HEIGHT);
+	//glutCreateWindow("Downhill Racing");
 
-	/*glutGameModeString("800x600:32");
-	glutEnterGameMode();*/
+	glutGameModeString("1024x768:32");
+	glutEnterGameMode();
 
 	// Make the default cursor disappear
-	//glutSetCursor(GLUT_CURSOR_NONE);
+	glutSetCursor(GLUT_CURSOR_NONE);
 
 	// Register callback functions
 	glutDisplayFunc(AppRender);
