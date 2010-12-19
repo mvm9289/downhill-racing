@@ -10,9 +10,6 @@
 #include <cmath>
 #include <gl/glut.h>
 
-#include <iostream>
-using namespace std;
-
 Game::Game(void) : ai(NUM_PLAYERS)
 {
 }
@@ -60,10 +57,10 @@ bool Game::Init()
 	aspectRatio = (float)GAME_WIDTH/(float)GAME_HEIGHT;
 
 	// Menu camera
-	Point obs(10.0*aspectRatio/2.0, 5, 10);
+	Point obs(10.0*aspectRatio/2.0, 5, 1);
 	Point vrp(10.0*aspectRatio/2.0, 5, 0);
 	Vector up(0, 1, 0);
-	menuCamera = new Camera(obs, vrp, up, -10.0*aspectRatio/2.0, 10.0*aspectRatio/2.0, -5, 5, 0.1, 15);
+	menuCamera = new Camera(obs, vrp, up, -10.0*aspectRatio/2.0, 10.0*aspectRatio/2.0, -5, 5, 0.1, 2);
 
 	// Menus initialization
 	createMenus();
@@ -551,13 +548,13 @@ void Game::initCameras()
 	Point vrp = scene.getPlayerPosition() + Vector(0, 2, 0);
 	Vector up(0, 1, 0);
 	if (gameCamera) delete gameCamera;
-	gameCamera = new Camera(center, obs, vrp, up, 60, aspectRatio, 0.1, 5*radius);
+	gameCamera = new Camera(center, obs, vrp, up, 60, aspectRatio, 0.1, 3*radius);
 	gameCamera->init();
 	currentCamera = gameCamera;
 	mode = GAME;
 	gameStarted = true;
 	// Debug camera
-	debugCamera = new Camera(center, obs, vrp, up, 60, aspectRatio, 0.1, 5*radius);
+	debugCamera = new Camera(center, obs, vrp, up, 60, aspectRatio, 0.1, 3*radius);
 }
 
 

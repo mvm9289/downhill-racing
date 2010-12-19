@@ -2,9 +2,6 @@
 #include "Terrain.h"
 #include <cmath>
 
-#include <iostream>
-using namespace std;
-
 Player::Player(unsigned int id, Point c, float r): playerID(id), Sphere(Point(c.x, c.y + r, c.z), r), initPoint(c) {
 }
 
