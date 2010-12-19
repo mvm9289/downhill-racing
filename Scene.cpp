@@ -86,12 +86,13 @@ Point Scene::getPlayerPosition()
 
 void Scene::movePlayer(unsigned int i, float dx)
 {
-	players[i]->move(dx, players);
+	if (level.endPoint().z < players[i]->getPosition().z) players[i]->move(dx, players);
 }
 
 bool Scene::jumpPlayer(unsigned int i)
 {
-	return players[i]->jump();
+	if (level.endPoint().z < players[i]->getPosition().z) return players[i]->jump();
+	return false;
 }
 
 int Scene::advancePlayers()
@@ -116,5 +117,6 @@ bool Scene::stopPlayer(unsigned int i) {
 }
 
 bool Scene::turboPlayer(unsigned int i) {
-	return players[i]->activateTurbo();
+	if (level.endPoint().z < players[i]->getPosition().z) return players[i]->activateTurbo();
+	return false;
 }
