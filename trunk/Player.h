@@ -29,7 +29,7 @@ public:
 	Point getPosition();
 	void setTerrain(Terrain *t);
 	bool isJumping();
-	void render();
+	void render(bool hellMode = false);
 	void setBlocked(bool b);
 	bool getBlocked();
 
