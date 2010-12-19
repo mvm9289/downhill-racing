@@ -102,7 +102,7 @@ void Game::initMusic() {
 				result = sys->createSound("sounds/stop.wav", FMOD_HARDWARE, 0, &sStop);
 				result = sys->createSound("sounds/level1.mp3", FMOD_HARDWARE, 0, &sL1);
 				result = sys->createSound("sounds/level2.mp3", FMOD_HARDWARE, 0, &sL2);
-				result = sys->createSound("sounds/level3.wav", FMOD_HARDWARE, 0, &sL3);
+				result = sys->createSound("sounds/level3.mp3", FMOD_HARDWARE, 0, &sL3);
 				sMenu->setMode(FMOD_LOOP_NORMAL);
 				sL1->setMode(FMOD_LOOP_NORMAL);
 				sL2->setMode(FMOD_LOOP_NORMAL);
