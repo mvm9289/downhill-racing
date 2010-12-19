@@ -344,6 +344,76 @@ void Game::createPauseMenu()
 	pauseScreen->setSelected(opResume);
 }
 
+void Game::createWinMenu()
+{
+	float c1[] = {1, 0, 0};
+	float c2[] = {1, 1, 1};
+	float c3[] = {1, 1, 0};
+
+	//Menu screens
+	Texture menuTexture;
+	menuTexture.load("textures/bkg.png", GL_RGBA);
+	winScreen = new MScreen(menuTexture.getID(), aspectRatio);
+
+	//title
+	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "You are the winner!", c3, 0.01, 15);
+
+	//create menu items
+	MText *opRestart = new MText(Point(5*aspectRatio, 5, 0), "Restart", c1, c2, 0.005, 3, true);
+	MText *opMenu = new MText(Point(5*aspectRatio, 2, 0), "Go to menu", c1, c2, 0.005, 3);
+
+	//set menu directions
+	opRestart->setUp(opMenu);
+	opRestart->setDown(opMenu);
+	opMenu->setUp(opRestart);
+	opMenu->setDown(opRestart);
+
+	//set menu actions
+	opRestart->setAction(ACTION_RESTART);
+	opMenu->setAction(ACTION_MENU);
+
+	//add to main screen
+	winScreen->add(mainTitle);
+	winScreen->add(opRestart);
+	winScreen->add(opMenu);
+	winScreen->setSelected(opRestart);
+}
+
+void Game::createLoseMenu()
+{
+	float c1[] = {1, 0, 0};
+	float c2[] = {1, 1, 1};
+	float c3[] = {1, 1, 0};
+
+	//Menu screens
+	Texture menuTexture;
+	menuTexture.load("textures/bkg.png", GL_RGBA);
+	loseScreen = new MScreen(menuTexture.getID(), aspectRatio);
+
+	//title
+	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "You are the loser!", c3, 0.01, 15);
+
+	//create menu items
+	MText *opRestart = new MText(Point(5*aspectRatio, 5, 0), "Restart", c1, c2, 0.005, 3, true);
+	MText *opMenu = new MText(Point(5*aspectRatio, 2, 0), "Go to menu", c1, c2, 0.005, 3);
+
+	//set menu directions
+	opRestart->setUp(opMenu);
+	opRestart->setDown(opMenu);
+	opMenu->setUp(opRestart);
+	opMenu->setDown(opRestart);
+
+	//set menu actions
+	opRestart->setAction(ACTION_RESTART);
+	opMenu->setAction(ACTION_MENU);
+
+	//add to main screen
+	loseScreen->add(mainTitle);
+	loseScreen->add(opRestart);
+	loseScreen->add(opMenu);
+	loseScreen->setSelected(opRestart);
+}
+
 void Game::createMenus()
 {
 	createMainMenu();
@@ -351,6 +421,8 @@ void Game::createMenus()
 	createCreditsMenu();
 	createPauseMenu();
 	createHowToMenu();
+	createWinMenu();
+	createLoseMenu();
 }
 
 void Game::createGUI() {
@@ -533,8 +605,27 @@ bool Game::Process()
 				scene.stopPlayer(i);
 			}
 		}
-		scene.advancePlayers();
-		if (!scene.getPlayers()[0]->getBlocked()) currentCamera->move(scene.getPlayerPosition());
+		int status = scene.advancePlayers();
+		switch (status)
+		{
+			case WINNER:
+				currentScreen = winScreen;
+				currentCamera = menuCamera;
+				currentCamera->init();
+				mode = MENU;
+				for (int i = 0; i < 256; i++) keys[i] = GLUT_KEY_NONE;
+				break;
+			case LOSER:
+				currentScreen = loseScreen;
+				currentCamera = menuCamera;
+				currentCamera->init();
+				mode = MENU;
+				for (int i = 0; i < 256; i++) keys[i] = GLUT_KEY_NONE;
+				break;
+			default:
+				if (!scene.getPlayers()[0]->getBlocked()) currentCamera->move(scene.getPlayerPosition());
+				break;
+		}
 
 		// Process Input
 		// Keyboard Input
