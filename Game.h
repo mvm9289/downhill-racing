@@ -31,7 +31,7 @@ using namespace std;
 #define GLUT_KEY_SPACE 32
 #define GLUT_KEY_ENTER 13
 
-#define XBOX_WAIT 20
+#define XBOX_WAIT 15
 
 class Game {
 private:
