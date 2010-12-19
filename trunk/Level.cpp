@@ -53,6 +53,8 @@ bool Level::loadLevel(string level)
 		if (!skydomeTexture.load((char *)("textures/" + textureBitMap).c_str(), GL_RGB))
 			return false;
 
+		if (!inputFile.eof()) inputFile >> hellmode;
+
 		vector<double> terrainPoints;
 		while (!inputFile.eof()) {
 			double aux;
@@ -90,6 +92,7 @@ Box Level::boundingBox()
 
 void Level::render()
 {
+	if (hellmode) glColor3f(1, 0, 0);
 	if (terrain != NULL) terrain->render();
 	if (skydome != NULL)
 	{
@@ -99,8 +102,14 @@ void Level::render()
 		glCullFace(GL_BACK);
 		glEnable(GL_LIGHTING);
 	}
+	glColor3f(1, 1, 1);
 }
 
 Terrain* Level::getTerrain() {
 	return terrain;
+}
+
+bool Level::isHellMode()
+{
+	return hellmode;
 }
