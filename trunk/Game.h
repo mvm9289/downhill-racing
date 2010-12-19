@@ -71,7 +71,10 @@ private:
 	int stopWait;
 	FMOD::Channel *cLevel;
 	FMOD::Channel *cMenu;
-	FMOD::Channel *channel;
+	FMOD::Channel *cJump;
+	FMOD::Channel *cTurbo;
+	FMOD::Channel *cPause;
+	FMOD::Channel *cStop;
 	FMOD_RESULT result;
 
 	unsigned char keys[256];
