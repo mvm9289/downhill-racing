@@ -491,6 +491,17 @@ void Game::createGUI() {
 	pNames.push_back(p3);
 }
 
+Vector Game::getYobs()
+{
+	glMatrixMode(GL_MODELVIEW);
+	float modelview[4][4];
+	glGetFloatv(GL_MODELVIEW_MATRIX, &modelview[0][0]);
+	Vector yobs(modelview[1][0], modelview[1][1], modelview[1][2]);
+	yobs.normalize();
+
+	return yobs;
+}
+
 bool Game::Loop()
 {
 	bool res = true;
@@ -855,18 +866,21 @@ void Game::Render()
 
 	if (mode == MENU) currentScreen->render();
 	else if (gameStarted) {
-		scene.render();
+		Vector camDir = currentCamera->getVisionDir();
+		float angle = acos(-camDir.z)*180.0/3.14159265;
+		if (camDir.y > 0)  angle = acos(camDir.z)*180.0/3.14159265 + 180;
+
+		scene.render(angle);
+
+		Vector yobs = getYobs();
+		yobs.z = -yobs.z;
+		yobs.x -= 0.4;
 
 		vector<Player*> pl = scene.getPlayers();
 		vector<Player*>::iterator it = pl.begin();
 		vector<MLabel*>::iterator lit = pNames.begin();
-		
-		Vector camDir = currentCamera->getVisionDir();
-		float angle = acos(-camDir.z)*180.0/3.14159265;
-		//if (camDir.y > 0)  angle = acos(camDir.z)*180.0/3.14159265;
-
 		for (; it != pl.end(); ++it, ++lit) {
-			Point p = (*it)->getPosition() + Vector(-0.5, 1.5, 0);
+			Point p = (*it)->getPosition() + yobs*(*it)->getRadius()*1.2;
 			(*lit)->setPosition(p);
 			(*lit)->render(true, angle);
 		}

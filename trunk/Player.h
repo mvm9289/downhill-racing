@@ -29,11 +29,12 @@ public:
 	Point getPosition();
 	void setTerrain(Terrain *t);
 	bool isJumping();
-	void render(bool hellMode = false);
+	void render(bool hellMode = false, float angle = 0);
 	void setBlocked(bool b);
 	bool getBlocked();
 
 	bool getJumpAvailable();
+	float getRadius();
 
 private:
 	//float weight; //not used, we use radius instead

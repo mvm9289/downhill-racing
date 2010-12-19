@@ -25,12 +25,12 @@ void Scene::boundingSphere(Point& center, float& radius)
 	radius = (box.maximum - center).length();
 }
 
-void Scene::render(void)
+void Scene::render(float angle)
 {
 	level.render();
 	vector<Player*>::iterator it = players.begin();
 	for (; it != players.end(); ++it)
-		(*it)->render(level.isHellMode());
+		(*it)->render(level.isHellMode(), angle);
 }
 
 bool Scene::init(string levelPath)
