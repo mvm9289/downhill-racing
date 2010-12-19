@@ -18,6 +18,9 @@ int IA::compute(unsigned int i, vector<Player*> pl) {
 	unsigned int ret = IA_NONE;
 	unsigned int r = 0;
 	int dX = pl[0]->getPosition().x - pl[i]->getPosition().x;
+	for (int j = 1; j < pl.size(); ++j){
+		if (j != i) dX += pl[0]->getPosition().x - pl[j]->getPosition().x;
+	}
 	int dY = pl[0]->getPosition().y - pl[i]->getPosition().y;
 	int dZ = pl[0]->getPosition().z - pl[i]->getPosition().z;
 
@@ -44,7 +47,7 @@ int IA::compute(unsigned int i, vector<Player*> pl) {
 	}
 	else {
 		r = rand() % 100;
-		if (dZ < 0 && dX > 0 && r > 25) ret += IA_TURN_LEFT;
+		if (dZ < 0  && dX > 0 && r > 25) ret += IA_TURN_LEFT;
 		else if (dZ < 0 && dX < 0 && r > 25) ret += IA_TURN_RIGHT;
 		else if (dZ > 0 && dX > 0 && r > 25) ret += IA_TURN_RIGHT;
 		else if (dZ > 0 && dX < 0 && r > 25) ret += IA_TURN_LEFT;

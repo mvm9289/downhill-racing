@@ -9,7 +9,7 @@
 #include <string>
 using namespace std;
 
-#define TERRAIN_WIDTH 10.0
+#define TERRAIN_WIDTH 6.0
 #define STARTUP_DEPTH 40.0
 #define SCALE_FACTOR 3.0
 
