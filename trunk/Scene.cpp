@@ -39,7 +39,7 @@ bool Scene::init(string levelPath)
 	if (!loadOK) return false;
 
 	Player *player1 = new Player(0, level.startupPoint(), 1.25);
-	Player *player2 = new Player(1, level.startupPoint() + Point(3, 0, 0), 1);
+	Player *player2 = new Player(1, level.startupPoint() + Point(3, 0, 0), 1.12);
 	Player *player3 = new Player(2, level.startupPoint() + Point(-3, 0, 0), 1.5);
 	Texture playerTexture1;
 	Texture playerTexture2;

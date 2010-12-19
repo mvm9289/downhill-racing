@@ -536,7 +536,7 @@ void Game::initCameras()
 	float radius;
 	Point center;
 	scene.boundingSphere(center, radius);
-	Point obs = scene.getPlayerPosition() + Vector(0, 5, 7);
+	Point obs = scene.getPlayerPosition() + Vector(0, 5, 10);
 	Point vrp = scene.getPlayerPosition() + Vector(0, 2, 0);
 	Vector up(0, 1, 0);
 	if (gameCamera) delete gameCamera;
