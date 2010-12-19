@@ -179,27 +179,32 @@ void Game::createLevelsMenu()
 	MLabel *mainTitle = new MLabel(Point(1.5*aspectRatio, 8, 0.1), "Choose a level", c3, 0.01, 15);
 	
 	//create menu items
-	MText *level1 = new MText(Point(5*aspectRatio, 5, 0), "Level 1", c1, c2, 0.005, 3, true);
-	MText *level2 = new MText(Point(5*aspectRatio, 4, 0), "Level 2", c1, c2, 0.005, 3);
+	MText *level1 = new MText(Point(5*aspectRatio, 6, 0), "Joy garden", c1, c2, 0.005, 3, true);
+	MText *level2 = new MText(Point(5*aspectRatio, 5, 0), "Space race", c1, c2, 0.005, 3);
+	MText *level3 = new MText(Point(5*aspectRatio, 4, 0), "Infernal hell", c1, c2, 0.005, 3);
 	MText *opBack = new MText(Point(5*aspectRatio, 1.5, 0), "Back", c1, c2, 0.005, 3);
 
 	//set menu directions
 	level1->setUp(opBack);
 	level1->setDown(level2);
 	level2->setUp(level1);
-	level2->setDown(opBack);
-	opBack->setUp(level2);
+	level2->setDown(level3);
+	level3->setUp(level2);
+	level3->setDown(opBack);
+	opBack->setUp(level3);
 	opBack->setDown(level1);
 
 	//set menu actions
 	level1->setAction(ACTION_LEVEL_1);
 	level2->setAction(ACTION_LEVEL_2);
+	level3->setAction(ACTION_LEVEL_3);
 	opBack->setAction(ACTION_BACK);
 
 	//add to main screen
 	levelsScreen->add(mainTitle);
 	levelsScreen->add(level1);
 	levelsScreen->add(level2);
+	levelsScreen->add(level3);
 	levelsScreen->add(opBack);
 	levelsScreen->setSelected(level1);
 }
@@ -612,6 +617,12 @@ bool Game::Process()
 				cMenu->setPaused(true);
 				sLevel = sL2;
 				res = loadLevel("levels/level2.txt");
+				for (int i = 0; i < 256; i++) keys[i] = GLUT_KEY_NONE;
+				break;
+			case ACTION_LEVEL_3:
+				cMenu->setPaused(true);
+				sLevel = sL2;
+				res = loadLevel("levels/level3.txt");
 				for (int i = 0; i < 256; i++) keys[i] = GLUT_KEY_NONE;
 				break;
 			case ACTION_RESUME:

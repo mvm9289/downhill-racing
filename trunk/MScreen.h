@@ -8,7 +8,8 @@ using namespace std;
 #define ACTION_START 1
 #define ACTION_LEVEL_1 2
 #define ACTION_LEVEL_2 3
-#define ACTION_OPTIONS 16
+#define ACTION_LEVEL_3 14
+#define ACTION_OPTIONS 13
 #define ACTION_CREDITS 4
 #define ACTION_BACK 5
 #define ACTION_EXIT 6
