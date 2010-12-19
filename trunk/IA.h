@@ -9,7 +9,7 @@ using namespace std;
 #define IA_TURBO 0x8
 #define IA_STOP 0x10
 
-#define TURN_STEPS 50
+#define TURN_STEPS 20
 
 #pragma once
 class IA

@@ -31,7 +31,7 @@ int IA::compute(unsigned int i, vector<Player*> pl) {
 		r = rand() % 100;
 		if (abs(dZ) > 10 && r > 95) ret += IA_TURBO;
 		r = rand() % 100;
-		if (abs(dZ) < 10 && r > 30 && !pl[0]->isJumping() && !pl[i]->isJumping()) ret += IA_JUMP;
+		if (abs(dZ) < 10 && r > 95 && !pl[0]->isJumping() && !pl[i]->isJumping()) ret += IA_JUMP;
 	}
 	else { //computer > player
 		r = rand() % 100;
