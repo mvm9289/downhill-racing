@@ -60,6 +60,8 @@ bool Scene::init(string levelPath)
 	players.push_back(player2);
 	players.push_back(player3);
 
+	win = -1;
+
 	return true;
 }
 
@@ -88,10 +90,19 @@ bool Scene::jumpPlayer(unsigned int i)
 	return players[i]->jump();
 }
 
-void Scene::advancePlayers()
+int Scene::advancePlayers()
 {
-	for (unsigned int i = 0; i != players.size(); ++i)
-		if (level.endPoint().z < players[i]->getPosition().z) players[i]->advance(players);
+	for (unsigned int i = 0; i != players.size(); ++i) {
+		if (level.endPoint().z < players[i]->getPosition().z) {
+			players[i]->advance(players);
+		}
+		else {
+			if (win < 0) win = i;
+			if (!i && !win) return WINNER;
+			else if (!i && win) return LOSER;
+		}
+	}
+	return NOTHING;
 }
 
 bool Scene::stopPlayer(unsigned int i) {
